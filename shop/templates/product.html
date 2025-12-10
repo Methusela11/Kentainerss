@@ -1,0 +1,137 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'assets/css/product.css' %}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ product.name }} - Kentainers</title>
+</head>
+
+<body>
+
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<main class="product-wrapper">
+    <div class="product-grid">
+
+        <!-- LEFT PRODUCT IMAGE (Slider Area Placeholder Like Screenshot) -->
+        <div class="product-image-box">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+
+        <!-- RIGHT PRODUCT DETAILS -->
+        <div class="product-details">
+
+            <!-- TITLE -->
+            <h1 class="p-title">{{ product.name }}</h1>
+
+            <!-- PRICE -->
+            <p class="p-from">
+                From <span>{{ product.price|intcomma }} KES</span>
+            </p>
+
+            <!-- DESCRIPTION -->
+            <p class="p-desc">
+                {{ product.description|truncatechars:170 }}
+            </p>
+
+            <!-- MORE INFO -->
+            <p class="more-info">More Information</p>
+
+            <!-- SIZE DROPDOWN -->
+            {% if options %}
+                <select id="optionSelect" class="select-field">
+                    <option disabled selected>Select Size (Litres / CMs)</option>
+                    {% for opt in options %}
+                        <option value="{{ opt.id }}" data-price="{{ opt.price }}">
+                            {{ opt.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <select class="select-field">
+                    <option>Select Size (Litres / CMs)</option>
+                </select>
+            {% endif %}
+
+            <!-- SHIPPING ZONE DROPDOWN -->
+            <select class="select-field" onclick="openZoneModal()">
+                <option selected>Select Shipping Zone</option>
+            </select>
+
+            <!-- ZONE LINK -->
+            <p class="zone-link" onclick="openZoneModal()">Which Zone am I ?</p>
+
+            <!-- QUANTITY -->
+            <div class="qty-box">
+                <button id="minus">−</button>
+                <span id="qty">1</span>
+                <button id="plus">+</button>
+            </div>
+
+            <!-- ADD TO CART BUTTON -->
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <input type="hidden" id="qtyInput" name="quantity">
+
+                <button class="add-btn">Add To Basket</button>
+            </form>
+
+        </div>
+
+    </div>
+</main>
+
+{% include "footer.html" %}
+
+<!-- SHIPPING MODAL -->
+<div id="zoneModal" class="zone-modal">
+    <div class="zone-card">
+        <span class="close-btn" onclick="closeZoneModal()">X</span>
+        <h2>Shipping Zones</h2>
+
+        <div class="zones-grid">
+            <div><h4>Zone 1</h4><p>Nairobi, Karen, Ngong...</p></div>
+            <div><h4>Zone 2</h4><p>Muranga, Kajiado...</p></div>
+            <div><h4>Zone 3</h4><p>Magadi, Gilgil...</p></div>
+            <div><h4>Zone 4</h4><p>Nakuru, Nanyuki...</p></div>
+            <div><h4>Zone 5</h4><p>Kericho, Kisii...</p></div>
+            <div><h4>Zone 6</h4><p>Migori, Homabay...</p></div>
+            <div><h4>Zone 7</h4><p>Busia, Modogash...</p></div>
+            <div><h4>Zone 8</h4><p>Loyiangalani...</p></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openZoneModal() {
+    document.getElementById("zoneModal").style.display = "flex";
+}
+
+function closeZoneModal() {
+    document.getElementById("zoneModal").style.display = "none";
+}
+</script>
+
+<script>
+// Quantity buttons
+let qty = 1;
+document.getElementById("plus").onclick = () => {
+    qty++;
+    document.getElementById("qty").textContent = qty;
+    document.getElementById("qtyInput").value = qty;
+};
+document.getElementById("minus").onclick = () => {
+    if (qty > 1) qty--;
+    document.getElementById("qty").textContent = qty;
+    document.getElementById("qtyInput").value = qty;
+};
+document.getElementById("qtyInput").value = qty;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% load humanize %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/shop.css' %}">
+</head>
+
+<body style="background-color: white">
+
+<header>
+    {% include "navbar.html" %}
+</header>
+
+<main class="main-content" style="background-color: white">
+
+
+<div><h1 class="shop-title">Material Handling</h1></div>
+<div class="product-grid">
+    {% for product in products %}
+       <a href="{% url 'product_detail' slug=product.slug %}" class="product-card">
+           <div class="image-wrapper">
+               <img src="{{ product.image.url }}" alt="{{ product.name }}">
+           </div>
+           <h2 class="product-name">{{ product.name }}</h2>
+           <p class="product-price">
+               From <strong style="color: #062454">{{ product.price|floatformat:0|intcomma }}</strong> KES
+           </p>
+       </a>
+    {% endfor %}
+</div>
+
+</main>
+
+<footer style="background-color: white">
+    {% include "footer.html" %}
+</footer>
+</body>
+</html>

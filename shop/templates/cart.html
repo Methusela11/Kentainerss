@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cart</title>
+</head>
+<body>
+<header>
+   {% include 'navbar.html' %}
+</header>
+<h1>Your Cart</h1>
+<ul>
+  {% for item in cart_items %}
+    <li>{{ item.product.name }} - Quantity: {{ item.quantity }}</li>
+  {% empty %}
+    <li>Your cart is empty.</li>
+  {% endfor %}
+</ul>
+
+</body>
+</html>

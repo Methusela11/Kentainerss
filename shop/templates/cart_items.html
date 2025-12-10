@@ -1,0 +1,22 @@
+{% load humanize %}
+
+{% for item in cart.items %}
+<div class="cart-item-row">
+    <img src="{{ item.product.image.url }}" class="mini-img">
+
+    <div class="item-info">
+        <p class="item-name">{{ item.product.name }}</p>
+
+        {% if item.option %}
+        <p class="item-meta">{{ item.option.name }}</p>
+        {% endif %}
+
+        <p class="item-price">
+            {{ item.quantity }} × {{ item.total_price|intcomma }} KES
+        </p>
+
+        <a href="{% url 'remove_from_cart' item.id %}" class="remove-btn">Remove</a>
+    </div>
+</div>
+<hr>
+{% endfor %}

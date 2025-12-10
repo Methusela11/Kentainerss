@@ -1,0 +1,110 @@
+{% load humanize %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kentainers Official</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/home.css' %}">
+</head>
+
+<body>
+
+<header>
+    {% include "navbar.html" %}
+</header>
+
+<main>
+<div class="kc-container">
+
+    <!-- HERO VIDEO -->
+    <div class="kc-hero">
+        <video class="kc-hero-video" controls autoplay muted playsinline>
+            <source src="{% static 'assets/video/kentainerss_intro.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- ONLINE SHOP -->
+    <section class="kc-online-shop">
+    <h1 class="kc-online-title">Online Shop</h1>
+
+    <p class="kc-online-desc">
+        Welcome to our self-service online shop for Kentainers products. Experience online shopping with
+        full information you require about the products. Our online agents will always try to be online
+        24/7 to try and address your concerns during your shopping time.
+    </p>
+
+    <a href="{% url 'shop' %}" class="kc-btn-shop">Shop Now</a>
+</section>
+
+
+    <h2 class="kc-latest-title">Latest Products</h2>
+
+<!-- Swiper Container -->
+<div class="swiper kc-products-swiper">
+    <div class="swiper-wrapper">
+
+        {% for product in products %}
+        <div class="swiper-slide">
+            <a href="{% url 'product_detail' slug=product.slug %}" class="kc-product-card-link">
+                <div class="kc-product-card">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <div class="kc-product-title">{{ product.name }}</div>
+                    <div class="kc-product-price">
+                        <span style="color: #373434">From</span>
+                        <strong>{{ product.price|floatformat:0|intcomma }}</strong>
+                        <span style="color: #373434">KES</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="swiper-pagination"></div>
+</div>
+
+
+<section class="kc-signup">
+    <h2>Sign Up</h2>
+
+    <p>
+        Subscribe to the Kentainers Ltd website and receive newsletter with access to
+        our product knowledge, product use cases, product promotions and offers,
+        exclusive price discounts, new product launches and free merchandises.
+    </p>
+
+    <div class="kc-signup-form">
+        <input type="email" placeholder="Enter email address..." />
+        <button>Sign Up</button>
+    </div>
+</section>
+
+
+</div>
+</main>
+<footer>
+    {% include 'footer.html' %}
+</footer>
+
+<script>
+var swiper = new Swiper(".kc-products-swiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    pagination: { el: ".swiper-pagination", clickable: true },
+    breakpoints: {
+        700: { slidesPerView: 2 },
+        1024: { slidesPerView: 4 }
+    }
+});
+</script>
+
+</body>
+</html>

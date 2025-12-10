@@ -1,0 +1,262 @@
+/* ----------------------------------------------------
+   BASE
+----------------------------------------------------- */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+
+.kc-container {
+    width: 92%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+header {
+    position: relative;
+    z-index: 9999;
+}
+
+/* ----------------------------------------------------
+   HERO VIDEO
+----------------------------------------------------- */
+.kc-hero {
+    margin-top: 15px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.kc-hero-video {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    max-height: 450px;
+}
+
+@media (max-width: 1024px) { .kc-hero-video { max-height: 240px; } }
+@media (max-width: 768px)  { .kc-hero-video { max-height: 190px; } }
+@media (max-width: 480px)  { .kc-hero-video { max-height: 150px; } }
+
+/* ----------------------------------------------------
+   ONLINE SHOP SECTION (CLEAN + MATCHES LIVE)
+----------------------------------------------------- */
+.kc-online-shop {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 55px;
+}
+
+.kc-online-title {
+    font-size: 30px;
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    color: #3261a1;
+    margin-bottom: 15px;
+}
+
+.kc-online-desc {
+    width: 85%;
+    margin: 0 auto;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+    font-family: Arial, sans-serif;
+}
+
+.kc-btn-shop {
+    display: inline-block;
+    margin-top: 25px;
+    background: #ffe500;
+    color: #000;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-size: 15px;
+    text-decoration: none;
+    border: 2px solid #142647;
+}
+
+.kc-btn-shop:hover {
+    background-color: #33ba33;
+    border-color: #23236a;
+    color: #fff;
+}
+
+/* ----------------------------------------------------
+   LATEST PRODUCTS
+----------------------------------------------------- */
+.kc-latest-title {
+    text-align: left;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    color: #1a375f;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+/* ----------------------------------------------------
+   PRODUCT CARD — CLEAN + CONSISTENT
+----------------------------------------------------- */
+.kc-product-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.kc-product-card {
+    background: #f3f3f3;
+    border-radius: 12px;
+    height: 520px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.kc-product-card img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+}
+
+.kc-product-title {
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a375f;
+    text-align: center;
+}
+
+.kc-product-price {
+    font-size: 14px;
+    color: #1a375f;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ----------------------------------------------------
+   SWIPER PAGINATION
+----------------------------------------------------- */
+.kc-products-swiper {
+    margin-top: 20px;
+    padding-bottom: 40px;
+}
+
+.swiper-pagination-bullet {
+    background: #ccc;
+    opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+    background: #000 !important;
+}
+
+/* ----------------------------------------------------
+   MOBILE FIXES (MATCHES LIVE)
+----------------------------------------------------- */
+@media (max-width: 600px) {
+    .kc-product-card {
+        height: 320px;
+        padding: 10px;
+    }
+    .kc-product-card img {
+        max-height: 200px;
+    }
+}
+
+/* ----------------------------------------------------
+   GRID FALLBACK FOR NON-SWIPER PAGES
+----------------------------------------------------- */
+@media (max-width: 992px) {
+    .kc-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .kc-products-grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 16px;
+        padding-bottom: 12px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        grid-template-columns: none;
+    }
+
+    .kc-products-grid::-webkit-scrollbar { display: none; }
+
+    .kc-product-card {
+        min-width: 85%;
+        flex: 0 0 auto;
+        scroll-snap-align: center;
+    }
+}
+
+/* ----------------------------------------------------
+   SIGN UP SECTION
+----------------------------------------------------- */
+.kc-signup {
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 80px;
+}
+
+.kc-signup h2 {
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    font-size: 30px;
+    color: #3261a1;
+    margin-bottom: 18px;
+}
+
+.kc-signup p {
+    width: 70%;
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    font-size: 15px;
+    color: #1a375f;
+    line-height: 1.5;
+    font-family: Arial, sans-serif;
+}
+
+.kc-signup-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.kc-signup-form input {
+    padding: 12px 20px;
+    width: 350px;
+    border-radius: 6px;
+    border: 1px solid #234675;
+    font-size: 14px;
+}
+
+.kc-signup-form button {
+    padding: 12px 32px;
+    background: #ffe500;
+    color: black;
+    border: 1px solid #234675;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.kc-signup-form button:hover {
+    background: #299a2e;
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .kc-signup-form {
+        flex-direction: column;
+    }
+    .kc-signup-form input {
+        width: 100%;
+    }
+}

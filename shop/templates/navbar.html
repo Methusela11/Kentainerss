@@ -1,0 +1,195 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'assets/css/navbar.css' %}">
+    <link rel="icon" href="{% static 'assets/image/favicons/favicon-2.jpg' %}">
+    <title>Kentainerss</title>
+</head>
+<body>
+
+<header>
+
+<!-- MOBILE MENU OVERLAY -->
+<div id="mobileOverlay" class="mobile-overlay"></div>
+
+<!-- MOBILE SLIDE MENU -->
+<div id="mobileMenu" class="mobile-menu">
+
+    <!-- Top Row -->
+    <div class="mobile-menu-top">
+        <button id="closeMobile" class="close-btn"></button>
+    </div>
+
+    <ul class="mobile-links">
+
+        <li><a href="{% url 'home' %}">Home</a></li>
+
+        <li class="mobile-has-sub">
+            <span class="submenu-trigger">
+                Shop <i class="arrow">›</i>
+            </span>
+        </li>
+
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Search</a></li>
+
+        {% if user.is_authenticated %}
+            <li><a href="#">Account</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+
+    <!-- SUBMENU: SHOP -->
+    <div id="shopSubMenu" class="mobile-submenu">
+
+        <div class="submenu-top">
+            <button id="backToMain" class="back-btn">‹</button>
+            <h3>Shop</h3>
+        </div>
+
+        <ul class="submenu-list">
+            <li><a href="{% url 'shop' %}">View All</a></li>
+            <li><a href="{% url 'water_tank_storage' %}">Water Tanks & Storage</a></li>
+            <li><a href="{% url 'sanitation' %}">Sanitation</a></li>
+            <li><a href="{% url 'agriculture' %}">Agriculture</a></li>
+            <li><a href="{% url 'material_handling' %}">Material Handling</a></li>
+            <li><a href="{% url 'water_supply_and_accessories' %}">Water Supply & Accessories</a></li>
+            <li><a href="{% url 'special_products_and_others' %}">Special Products & Others</a></li>
+        </ul>
+
+    </div>
+
+</div>
+
+<!-- DESKTOP NAVBAR -->
+<nav class="navbar-container">
+
+    <div class="navbar-inner">
+
+        <!-- Hamburger (Mobile only) -->
+        <!-- Hamburger menu using ☰ -->
+<div id="openMobile" class="hamburger">☰</div>
+
+
+        <!-- Left -->
+        <div class="nav-left desktop-only">
+            <a href="{% url 'home' %}">Home</a>
+
+            <!-- dropdown wrapper -->
+<div class="kc-dropdown">
+    <a href="#" class="nav-left">Shop</a>
+
+    <div class="kc-megamenu">
+        <div class="kc-megamenu-inner">
+
+            <div class="kc-menu-columns">
+                <ul class="kc-menu-list">
+                    <li><a href="{% url 'shop' %}" data-image="{% static 'assets/image/water_tanks_and_storage/kentank_upright.png' %}">View All</a></li>
+                    <li><a href="{% url 'water_tank_storage' %}" data-image="{% static 'assets/image/water_tanks_and_storage/wtas.png' %}">Water Tanks & Storage</a></li>
+                    <li><a href="{% url 'sanitation' %}" data-image="{% static 'assets/image/sanitation/sanitation.png' %}">Sanitation</a></li>
+                    <li><a href="{% url 'agriculture' %}" data-image="{% static 'assets/image/agriculture/agriculture.png' %}">Agriculture</a></li>
+                </ul>
+
+                <ul class="kc-menu-list">
+                    <li><a href="{% url 'material_handling' %}" data-image="{% static 'assets/image/material_handling/bins.png' %}">Material Handling</a></li>
+                    <li><a href="{% url 'water_supply_and_accessories' %}" data-image="{% static 'assets/image/water_supply_and_accessories/water_supply.png' %}">Water Supply & Accessories</a></li>
+                    <li><a href="{% url 'special_products_and_others' %}" data-image="{% static 'assets/image/special_products_and_others/special_products.png' %}">Special Products & Others</a></li>
+                </ul>
+            </div>
+
+            <div class="kc-menu-image">
+                <img id="kc-menu-img" src="" style="display:none;">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+            <a href="#">Projects</a>
+        </div>
+
+        <!-- Center Logo -->
+        <div class="nav-center" style="text-decoration: none">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'assets/image/logos/kentainerss-logo.png' %}" alt="">
+            </a>
+        </div>
+
+        <!-- Right -->
+        <div class="nav-right">
+    <a href="#" class="nav-icon desktop-only">Search</a>
+
+    {% if user.is_authenticated %}
+        <a href="#" class="nav-icon desktop-only">Account</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="nav-icon desktop-only">Login</a>
+    {% endif %}
+
+    <a href="{% url 'cart_page' %}" class="cart-header">
+        Cart
+        <span class="cart-count">{{ cart_count|default:"0" }}</span>
+    </a>
+</div>
+
+    </div>
+
+</nav>
+
+</header>
+
+<script src="{% static 'assets/js/navbar.js' %}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.querySelector('.kc-dropdown');
+    const links = dropdown.querySelectorAll('.kc-menu-list a');
+    const menuImage = document.getElementById('kc-menu-img');
+
+    // Show image when hovering over Shop
+    dropdown.addEventListener('mouseenter', () => {
+        menuImage.style.display = 'block';
+        // set default image (first link)
+        menuImage.src = links[0].dataset.image || '';
+    });
+
+    // Hide image when leaving Shop
+    dropdown.addEventListener('mouseleave', () => {
+        menuImage.style.display = 'none';
+        menuImage.src = '';
+    });
+
+    // Change image dynamically when hovering over links
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            const imgSrc = link.dataset.image;
+            if (imgSrc) menuImage.src = imgSrc;
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const backBtn = document.getElementById('backToMain');
+    const shopSubMenu = document.getElementById('shopSubMenu');
+
+    backBtn.addEventListener('click', () => {
+        // Close the Shop submenu
+        shopSubMenu.classList.remove('open');
+    });
+});
+</script>
+
+<script>
+const shopTrigger = document.querySelector('.submenu-trigger');
+shopTrigger.addEventListener('click', () => {
+    const shopSubMenu = document.getElementById('shopSubMenu');
+    shopSubMenu.classList.add('open');  // open the submenu
+});
+</script>
+
+</body>
+</html>

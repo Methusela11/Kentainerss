@@ -1,0 +1,252 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #ffffff;
+}
+
+/* MAIN WRAPPER */
+.product-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.product-grid {
+    width: 85%;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 60px;
+}
+
+/* LEFT IMAGE AREA */
+.product-image-box {
+    background: #e9e9e9;
+    padding: 40px 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 630px;
+}
+
+.product-image-box img {
+    width: 100%;
+    max-height: 580px;
+    object-fit: contain;
+}
+
+/* RIGHT SIDE DETAILS */
+.product-details {
+    padding-top: 40px;
+}
+
+.p-title {
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.p-from {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.p-from span {
+    font-weight: 600;
+}
+
+.p-desc {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    max-width: 90%;
+    margin-bottom: 20px;
+}
+
+.more-info {
+    color: #0033cc;
+    margin-bottom: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* SELECTS */
+.select-field {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.zone-link {
+    font-size: 13px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+/* QUANTITY */
+.qty-box {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    width: 180px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.qty-box button {
+    width: 50px;
+    height: 45px;
+    font-size: 20px;
+    border: none;
+    background: #efefef;
+    cursor: pointer;
+}
+
+#qty {
+    width: 80px;
+    text-align: center;
+    font-size: 17px;
+}
+
+/* ADD TO CART BUTTON */
+.add-btn {
+    width: 100%;
+    background: #ffe55c;
+    border: none;
+    padding: 17px;
+    border-radius: 6px;
+    margin-top: 35px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* MODAL */
+.zone-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.zone-card {
+    width: 70%;
+    background: #fff;
+    padding: 30px;
+    border-radius: 6px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.close-btn {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.zones-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.zones-grid div {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.zones-grid h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ------------------------ */
+/*  MOBILE RESPONSIVENESS   */
+/* ------------------------ */
+
+@media (max-width: 991px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        width: 92%;
+    }
+
+    .product-image-box {
+        height: auto;
+        padding: 25px;
+    }
+
+    .product-image-box img {
+        max-height: 360px;
+    }
+
+    .p-title {
+        font-size: 32px;
+        margin-top: 10px;
+    }
+
+    .p-desc {
+        max-width: 100%;
+        font-size: 14px;
+    }
+
+    .qty-box {
+        width: 160px;
+    }
+
+    .add-btn {
+        font-size: 15px;
+        padding: 15px;
+    }
+
+    .zone-card {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .zones-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .product-grid {
+        width: 95%;
+    }
+
+    .p-title {
+        font-size: 28px;
+    }
+
+    .p-from {
+        font-size: 16px;
+    }
+
+    .product-image-box img {
+        max-height: 300px;
+    }
+
+    .qty-box {
+        width: 150px;
+    }
+
+    .zones-grid {
+        grid-template-columns: 1fr;
+    }
+}
