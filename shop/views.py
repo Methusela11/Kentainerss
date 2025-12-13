@@ -51,44 +51,71 @@ def shop(request):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
 
-    # Options for "viable" product types
-    sizes = product.options.all().order_by("price") if product.type == "viable" else None
+    has_variants = product.variants.exists()
+    has_options = product.options.exists()
 
-    return render(request, "product.html", {
+    # Product classification
+    is_viable = product.type == "viable" and (has_variants or has_options)
+    is_simple_viable = product.type == "viable" and (has_variants != has_options)
+    is_simple = product.type == "simple" and not has_variants and not has_options
+
+    context = {
         "product": product,
-        "sizes": sizes,     # <-- FIXED HERE!
-    })
+        "variants": product.variants.all() if has_variants else None,
+        "options": product.options.all() if has_options else None,
+
+        "is_viable": is_viable,
+        "is_simple_viable": is_simple_viable,
+        "is_simple": is_simple,
+    }
+
+    return render(request, "product.html", context)
 
 
 
 @login_required
-def add_to_cart(request, product_id):
-    if request.method == "POST":
-        product_id = request.POST.get("product_id")
-        option_id = request.POST.get("option_id")
-        quantity = int(request.POST.get("quantity"))
+def add_to_cart(request):
+    if request.method != "POST":
+        return redirect("shop")
 
-        product = Product.objects.get(id=product_id)
+    product_id = request.POST.get("product_id")
+    variant_id = request.POST.get("variant_id")
+    option_id = request.POST.get("option_id")
+    quantity = int(request.POST.get("quantity", 1))
 
-        if product.type == "variable":
-            option = ProductOption.objects.get(id=option_id)
-            price = option.price
-            label = option.name
-        else:
-            price = product.price
-            label = None
+    product = get_object_or_404(Product, id=product_id)
 
-        CartItem.objects.create(
-            user=request.user,  # Assign logged-in user
-            product=product,
-            option_label=label,
-            price=price,
-            quantity=quantity
-        )
-        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-            return render(request, "cart_items.html", {"cart": cart})
+    price = product.price
+    label = None
 
-        return redirect("cart_page")
+    # Handle VIABLE product variants
+    if variant_id:
+        variant = ProductVariant.objects.get(id=variant_id)
+        price = variant.price
+        label = variant.name
+
+    # Handle OPTIONS (like shipping zone or extra type)
+    if option_id:
+        option = ProductOption.objects.get(id=option_id)
+        price = option.price
+        label = option.name if not label else f"{label} / {option.name}"
+
+    # Create cart item
+    CartItem.objects.create(
+        user=request.user,
+        product=product,
+        option_label=label,
+        price=price,
+        quantity=quantity
+    )
+
+    # AJAX SUPPORT
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        cart_items = CartItem.objects.filter(user=request.user)
+        return render(request, "cart_items.html", {"cart_items": cart_items})
+
+    return redirect("cart")
+
 
 @login_required
 def cart(request):

@@ -1,0 +1,80 @@
+{% load humanize %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'assets/css/cart_sidebar.css' %}">
+
+<!-- CART SIDEBAR -->
+<div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <h2>Cart</h2>
+        <button id="closeCart" class="close-btn">×</button>
+    </div>
+
+    <div id="cartItems" class="cart-items">
+        {% include "cart_items.html" %}
+    </div>
+
+    <div class="cart-footer">
+        <div class="subtotal-row">
+            <span>Subtotal:</span>
+            <span id="subtotalValue">{{ cart.subtotal|intcomma }} KES</span>
+        </div>
+
+        <a href="#" class="checkout-btn">Checkout</a>
+        <a href="{% url 'cartslide' %}" class="viewcart-btn">View Cart</a>
+    </div>
+</div>
+
+<!-- DARK OVERLAY -->
+<div id="cartOverlay" class="cart-overlay"></div>
+
+<script>
+const cartSidebar = document.getElementById("cartSidebar");
+const cartOverlay = document.getElementById("cartOverlay");
+const closeCart = document.getElementById("closeCart");
+
+// OPEN CART
+function openCart() {
+    cartSidebar.classList.add("active");
+    cartOverlay.classList.add("active");
+}
+
+// CLOSE CART
+function closeCartFn() {
+    cartSidebar.classList.remove("active");
+    cartOverlay.classList.remove("active");
+}
+
+closeCart.addEventListener("click", closeCartFn);
+cartOverlay.addEventListener("click", closeCartFn);
+</script>
+
+<script>
+document.getElementById("addToCartBtn").addEventListener("click", function () {
+    let formData = new FormData(document.getElementById("addToCartForm"));
+    let csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    let url = document.getElementById("addToCartForm").action;
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrf
+        },
+        body: formData
+    })
+    .then(res => res.text())
+    .then(html => {
+        // Replace cart HTML
+        document.getElementById("cartItems").innerHTML = html;
+
+        // Update subtotal
+        const subtotalElement = document.getElementById("subtotalValue");
+        if (subtotalElement) {
+            subtotalElement.innerHTML = document.getElementById("updatedSubtotal").value;
+        }
+
+        // Open cart
+        openCart();
+    });
+});
+</script>

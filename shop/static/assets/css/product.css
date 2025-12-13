@@ -4,22 +4,28 @@ body {
     background: #ffffff;
 }
 
-/* MAIN WRAPPER */
+/* ============================================================
+   MAIN WRAPPER — NOW MATCHES NAVBAR EXACTLY
+   ============================================================ */
 .product-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 40px 0;
+    max-width: 1300px;        /* same layout width as navbar inner */
+    margin: 40px auto;
+    padding: 0 40px;          /* aligns content with header links (Home/Shop/Cart) */
 }
 
+/* ============================================================
+   PRODUCT GRID
+   ============================================================ */
 .product-grid {
-    width: 85%;
     display: grid;
     grid-template-columns: 1.3fr 1fr;
     gap: 60px;
+    width: 100%;
 }
 
-/* LEFT IMAGE AREA */
+/* ============================================================
+   LEFT IMAGE AREA
+   ============================================================ */
 .product-image-box {
     background: #e9e9e9;
     padding: 40px 20px;
@@ -36,7 +42,9 @@ body {
     object-fit: contain;
 }
 
-/* RIGHT SIDE DETAILS */
+/* ============================================================
+   RIGHT SIDE DETAILS
+   ============================================================ */
 .product-details {
     padding-top: 40px;
 }
@@ -72,7 +80,9 @@ body {
     font-weight: bold;
 }
 
-/* SELECTS */
+/* ============================================================
+   SELECT FIELDS
+   ============================================================ */
 .select-field {
     width: 100%;
     padding: 12px;
@@ -88,102 +98,204 @@ body {
     cursor: pointer;
 }
 
-/* QUANTITY */
+/* CUSTOM SHIPPING ZONE BUTTON */
+.zone-button {
+    width: 100%;
+    padding: 12px 40px 12px 12px; /* space for arrow */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+}
+
+.dropdown-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* ============================================================
+   QUANTITY BOX
+   ============================================================ */
+/* QUANTITY BOX WRAPPER */
 .qty-box {
+    width: 100%;
+    max-width: 500px;     /* Optional – adjust if needed */
     display: flex;
     align-items: center;
-    margin-top: 30px;
-    border: 1px solid #ccc;
-    width: 180px;
+    justify-content: space-between;
+    border: 1px solid #ddd;
     border-radius: 6px;
-    overflow: hidden;
+    padding: 10px 20px;
+    margin: 15px 0;
+    background: #f6f6f6;
 }
 
+/* QUANTITY BUTTONS */
 .qty-box button {
     width: 50px;
-    height: 45px;
-    font-size: 20px;
+    height: 15px;
     border: none;
-    background: #efefef;
+    background: transparent;
+    font-size: 15px;
     cursor: pointer;
+    color: #555;
 }
 
-#qty {
-    width: 80px;
+/* QUANTITY NUMBER */
+.qty-box #qty {
+    flex: 1;
     text-align: center;
-    font-size: 17px;
+    font-size: 15px;
+    font-weight: normal;
 }
 
-/* ADD TO CART BUTTON */
+/* ============================================================
+   ADD TO CART BUTTON
+   ============================================================ */
 .add-btn {
     width: 100%;
-    background: #ffe55c;
-    border: none;
+    background: #ffe500;
     padding: 17px;
     border-radius: 6px;
     margin-top: 35px;
     font-size: 16px;
-    font-weight: bold;
     cursor: pointer;
+    border: 2px solid #142647;
 }
 
-/* MODAL */
+.add-btn:hover {
+    background-color: #1e9c1e;
+    border-color: #23236a;
+    color: #fff;
+}
+
+/* ============================================================
+   SHIPPING ZONE MODAL
+   ============================================================ */
+/* ===== OVERLAY ===== */
 .zone-modal {
     display: none;
     position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.55);
     justify-content: center;
     align-items: center;
     z-index: 2000;
+    padding: 20px;
 }
 
+/* ===== MODAL CARD ===== */
 .zone-card {
-    width: 70%;
-    background: #fff;
-    padding: 30px;
-    border-radius: 6px;
-    max-height: 85vh;
+    width: 90%;
+    max-width: 750px;
+    background: #ffffff;
+    padding: 40px 45px;
+    border-radius: 8px;
+    max-height: 80vh;
     overflow-y: auto;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 
+/* ===== CLOSE BUTTON ===== */
 .close-btn {
-    float: right;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 400;
+    color: #333;
 }
 
+/* The word “Close” below the X */
+.close-text {
+    font-size: 13px;
+    color: #555;
+}
+
+/* ===== TITLE ===== */
+.zone-card h2 {
+    font-size: 28px;
+    font-weight: normal;
+    color: #143b91;
+    margin-bottom: 25px;
+}
+
+/* ===== GRID ===== */
 .zones-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-    margin-top: 25px;
+    cursor: pointer;
+    grid-template-columns: repeat(2, 1fr); /* Two columns on desktop */
+    text-align: left;
 }
 
+/* ===== INDIVIDUAL ZONE BOX ===== */
 .zones-grid div {
-    background: #f4f4f4;
-    padding: 15px;
-    border-radius: 4px;
+    background: none; /* live site has NO grey background */
+    padding: 0;
 }
 
 .zones-grid h4 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700; /* bolder like live */
+    margin-bottom: 8px;
+    color: #111;
 }
 
-/* ------------------------ */
-/*  MOBILE RESPONSIVENESS   */
-/* ------------------------ */
+.zones-grid p {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #333;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .zones-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .zone-card {
+        padding: 30px 25px;
+    }
+
+    .zones-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .zone-card h2 {
+        font-size: 24px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVENESS
+   ============================================================ */
+@media (max-width: 1100px) {
+    .product-wrapper {
+        padding: 0 30px;  /* match header on tablet widths */
+    }
+}
 
 @media (max-width: 991px) {
     .product-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
-        width: 92%;
+        gap: 40px;
+    }
+
+    .product-wrapper {
+        padding: 0 20px;
     }
 
     .product-image-box {
@@ -197,21 +309,10 @@ body {
 
     .p-title {
         font-size: 32px;
-        margin-top: 10px;
     }
 
     .p-desc {
         max-width: 100%;
-        font-size: 14px;
-    }
-
-    .qty-box {
-        width: 160px;
-    }
-
-    .add-btn {
-        font-size: 15px;
-        padding: 15px;
     }
 
     .zone-card {
@@ -226,8 +327,9 @@ body {
 }
 
 @media (max-width: 600px) {
-    .product-grid {
-        width: 95%;
+
+    .product-wrapper {
+        padding: 0 15px; /* same as mobile navbar padding */
     }
 
     .p-title {

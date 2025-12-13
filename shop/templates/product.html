@@ -18,12 +18,12 @@
 <main class="product-wrapper">
     <div class="product-grid">
 
-        <!-- LEFT PRODUCT IMAGE (Slider Area Placeholder Like Screenshot) -->
+        <!-- LEFT PRODUCT IMAGE -->
         <div class="product-image-box">
             <img src="{{ product.image.url }}" alt="{{ product.name }}">
         </div>
 
-        <!-- RIGHT PRODUCT DETAILS -->
+        <!-- RIGHT SECTION -->
         <div class="product-details">
 
             <!-- TITLE -->
@@ -58,13 +58,18 @@
                 </select>
             {% endif %}
 
-            <!-- SHIPPING ZONE DROPDOWN -->
-            <select class="select-field" onclick="openZoneModal()">
-                <option selected>Select Shipping Zone</option>
-            </select>
+          <!-- SHIPPING ZONE BUTTON -->
+<div class="select-field zone-button" id="zoneButton" onclick="openZoneModal()">
+    Select Shipping Zone
+    <span class="dropdown-icon">⌄</span>
+</div>
 
-            <!-- ZONE LINK -->
-            <p class="zone-link" onclick="openZoneModal()">Which Zone am I ?</p>
+<!-- ZONE LINK -->
+<p class="zone-link" onclick="openZoneModal()">Which Zone am I?</p>
+
+<!-- HIDDEN INPUT TO STORE ZONE -->
+<input type="hidden" id="zoneInput" name="zone" value="">
+
 
             <!-- QUANTITY -->
             <div class="qty-box">
@@ -73,12 +78,12 @@
                 <button id="plus">+</button>
             </div>
 
-            <!-- ADD TO CART BUTTON -->
-            <form method="post" action="{% url 'add_to_cart' product.id %}">
+            <!-- ADD TO CART FORM -->
+            <form id="addToCartForm" method="post" action="{% url 'add_to_cart' product.id %}">
                 {% csrf_token %}
-                <input type="hidden" id="qtyInput" name="quantity">
+                <input type="hidden" id="qtyInput" name="quantity" value="1">
 
-                <button class="add-btn">Add To Basket</button>
+                <button type="button" class="add-btn" id="addToCartBtn">Add To Basket</button>
             </form>
 
         </div>
@@ -88,49 +93,147 @@
 
 {% include "footer.html" %}
 
-<!-- SHIPPING MODAL -->
+<!-- SHIPPING ZONE MODAL -->
 <div id="zoneModal" class="zone-modal">
     <div class="zone-card">
-        <span class="close-btn" onclick="closeZoneModal()">X</span>
-        <h2>Shipping Zones</h2>
+        <span class="close-btn" onclick="closeZoneModal()">✕</span>
+        <p class="close-text">Close</p>
 
-        <div class="zones-grid">
-            <div><h4>Zone 1</h4><p>Nairobi, Karen, Ngong...</p></div>
-            <div><h4>Zone 2</h4><p>Muranga, Kajiado...</p></div>
-            <div><h4>Zone 3</h4><p>Magadi, Gilgil...</p></div>
-            <div><h4>Zone 4</h4><p>Nakuru, Nanyuki...</p></div>
-            <div><h4>Zone 5</h4><p>Kericho, Kisii...</p></div>
-            <div><h4>Zone 6</h4><p>Migori, Homabay...</p></div>
-            <div><h4>Zone 7</h4><p>Busia, Modogash...</p></div>
-            <div><h4>Zone 8</h4><p>Loyiangalani...</p></div>
+        <h2 class="zone-title">Shipping Zones</h2>
+
+        <div class="zones-grid" onclick="selectZone('Zone 1')">
+            <div>
+                <h4>Zone 1</h4>
+                <p>0-50Km Nairobi, Karen, Ngong, Ongata Rongai, Kitengela, Athi River, Ruai, Juja, Ruiru, Kikuyu</p>
+            </div>
+
+            <div onclick="selectZone('Zone 2')">
+                <h4>Zone 2</h4>
+                <p>51-100Km Muranga, Kajiado, Machakos town, Naivasha</p>
+            </div>
+
+            <div onclick="selectZone('Zone 3')">
+                <h4>Zone 3</h4>
+                <p>101-150Km Magadi, Gilgil, Narok, Nyeri, Embu, Sultan Hamud</p>
+            </div>
+
+            <div onclick="selectZone('Zone 4')">
+                <h4>Zone 4</h4>
+                <p>151-250Km Nakuru, Nanyuki, Kitui, Mwingi, Molo, Nyahururu, Nanyuki, Solai, Londiani, Nyer Kisim, Lorule, Bomet, Nguni, Kitui, Kibwezi, Mitio Andei</p>
+            </div>
+
+            <div onclick="selectZone('Zone 5')">
+                <h4>Zone 5</h4>
+                <p>251-350Km Kericho, Kisii, Muhoroni, Isolo, Meru, Marigat, Kisumu, Eldoret, Kapasbet, Voi, Isolo Taveta, Maralal, Mau</p>
+            </div>
+
+            <div onclick="selectZone('Zone 6')">
+                <h4>Zone 6</h4>
+                <p>351-450Km Migori, Homabay, Butere, Kitale, Kindu bay, Kakamega, Tsavo, Bura, Garissa, Laisamis, Webuye, Bungoma, Maralal, Bondo, Siaya</p>
+            </div>
+
+            <div onclick="selectZone('Zone 7')">
+                <h4>Zone 7</h4>
+                <p>451-600Km Busia, Modogashi, Baragoi, Marsabit, Habaswein, Hagera, Liboi, Mombasa, Hola</p>
+            </div>
+
+            <div onclick="selectZone('Zone 8')">
+                <h4>Zone 8</h4>
+                <p>600-1100Km Loyiangalani, N. Horr, Buna, Wajir, Turukana, Lamu, Kakuma, Lokichogio, Moyale, Lodwa, Elwak, Takaba Mandera, Malindi</p>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- MODAL SCRIPTS -->
+<script>
+let selectedSizePrice = null;
+let selectedZone = null;
+
+// When user selects a size
+document.getElementById("optionSelect")?.addEventListener("change", function() {
+    selectedSizePrice = parseInt(this.options[this.selectedIndex].dataset.price);
+    updateAddButton();
+});
+
+// When user selects zone in modal
+function selectZone(zoneName) {
+    selectedZone = zoneName;
+
+    // Update the zone button text
+    document.getElementById("zoneButton").innerHTML =
+        zoneName + ' <span class="dropdown-icon">⌄</span>';
+
+    // Write zone to hidden input
+    document.getElementById("zoneInput").value = zoneName;
+
+    closeZoneModal();
+    updateAddButton();
+}
+function updateAddButton() {
+    const btn = document.getElementById("addToCartBtn");
+
+    if (!selectedSizePrice || !selectedZone) {
+        btn.textContent = "Add To Basket";   // Default before selections
+        return;
+    }
+
+    // Both selected → show real price
+    btn.textContent = "Add To Cart – " + selectedSizePrice.toLocaleString() + " KES";
+}
+</script>
 
 <script>
 function openZoneModal() {
     document.getElementById("zoneModal").style.display = "flex";
 }
-
 function closeZoneModal() {
     document.getElementById("zoneModal").style.display = "none";
 }
 </script>
 
+<!-- QUANTITY SCRIPT -->
 <script>
-// Quantity buttons
 let qty = 1;
+
 document.getElementById("plus").onclick = () => {
     qty++;
     document.getElementById("qty").textContent = qty;
     document.getElementById("qtyInput").value = qty;
 };
+
 document.getElementById("minus").onclick = () => {
     if (qty > 1) qty--;
     document.getElementById("qty").textContent = qty;
     document.getElementById("qtyInput").value = qty;
 };
-document.getElementById("qtyInput").value = qty;
+</script>
+
+<!-- ADD TO CART AJAX -->
+<script>
+const addBtn = document.getElementById("addToCartBtn");
+
+addBtn.addEventListener("click", function() {
+
+    let form = document.getElementById("addToCartForm");
+    let url = form.action;
+    let csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    let formData = new FormData();
+    formData.append("quantity", document.getElementById("qtyInput").value);
+
+    fetch(url, {
+        method: "POST",
+        headers: { "X-CSRFToken": csrf },
+        body: formData
+    })
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById("cartSidebar").innerHTML = html;
+        document.getElementById("cartWrapper").classList.add("cart-open");
+    })
+    .catch(err => console.error("Cart error:", err));
+});
 </script>
 
 </body>
