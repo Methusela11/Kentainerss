@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/product.css' %}">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ product.name }} - Kentainers</title>
+    <title>{{ product.name }} - Kentainerss</title>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
 
             <!-- PRICE -->
             <p class="p-from">
-                From <span>{{ product.price|intcomma }} KES</span>
+                From <span>{{ product.price }}</span> KES
             </p>
 
             <!-- DESCRIPTION -->
@@ -58,18 +58,17 @@
                 </select>
             {% endif %}
 
-          <!-- SHIPPING ZONE BUTTON -->
-<div class="select-field zone-button" id="zoneButton" onclick="openZoneModal()">
-    Select Shipping Zone
-    <span class="dropdown-icon">⌄</span>
-</div>
+            <!-- SHIPPING ZONE BUTTON -->
+            <div class="select-field zone-button" id="zoneButton" onclick="openZoneModal()">
+                Select Shipping Zone
+                <span class="dropdown-icon">⌄</span>
+            </div>
 
-<!-- ZONE LINK -->
-<p class="zone-link" onclick="openZoneModal()">Which Zone am I?</p>
+            <!-- ZONE LINK -->
+            <p class="zone-link" onclick="openZoneModal()">Which Zone am I?</p>
 
-<!-- HIDDEN INPUT TO STORE ZONE -->
-<input type="hidden" id="zoneInput" name="zone" value="">
-
+            <!-- HIDDEN INPUT TO STORE ZONE -->
+            <input type="hidden" id="zoneInput" name="zone" value="">
 
             <!-- QUANTITY -->
             <div class="qty-box">
@@ -83,7 +82,8 @@
                 {% csrf_token %}
                 <input type="hidden" id="qtyInput" name="quantity" value="1">
 
-                <button type="button" class="add-btn" id="addToCartBtn">Add To Basket</button>
+                <!-- MODIFIED BUTTON - INITIALLY DISABLED -->
+                <button type="button" class="add-btn" id="addToCartBtn" disabled>Add to Basket</button>
             </form>
 
         </div>
@@ -170,16 +170,33 @@ function selectZone(zoneName) {
     closeZoneModal();
     updateAddButton();
 }
+
 function updateAddButton() {
     const btn = document.getElementById("addToCartBtn");
+    const sizeSelected = !!selectedSizePrice;
+    const zoneSelected = !!selectedZone;
 
-    if (!selectedSizePrice || !selectedZone) {
-        btn.textContent = "Add To Basket";   // Default before selections
-        return;
+    // Enable button only when both are selected
+    if (sizeSelected && zoneSelected) {
+        btn.disabled = false;
+        btn.textContent = "Add To Basket – " + selectedSizePrice.toLocaleString() + " KES";
+        btn.classList.add("btn-enabled");
+        btn.classList.remove("btn-disabled");
+    } else {
+        btn.disabled = true;
+
+        // Set appropriate message based on what's missing
+        if (!sizeSelected && !zoneSelected) {
+            btn.textContent = "Select Size & Shipping Zone";
+        } else if (!sizeSelected) {
+            btn.textContent = "Select Size";
+        } else if (!zoneSelected) {
+            btn.textContent = "Select Shipping Zone";
+        }
+
+        btn.classList.add("btn-disabled");
+        btn.classList.remove("btn-enabled");
     }
-
-    // Both selected → show real price
-    btn.textContent = "Add To Cart – " + selectedSizePrice.toLocaleString() + " KES";
 }
 </script>
 
@@ -214,6 +231,8 @@ document.getElementById("minus").onclick = () => {
 const addBtn = document.getElementById("addToCartBtn");
 
 addBtn.addEventListener("click", function() {
+    // Don't proceed if button is disabled
+    if (this.disabled) return;
 
     let form = document.getElementById("addToCartForm");
     let url = form.action;
@@ -221,6 +240,10 @@ addBtn.addEventListener("click", function() {
 
     let formData = new FormData();
     formData.append("quantity", document.getElementById("qtyInput").value);
+    // Also send the selected zone if needed
+    if (selectedZone) {
+        formData.append("zone", selectedZone);
+    }
 
     fetch(url, {
         method: "POST",
