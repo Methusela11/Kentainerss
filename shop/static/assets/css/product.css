@@ -68,6 +68,7 @@ body {
 .p-from span {
     font-weight: 600;
     color: #113761;
+    font-family: Arial, sans-serif;
 }
 
 .p-desc {
@@ -80,11 +81,12 @@ body {
 }
 
 .more-info {
-    color: #0033cc;
+    color: #113761;
     margin-bottom: 25px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
+    text-decoration: underline;
 }
 
 /* ============================================================
@@ -202,6 +204,87 @@ body {
     color: #fff;
     border: 2px solid #142647;
     cursor: not-allowed;
+}
+
+/* =========================
+   PRODUCT INFORMATION
+========================= */
+.product-info {
+    max-width: 760px;
+    margin: 120px auto 0;
+    padding: 0 20px;
+    color: #0b1a4a;
+}
+
+/* Headings */
+.product-info h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 50px 0 14px;
+    color: #0b1a4a;
+}
+
+/* Paragraph text */
+.product-info p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #1c1c1c;
+    margin-bottom: 16px;
+}
+
+/* Lists */
+.product-info ul {
+    padding-left: 18px;
+    margin-bottom: 40px;
+}
+
+.product-info li {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 6px;
+    color: #1c1c1c;
+}
+
+@media (max-width: 768px) {
+    .product-info {
+        margin-top: 80px;
+    }
+
+    .product-info h2 {
+        font-size: 24px;
+    }
+
+    .trust-section {
+        gap: 30px;
+    }
+
+    .trust-section img {
+        width: 95px;
+    }
+}
+
+/* =========================
+   INFORMATION LINKS
+   (Exact Kentainerss Style)
+========================= */
+.info-links {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-links a {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0b1a8f; /* Kentainerss blue */
+    text-decoration: underline;
+    line-height: 1.6;
+    width: fit-content;
+}
+
+.info-links a:hover {
+    opacity: 0.8;
 }
 
 /* ============================================================

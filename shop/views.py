@@ -51,25 +51,21 @@ def shop(request):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
 
-    has_variants = product.variants.exists()
     has_options = product.options.exists()
 
     # Product classification
-    is_viable = product.type == "viable" and (has_variants or has_options)
-    is_simple_viable = product.type == "viable" and (has_variants != has_options)
-    is_simple = product.type == "simple" and not has_variants and not has_options
+    is_viable = product.type == "viable" and has_options
+    is_simple = product.type == "simple" and not has_options
 
     context = {
         "product": product,
-        "variants": product.variants.all() if has_variants else None,
         "options": product.options.all() if has_options else None,
-
         "is_viable": is_viable,
-        "is_simple_viable": is_simple_viable,
         "is_simple": is_simple,
     }
 
     return render(request, "product.html", context)
+
 
 
 

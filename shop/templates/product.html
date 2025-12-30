@@ -31,7 +31,9 @@
 
             <!-- PRICE -->
             <p class="p-from">
-                From <span>{{ product.price }}</span> KES
+                <span style="font-family: Arial, sans-serif; font-size: small; font-weight: normal">From</span>
+                <span>{{ product.price }}</span>
+                <span style="font-family: Arial, sans-serif; font-size: small; font-weight: normal">KES</span>
             </p>
 
             <!-- DESCRIPTION -->
@@ -40,7 +42,7 @@
             </p>
 
             <!-- MORE INFO -->
-            <p class="more-info">More Information</p>
+            <p class="more-info" onclick="scrollToInfo()">More Information</p>
 
             <!-- SIZE DROPDOWN -->
             {% if options %}
@@ -70,6 +72,10 @@
             <!-- HIDDEN INPUT TO STORE ZONE -->
             <input type="hidden" id="zoneInput" name="zone" value="">
 
+            <p class="p-from">
+                <span>{{ product.price }}</span> KES
+            </p>
+
             <!-- QUANTITY -->
             <div class="qty-box">
                 <button id="minus">−</button>
@@ -89,6 +95,59 @@
         </div>
 
     </div>
+<!-- =========================
+       INFORMATION SECTION
+    ========================== -->
+    <section class="product-info">
+
+        <h2 id="product-information">Information</h2>
+
+        <div class="info-meta">
+    <p><strong>SKU:</strong> {{ product.sku }}</p>
+    <p>
+        <strong>Categories: </strong>{{ product.name }},
+        {{ product.get_category_display }}
+    </p>
+</div>
+
+        {{ product.description|safe }}
+
+        <div class="info-links">
+    {% if product.brochure %}
+    <a href="{{ product.brochure.url }}" target="_blank">
+        Download {{ product.name }} Brochure
+    </a>
+{% endif %}
+
+</div>
+
+
+        <h2>Features</h2>
+        <ul>
+            <li>Made from 100% food-grade virgin material</li>
+            <li>In-built handles</li>
+            <li>Durable</li>
+            <li>No change in taste of water</li>
+            <li>Safe for water storage</li>
+        </ul>
+
+        <h2>Application</h2>
+        <ul>
+            <li>Outdoor & indoor water storage</li>
+            <li>Chemical storage</li>
+            <li>Agriculture</li>
+            <li>Hand wash systems</li>
+        </ul>
+
+    </section>
+
+    <!-- =========================
+       TRUST BADGES
+    ========================== -->
+    <section class="trust-section">
+        <img src="{% static 'assets/img/durable.png' %}">
+        <img src="{% static 'assets/img/30years.png' %}">
+    </section>
 </main>
 
 {% include "footer.html" %}
@@ -101,8 +160,8 @@
 
         <h2 class="zone-title">Shipping Zones</h2>
 
-        <div class="zones-grid" onclick="selectZone('Zone 1')">
-            <div>
+        <div class="zones-grid">
+            <div  onclick="selectZone('Zone 1')">
                 <h4>Zone 1</h4>
                 <p>0-50Km Nairobi, Karen, Ngong, Ongata Rongai, Kitengela, Athi River, Ruai, Juja, Ruiru, Kikuyu</p>
             </div>
@@ -257,6 +316,19 @@ addBtn.addEventListener("click", function() {
     })
     .catch(err => console.error("Cart error:", err));
 });
+</script>
+
+{#clicking on more infor scrolls to infor#}
+<script>
+function scrollToInfo() {
+    const infoSection = document.getElementById("product-information");
+    if (infoSection) {
+        infoSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+}
 </script>
 
 </body>

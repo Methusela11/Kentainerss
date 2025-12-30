@@ -16,6 +16,12 @@ class Product(models.Model):
         ("viable", "Viable"),
         ("simple", "Simple"),
     ]
+    brochure = models.FileField(
+        upload_to="brochures/",
+        blank=True,
+        null=True,
+        help_text="Upload product brochure (PDF recommended)"
+    )
 
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
@@ -36,20 +42,11 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-class ProductVariant(models.Model):
-    product = models.ForeignKey(Product, related_name="variants", on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)      # e.g. 500L, 1000L, Binbox, Bincircle
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.product.name} - {self.name}"
-
-
 class ProductOption(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="options")
     name = models.CharField(max_length=200)  # e.g. "WASTE BIN 30"
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.product.name} - {self.name}"

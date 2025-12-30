@@ -1,0 +1,74 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'assets/css/whatsapp.css' %}">
+</head>
+<body>
+<main>
+    {% load static %}
+
+<!-- WHATSAPP FLOATING ICON -->
+<div class="kc-whatsapp-icon" id="whatsappToggle">
+    <img id="whatsappIcon" src="{% static 'assets/image/icons/whatsapp-t.png' %}" alt="WhatsApp">
+</div>
+
+<!-- WHATSAPP SUPPORT BOX -->
+<div class="kc-whatsapp-box" id="whatsappBox">
+
+    <!-- HEADER -->
+    <div class="kc-whatsapp-top">
+        <div class="kc-whatsapp-top-row">
+            <img src="{% static 'assets/image/icons/whatsapp-2-modified.png' %}" alt="">
+            <h4>Start a Conversation</h4>
+        </div>
+        <p>Hi! Click ‘Kentainerss’ below to chat with us on WhatsApp</p>
+    </div>
+
+    <!-- BODY -->
+    <div class="kc-whatsapp-content">
+        <small class="kc-reply-time">The team typically replies in a few minutes.</small>
+
+        <a href="https://wa.me/254762120373" target="_blank" class="kc-agent-card">
+            <img src="{% static 'assets/image/logos/kentainerss-logo.png' %}" alt="">
+            <div>
+                <strong>Sales Agent Support</strong>
+                <span>Need Help? Chat with us</span>
+            </div>
+        </a>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    const toggle = document.getElementById("whatsappToggle");
+    const box = document.getElementById("whatsappBox");
+    const icon = document.getElementById("whatsappIcon");
+
+    const whatsappImg = "{% static 'assets/image/icons/whatsapp-t.png' %}";
+    const closeImg = "{% static 'assets/image/icons/close-t.png' %}";
+
+    let isOpen = false;
+
+    toggle.addEventListener("click", () => {
+        isOpen = !isOpen;
+
+        if (isOpen) {
+            box.style.display = "block";
+            icon.src = closeImg;
+        } else {
+            box.style.display = "none";
+            icon.src = whatsappImg;
+        }
+    });
+})();
+</script>
+
+</main>
+</body>
+</html>
