@@ -57,17 +57,20 @@ def product_detail(request, slug):
     is_viable = product.type == "viable" and has_options
     is_simple = product.type == "simple" and not has_options
 
+    # Related products (same category, exclude current)
+    related_products = Product.objects.filter(
+        category=product.category
+    ).exclude(id=product.id)
+
     context = {
         "product": product,
         "options": product.options.all() if has_options else None,
         "is_viable": is_viable,
         "is_simple": is_simple,
+        "related_products": related_products,
     }
 
     return render(request, "product.html", context)
-
-
-
 
 @login_required
 def add_to_cart(request):

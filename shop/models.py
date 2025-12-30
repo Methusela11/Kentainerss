@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User  # <- Add this line
+from django.urls import reverse
+
 
 class Product(models.Model):
 
@@ -39,8 +41,49 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     stock_status = models.BooleanField(default=True)
 
+    def get_category_url(self):
+        mapping = {
+            "water_tanks": "water_tank_storage",
+            "sanitation": "sanitation",
+            "agriculture": "agriculture",
+            "material_handling": "material_handling",
+            "water_supply": "water_supply_and_accessories",
+            "special_products": "special_products_and_others",
+        }
+        return reverse(mapping[self.category])
+
     def __str__(self):
         return self.name
+
+class ProductFeature(models.Model):
+    product = models.ForeignKey(
+        Product,
+        related_name="features",
+        on_delete=models.CASCADE
+    )
+    text = models.CharField(max_length=255)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.product.name} - Feature"
+
+class ProductApplication(models.Model):
+    product = models.ForeignKey(
+        Product,
+        related_name="applications",
+        on_delete=models.CASCADE
+    )
+    text = models.CharField(max_length=255)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.product.name} - Application"
 
 class ProductOption(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="options")

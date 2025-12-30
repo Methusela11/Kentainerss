@@ -47,13 +47,16 @@
             <!-- SIZE DROPDOWN -->
             {% if options %}
                 <select id="optionSelect" class="select-field">
-                    <option disabled selected>Select Size (Litres / CMs)</option>
+                <option value="" disabled selected>Select Size (Litres / CMs)</option>
                     {% for opt in options %}
-                        <option value="{{ opt.id }}" data-price="{{ opt.price }}">
+                        <option value="{{ opt.id }}"
+                                data-price="{{ opt.price }}">
                             {{ opt.name }}
                         </option>
+
                     {% endfor %}
                 </select>
+
             {% else %}
                 <select class="select-field">
                     <option>Select Size (Litres / CMs)</option>
@@ -72,9 +75,13 @@
             <!-- HIDDEN INPUT TO STORE ZONE -->
             <input type="hidden" id="zoneInput" name="zone" value="">
 
-            <p class="p-from">
-                <span>{{ product.price }}</span> KES
+            <p class="p-size">
+                <span id="productPrice">
+                    {{ options.first.price }}
+                </span> KES
             </p>
+
+            <input type="hidden" name="option_id" id="optionInput">
 
             <!-- QUANTITY -->
             <div class="qty-box">
@@ -103,11 +110,18 @@
         <h2 id="product-information">Information</h2>
 
         <div class="info-meta">
-    <p><strong>SKU:</strong> {{ product.sku }}</p>
+    <p style="font-size: 13px">SKU: <strong>{{ product.sku }}</strong></p>
     <p>
-        <strong>Categories: </strong>{{ product.name }},
-        {{ product.get_category_display }}
+        Category:
+        <strong>
+            {{ product.name }},
+            <a href="{{ product.get_category_url }}" style="text-decoration: none; color: #0b1a4a">
+                {{ product.get_category_display }}
+            </a>
+        </strong>
     </p>
+
+
 </div>
 
         {{ product.description|safe }}
@@ -120,24 +134,23 @@
 {% endif %}
 
 </div>
+{% if product.features.all %}
+<h2>Features</h2>
+<ul>
+    {% for feature in product.features.all %}
+        <li>{{ feature.text }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
-
-        <h2>Features</h2>
-        <ul>
-            <li>Made from 100% food-grade virgin material</li>
-            <li>In-built handles</li>
-            <li>Durable</li>
-            <li>No change in taste of water</li>
-            <li>Safe for water storage</li>
-        </ul>
-
-        <h2>Application</h2>
-        <ul>
-            <li>Outdoor & indoor water storage</li>
-            <li>Chemical storage</li>
-            <li>Agriculture</li>
-            <li>Hand wash systems</li>
-        </ul>
+{% if product.applications.all %}
+<h2>Application</h2>
+<ul>
+    {% for app in product.applications.all %}
+        <li>{{ app.text }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
     </section>
 
@@ -145,9 +158,33 @@
        TRUST BADGES
     ========================== -->
     <section class="trust-section">
-        <img src="{% static 'assets/img/durable.png' %}">
-        <img src="{% static 'assets/img/30years.png' %}">
+        <img src="{% static 'assets/image/support/durability.png' %}" alt="Durability">
     </section>
+
+        <h2 style="font-weight: normal; font-family: Arial, sans-serif; font-size: 24px">
+            More From {{ product.get_category_display }}
+        </h2>
+
+<div class="related-grid">
+    {% for item in related_products %}
+        <a href="{% url 'product_detail' item.slug %}" class="related-card">
+
+            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+
+            <h3>{{ item.name }}</h3>
+
+            {% if item.options.exists %}
+                <p>From {{ item.options.first.price|intcomma }} KES</p>
+            {% else %}
+                <p>{{ item.price|intcomma }} KES</p>
+            {% endif %}
+
+        </a>
+    {% empty %}
+        <p>No other products in this category.</p>
+    {% endfor %}
+</div>
+
 </main>
 
 {% include "footer.html" %}
@@ -204,6 +241,38 @@
     </div>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const optionSelect = document.getElementById("optionSelect");
+    const priceEl = document.getElementById("productPrice");
+    const optionInput = document.getElementById("optionInput");
+
+    // Hide price initially
+    priceEl.style.display = "none";
+
+    function updatePrice() {
+        const selected = optionSelect.options[optionSelect.selectedIndex];
+        const price = selected.dataset.price;
+
+        if (price) {
+            priceEl.style.display = "inline"; // show price
+            priceEl.textContent = Number(price).toLocaleString();
+            optionInput.value = selected.value;
+        } else {
+            priceEl.style.display = "none"; // hide if no price
+            optionInput.value = "";
+        }
+    }
+
+    // Only update price when user changes the selection
+    optionSelect.addEventListener("change", updatePrice);
+});
+</script>
+
+
+</script>
+
 <!-- MODAL SCRIPTS -->
 <script>
 let selectedSizePrice = null;
@@ -214,6 +283,7 @@ document.getElementById("optionSelect")?.addEventListener("change", function() {
     selectedSizePrice = parseInt(this.options[this.selectedIndex].dataset.price);
     updateAddButton();
 });
+
 
 // When user selects zone in modal
 function selectZone(zoneName) {
@@ -285,51 +355,92 @@ document.getElementById("minus").onclick = () => {
 };
 </script>
 
-<!-- ADD TO CART AJAX -->
 <script>
-const addBtn = document.getElementById("addToCartBtn");
+document.addEventListener("DOMContentLoaded", function () {
 
-addBtn.addEventListener("click", function() {
-    // Don't proceed if button is disabled
-    if (this.disabled) return;
+    let selectedSizePrice = null;
+    let selectedZone = null;
 
-    let form = document.getElementById("addToCartForm");
-    let url = form.action;
-    let csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const addBtn = document.getElementById("addToCartBtn");
+    const optionSelect = document.getElementById("optionSelect");
+    const optionInput = document.getElementById("optionInput");
+    const qtyInput = document.getElementById("qtyInput");
 
-    let formData = new FormData();
-    formData.append("quantity", document.getElementById("qtyInput").value);
-    // Also send the selected zone if needed
-    if (selectedZone) {
-        formData.append("zone", selectedZone);
+    // Price display
+    const priceEl = document.getElementById("productPrice");
+    priceEl.style.display = "none";
+
+    // Handle size selection
+    optionSelect?.addEventListener("change", function () {
+        const selected = optionSelect.options[optionSelect.selectedIndex];
+        selectedSizePrice = parseInt(selected.dataset.price);
+        optionInput.value = selected.value;
+
+        if (selectedSizePrice) {
+            priceEl.style.display = "inline";
+            priceEl.textContent = selectedSizePrice.toLocaleString() + " KES";
+        } else {
+            priceEl.style.display = "none";
+        }
+        updateAddButton();
+    });
+
+    // Handle shipping zone selection
+    window.selectZone = function(zoneName) {
+        selectedZone = zoneName;
+        document.getElementById("zoneButton").innerHTML = zoneName + ' <span class="dropdown-icon">⌄</span>';
+        document.getElementById("zoneInput").value = zoneName;
+        closeZoneModal();
+        updateAddButton();
+    };
+
+    // Enable button only when both size & zone are selected
+    function updateAddButton() {
+        if (selectedSizePrice && selectedZone) {
+            addBtn.disabled = false;
+            addBtn.classList.remove("btn-disabled");
+            addBtn.classList.add("btn-enabled");
+            addBtn.textContent = "Add to Basket – " + selectedSizePrice.toLocaleString() + " KES";
+        } else {
+            addBtn.disabled = true;
+            addBtn.classList.remove("btn-enabled");
+            addBtn.classList.add("btn-disabled");
+
+            if (!selectedSizePrice && !selectedZone) {
+                addBtn.textContent = "Select Size & Shipping Zone";
+            } else if (!selectedSizePrice) {
+                addBtn.textContent = "Select Size";
+            } else {
+                addBtn.textContent = "Select Shipping Zone";
+            }
+        }
     }
 
-    fetch(url, {
-        method: "POST",
-        headers: { "X-CSRFToken": csrf },
-        body: formData
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById("cartSidebar").innerHTML = html;
-        document.getElementById("cartWrapper").classList.add("cart-open");
-    })
-    .catch(err => console.error("Cart error:", err));
+    // Add to cart AJAX
+    addBtn.addEventListener("click", function () {
+        if (this.disabled) return;
+
+        const formData = new FormData();
+        formData.append("quantity", qtyInput.value);
+        formData.append("option_id", optionInput.value);
+        formData.append("zone", selectedZone);
+
+        const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch(document.getElementById("addToCartForm").action, {
+            method: "POST",
+            headers: { "X-CSRFToken": csrf },
+            body: formData
+        })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById("cartSidebar").innerHTML = html;
+            document.getElementById("cartWrapper").classList.add("cart-open");
+        })
+        .catch(err => console.error("Cart error:", err));
+    });
 });
 </script>
 
-{#clicking on more infor scrolls to infor#}
-<script>
-function scrollToInfo() {
-    const infoSection = document.getElementById("product-information");
-    if (infoSection) {
-        infoSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
-}
-</script>
 
 </body>
 </html>
