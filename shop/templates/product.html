@@ -15,6 +15,14 @@
     {% include 'navbar.html' %}
 </header>
 
+<div id="cartWrapper">
+    <div id="cartSidebar" class="cart-sidebar">
+        {% include "cart_sidebar.html" %}
+    </div>
+</div>
+
+{% csrf_token %}
+
 <main class="product-wrapper">
     <div class="product-grid">
 
@@ -64,24 +72,21 @@
             {% endif %}
 
             <!-- SHIPPING ZONE BUTTON -->
-            <div class="select-field zone-button" id="zoneButton" onclick="openZoneModal()">
-                Select Shipping Zone
-                <span class="dropdown-icon">⌄</span>
-            </div>
+            {% if product.offers_delivery %}
+    <div class="select-field zone-button" id="zoneButton" onclick="openZoneModal()">
+        Select Shipping Zone
+        <span class="dropdown-icon">⌄</span>
+    </div>
 
-            <!-- ZONE LINK -->
-            <p class="zone-link" onclick="openZoneModal()">Which Zone am I?</p>
-
-            <!-- HIDDEN INPUT TO STORE ZONE -->
-            <input type="hidden" id="zoneInput" name="zone" value="">
+    <!-- ZONE LINK -->
+    <p class="zone-link" onclick="openZoneModal()">Which Zone am I?</p>
+{% endif %}
 
             <p class="p-size">
                 <span id="productPrice">
                     {{ options.first.price }}
-                </span> KES
+                </span>
             </p>
-
-            <input type="hidden" name="option_id" id="optionInput">
 
             <!-- QUANTITY -->
             <div class="qty-box">
@@ -89,15 +94,19 @@
                 <span id="qty">1</span>
                 <button id="plus">+</button>
             </div>
+        <form id="addToCartForm" action="{% url 'add_to_cart' product.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="qtyInput" name="quantity" value="1">
+            <input type="hidden" id="optionInput" name="option_id">
+            <input type="hidden" id="zoneInput" name="zone">
+        </form>
 
-            <!-- ADD TO CART FORM -->
-            <form id="addToCartForm" method="post" action="{% url 'add_to_cart' product.id %}">
-                {% csrf_token %}
-                <input type="hidden" id="qtyInput" name="quantity" value="1">
 
-                <!-- MODIFIED BUTTON - INITIALLY DISABLED -->
-                <button type="button" class="add-btn" id="addToCartBtn" disabled>Add to Basket</button>
-            </form>
+        <button type="button" class="add-btn btn-disabled" id="addToCartBtn" disabled>
+            <span class="btn-text">Add to Basket</span>
+            <span class="btn-loader"></span>
+        </button>
+
 
         </div>
 
@@ -242,117 +251,7 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const optionSelect = document.getElementById("optionSelect");
-    const priceEl = document.getElementById("productPrice");
-    const optionInput = document.getElementById("optionInput");
-
-    // Hide price initially
-    priceEl.style.display = "none";
-
-    function updatePrice() {
-        const selected = optionSelect.options[optionSelect.selectedIndex];
-        const price = selected.dataset.price;
-
-        if (price) {
-            priceEl.style.display = "inline"; // show price
-            priceEl.textContent = Number(price).toLocaleString();
-            optionInput.value = selected.value;
-        } else {
-            priceEl.style.display = "none"; // hide if no price
-            optionInput.value = "";
-        }
-    }
-
-    // Only update price when user changes the selection
-    optionSelect.addEventListener("change", updatePrice);
-});
-</script>
-
-
-</script>
-
-<!-- MODAL SCRIPTS -->
-<script>
-let selectedSizePrice = null;
-let selectedZone = null;
-
-// When user selects a size
-document.getElementById("optionSelect")?.addEventListener("change", function() {
-    selectedSizePrice = parseInt(this.options[this.selectedIndex].dataset.price);
-    updateAddButton();
-});
-
-
-// When user selects zone in modal
-function selectZone(zoneName) {
-    selectedZone = zoneName;
-
-    // Update the zone button text
-    document.getElementById("zoneButton").innerHTML =
-        zoneName + ' <span class="dropdown-icon">⌄</span>';
-
-    // Write zone to hidden input
-    document.getElementById("zoneInput").value = zoneName;
-
-    closeZoneModal();
-    updateAddButton();
-}
-
-function updateAddButton() {
-    const btn = document.getElementById("addToCartBtn");
-    const sizeSelected = !!selectedSizePrice;
-    const zoneSelected = !!selectedZone;
-
-    // Enable button only when both are selected
-    if (sizeSelected && zoneSelected) {
-        btn.disabled = false;
-        btn.textContent = "Add To Basket – " + selectedSizePrice.toLocaleString() + " KES";
-        btn.classList.add("btn-enabled");
-        btn.classList.remove("btn-disabled");
-    } else {
-        btn.disabled = true;
-
-        // Set appropriate message based on what's missing
-        if (!sizeSelected && !zoneSelected) {
-            btn.textContent = "Select Size & Shipping Zone";
-        } else if (!sizeSelected) {
-            btn.textContent = "Select Size";
-        } else if (!zoneSelected) {
-            btn.textContent = "Select Shipping Zone";
-        }
-
-        btn.classList.add("btn-disabled");
-        btn.classList.remove("btn-enabled");
-    }
-}
-</script>
-
-<script>
-function openZoneModal() {
-    document.getElementById("zoneModal").style.display = "flex";
-}
-function closeZoneModal() {
-    document.getElementById("zoneModal").style.display = "none";
-}
-</script>
-
-<!-- QUANTITY SCRIPT -->
-<script>
-let qty = 1;
-
-document.getElementById("plus").onclick = () => {
-    qty++;
-    document.getElementById("qty").textContent = qty;
-    document.getElementById("qtyInput").value = qty;
-};
-
-document.getElementById("minus").onclick = () => {
-    if (qty > 1) qty--;
-    document.getElementById("qty").textContent = qty;
-    document.getElementById("qtyInput").value = qty;
-};
+    const DELIVERY_REQUIRED = {{ product.offers_delivery|yesno:"true,false" }};
 </script>
 
 <script>
@@ -365,81 +264,129 @@ document.addEventListener("DOMContentLoaded", function () {
     const optionSelect = document.getElementById("optionSelect");
     const optionInput = document.getElementById("optionInput");
     const qtyInput = document.getElementById("qtyInput");
-
-    // Price display
     const priceEl = document.getElementById("productPrice");
-    priceEl.style.display = "none";
 
-    // Handle size selection
+    if (priceEl) priceEl.style.display = "none";
+
+    /* ---------- SIZE SELECTION ---------- */
     optionSelect?.addEventListener("change", function () {
         const selected = optionSelect.options[optionSelect.selectedIndex];
-        selectedSizePrice = parseInt(selected.dataset.price);
-        optionInput.value = selected.value;
+        selectedSizePrice = selected.dataset.price
+            ? parseInt(selected.dataset.price)
+            : null;
 
-        if (selectedSizePrice) {
+        optionInput.value = selected.value || "";
+
+        if (selectedSizePrice && priceEl) {
             priceEl.style.display = "inline";
             priceEl.textContent = selectedSizePrice.toLocaleString() + " KES";
-        } else {
+        } else if (priceEl) {
             priceEl.style.display = "none";
         }
+
         updateAddButton();
     });
 
-    // Handle shipping zone selection
-    window.selectZone = function(zoneName) {
+    /* ---------- ZONE SELECTION (ONLY IF DELIVERY) ---------- */
+    window.selectZone = function (zoneName) {
+        if (!DELIVERY_REQUIRED) return;
+
         selectedZone = zoneName;
-        document.getElementById("zoneButton").innerHTML = zoneName + ' <span class="dropdown-icon">⌄</span>';
-        document.getElementById("zoneInput").value = zoneName;
+
+        const zoneBtn = document.getElementById("zoneButton");
+        const zoneInput = document.getElementById("zoneInput");
+
+        if (zoneBtn) {
+            zoneBtn.innerHTML = zoneName + ' <span class="dropdown-icon">⌄</span>';
+        }
+        if (zoneInput) zoneInput.value = zoneName;
+
         closeZoneModal();
         updateAddButton();
     };
 
-    // Enable button only when both size & zone are selected
+    /* ---------- BUTTON ENABLE LOGIC ---------- */
     function updateAddButton() {
-        if (selectedSizePrice && selectedZone) {
+        const sizeOk = !!selectedSizePrice;
+        const zoneOk = DELIVERY_REQUIRED ? !!selectedZone : true;
+
+        if (sizeOk && zoneOk) {
             addBtn.disabled = false;
-            addBtn.classList.remove("btn-disabled");
             addBtn.classList.add("btn-enabled");
-            addBtn.textContent = "Add to Basket – " + selectedSizePrice.toLocaleString() + " KES";
+            addBtn.classList.remove("btn-disabled");
+            addBtn.textContent =
+                "Add to Basket – " + selectedSizePrice.toLocaleString() + " KES";
         } else {
             addBtn.disabled = true;
             addBtn.classList.remove("btn-enabled");
             addBtn.classList.add("btn-disabled");
 
-            if (!selectedSizePrice && !selectedZone) {
+            if (!sizeOk && DELIVERY_REQUIRED && !zoneOk) {
                 addBtn.textContent = "Select Size & Shipping Zone";
-            } else if (!selectedSizePrice) {
+            } else if (!sizeOk) {
                 addBtn.textContent = "Select Size";
-            } else {
+            } else if (DELIVERY_REQUIRED && !zoneOk) {
                 addBtn.textContent = "Select Shipping Zone";
             }
         }
     }
+});
+</script>
 
-    // Add to cart AJAX
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const addBtn = document.getElementById("addToCartBtn");
+    const btnText = addBtn.querySelector(".btn-text");
+    const qtyDisplay = document.getElementById("qty");
+    const qtyInput = document.getElementById("qtyInput");
+    const optionInput = document.getElementById("optionInput");
+    const form = document.getElementById("addToCartForm");
+
+    /* ---------- SYNC QTY ---------- */
+    document.getElementById("plus").onclick = () => {
+        qtyDisplay.textContent = +qtyDisplay.textContent + 1;
+        qtyInput.value = qtyDisplay.textContent;
+    };
+
+    document.getElementById("minus").onclick = () => {
+        if (+qtyDisplay.textContent > 1) {
+            qtyDisplay.textContent--;
+            qtyInput.value = qtyDisplay.textContent;
+        }
+    };
+
+    /* ---------- ADD TO CART ---------- */
     addBtn.addEventListener("click", function () {
-        if (this.disabled) return;
+        if (addBtn.disabled || addBtn.classList.contains("loading")) return;
 
-        const formData = new FormData();
-        formData.append("quantity", qtyInput.value);
-        formData.append("option_id", optionInput.value);
-        formData.append("zone", selectedZone);
+        addBtn.classList.add("loading");
+        btnText.textContent = "Adding…";
 
-        const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        fetch(document.getElementById("addToCartForm").action, {
+        fetch(form.action, {
             method: "POST",
-            headers: { "X-CSRFToken": csrf },
-            body: formData
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: new FormData(form)
         })
         .then(res => res.text())
         .then(html => {
             document.getElementById("cartSidebar").innerHTML = html;
             document.getElementById("cartWrapper").classList.add("cart-open");
+
+            btnText.textContent = "Added ✓";
+            addBtn.classList.remove("loading");
         })
-        .catch(err => console.error("Cart error:", err));
+        .catch(() => {
+            btnText.textContent = "Try Again";
+            addBtn.classList.remove("loading");
+            addBtn.disabled = false;
+        });
     });
 });
 </script>
+
 
 
 </body>

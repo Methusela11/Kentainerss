@@ -40,6 +40,11 @@ class Product(models.Model):
     )
     description = models.TextField(blank=True, null=True)
     stock_status = models.BooleanField(default=True)
+    offers_delivery = models.BooleanField(
+        default=False,
+        help_text="Check this if this product requires delivery & shipping zone selection"
+    )
+
 
     def get_category_url(self):
         mapping = {
@@ -95,14 +100,14 @@ class ProductOption(models.Model):
         return f"{self.product.name} - {self.name}"
 
 class CartItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # NEW
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    option_label = models.CharField(max_length=200, null=True, blank=True)
+    option = models.ForeignKey(ProductOption, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField(default=1)
 
-    def __str__(self):
-        return f"{self.product.name} ({self.quantity})"
+    class Meta:
+        unique_together = ('user', 'product', 'option')
 
 class ProductImage(models.Model):
     product = models.ForeignKey(

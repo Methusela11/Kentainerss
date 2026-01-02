@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db.models import F, Sum
 
 # Signup
 def signup_view(request):
@@ -72,57 +73,62 @@ def product_detail(request, slug):
 
     return render(request, "product.html", context)
 
-@login_required
-def add_to_cart(request):
+
+def add_to_cart(request, product_id):
     if request.method != "POST":
         return redirect("shop")
 
-    product_id = request.POST.get("product_id")
-    variant_id = request.POST.get("variant_id")
     option_id = request.POST.get("option_id")
     quantity = int(request.POST.get("quantity", 1))
 
     product = get_object_or_404(Product, id=product_id)
-
     price = product.price
-    label = None
+    option = None
 
-    # Handle VIABLE product variants
-    if variant_id:
-        variant = ProductVariant.objects.get(id=variant_id)
-        price = variant.price
-        label = variant.name
-
-    # Handle OPTIONS (like shipping zone or extra type)
     if option_id:
-        option = ProductOption.objects.get(id=option_id)
+        option = get_object_or_404(ProductOption, id=option_id)
         price = option.price
-        label = option.name if not label else f"{label} / {option.name}"
 
-    # Create cart item
-    CartItem.objects.create(
-        user=request.user,
+    user = request.user if request.user.is_authenticated else None
+
+    # Try to get existing cart item
+    cart_item = CartItem.objects.filter(
+        user=user,
         product=product,
-        option_label=label,
-        price=price,
-        quantity=quantity
+        option=option
+    ).first()
+
+    if cart_item:
+        cart_item.quantity += quantity
+        cart_item.price = price
+        cart_item.save()
+    else:
+        CartItem.objects.create(
+            user=user,
+            product=product,
+            option=option,
+            price=price,
+            quantity=quantity
+        )
+
+    cart_items = CartItem.objects.filter(user=user)
+    cart_subtotal = cart_items.aggregate(total=Sum(F("price") * F("quantity")))["total"] or 0
+
+    return render(
+        request,
+        "cart_sidebar.html",
+        {
+            "cart_items": cart_items,
+            "cart_subtotal": cart_subtotal,
+        },
     )
 
-    # AJAX SUPPORT
-    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        cart_items = CartItem.objects.filter(user=request.user)
-        return render(request, "cart_items.html", {"cart_items": cart_items})
-
-    return redirect("cart")
-
-
-@login_required
 def cart(request):
     cart_items = CartItem.objects.filter(user=request.user)
     cart_count = sum(item.quantity for item in cart_items)
     return render(request, 'cart.html', {'cart_items': cart_items, 'cart_count': cart_count})
 
-def cart_items(request):
+def cart_items_views(request):
     return render(request, "cart_items.html")
 
 def water_tank_storage(request):
