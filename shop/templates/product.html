@@ -40,7 +40,7 @@
             <!-- PRICE -->
             <p class="p-from">
                 <span style="font-family: Arial, sans-serif; font-size: small; font-weight: normal">From</span>
-                <span>{{ product.price }}</span>
+                <span>{{ product.price|floatformat:0 }}</span>
                 <span style="font-family: Arial, sans-serif; font-size: small; font-weight: normal">KES</span>
             </p>
 
@@ -114,8 +114,7 @@
 <!-- =========================
        INFORMATION SECTION
     ========================== -->
-    <section class="product-info">
-
+    <section class="product-info" >
         <h2 id="product-information">Information</h2>
 
         <div class="info-meta">
@@ -387,6 +386,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<script>
+function scrollToInfo() {
+    const target = document.getElementById("product-information");
+    if (!target) return;
+
+    const yOffset = -100; // adjust to header height
+    const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+}
+</script>
 
 
 </body>

@@ -128,7 +128,7 @@
         <a href="{% url 'login' %}" class="nav-icon desktop-only">Login</a>
     {% endif %}
 
-    <a href="javascript:void(0)" class="cart-header" id="cartToggle">
+    <a href="{% url 'cart' %}" class="cart-header" id="cartToggle">
         Cart
         <span class="cart-count">{{ cart_count|default:"0" }}</span>
     </a>

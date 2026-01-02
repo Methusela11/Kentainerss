@@ -91,13 +91,25 @@ class ProductApplication(models.Model):
         return f"{self.product.name} - Application"
 
 class ProductOption(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="options")
-    name = models.CharField(max_length=200)  # e.g. "WASTE BIN 30"
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="options"
+    )
+    name = models.CharField(max_length=200)  # e.g. "200 Litres"
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField(default=0)
 
+    image = models.ImageField(
+        upload_to="products/options/",
+        blank=True,
+        help_text="Optional image for this size/option"
+    )
+
     def __str__(self):
         return f"{self.product.name} - {self.name}"
+
+
 
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

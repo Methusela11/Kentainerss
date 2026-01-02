@@ -1,24 +1,64 @@
+{% load static %}
+{% load humanize %}
+
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cart</title>
+    <title>Cart – Kentainerss</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'assets/css/cart_sidebar.css' %}">
 </head>
-<body>
-<header>
-   {% include 'navbar.html' %}
-</header>
-<h1>Your Cart</h1>
-<ul>
-  {% for item in cart_items %}
-    <li>{{ item.product.name }} - Quantity: {{ item.quantity }}</li>
-  {% empty %}
-    <li>Your cart is empty.</li>
-  {% endfor %}
-</ul>
 
+<body>
+
+<header>
+    {% include "navbar.html" %}
+</header>
+
+<div class="cart-page">
+
+    <h1>Cart</h1>
+
+    <div class="cart-grid">
+
+        <!-- LEFT INFO -->
+        <aside class="cart-info">
+            <p>
+                We only deliver to addresses located in Kenya.<br><br>
+                For enquiries please contact us below:
+            </p>
+            <p>
+                <strong>Email:</strong> info@kentainers.co.ke<br>
+                <strong>Tel:</strong> +254 705713278<br>
+                <strong>Cell:</strong> +254 762120373
+            </p>
+        </aside>
+
+        <!-- CART ITEMS -->
+        <section class="cart-items">
+    {% include "cart_items.html" %}
+
+    <!-- SUMMARY -->
+    <div class="summary">
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <span>{{ cart_subtotal|intcomma }} KES</span>
+        </div>
+
+        <div class="summary-row summary-total">
+            <span>Total</span>
+            <span>{{ cart_subtotal|intcomma }} KES</span>
+        </div>
+
+        <button class="checkout-btn">Proceed to checkout</button>
+    </div>
+</section>
+
+
+    </div>
+</div>
+
+{% include "footer.html" %}
 </body>
 </html>

@@ -1,234 +1,7 @@
-<style>
-/* ================= OVERLAY ================= */
-body.cart-open {
-    overflow: hidden;
-}
-
-.site-header,
-header {
-    position: relative;
-    z-index: 100;
-}
-
-/* OVERLAY */
-#cartOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.35);
-    opacity: 0;
-    visibility: hidden;
-    transition: .25s ease;
-    z-index: 998;
-}
-
-/* CART SIDEBAR */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: -600px;          /* must match width */
-    width: 600px;
-    max-width: 100%;
-    height: 100vh;
-
-    background: #fff;
-    z-index: 999;
-
-    display: flex;
-    flex-direction: column;
-
-    transition: right .35s ease;
-    box-shadow: -6px 0 25px rgba(0,0,0,.15);
-}
-
-
-/* OPEN STATE */
-#cartWrapper.cart-open #cartOverlay {
-    opacity: 1;
-    visibility: visible;
-}
-
-#cartWrapper.cart-open .cart-sidebar {
-    right: 0;
-}
-#cartOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.35);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: .25s ease;
-    z-index: 998;
-}
-
-#cartWrapper.cart-open #cartOverlay {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;  /* ⬅️ click enabled */
-}
-
-
-/* ================= HEADER ================= */
-.cart-header {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    background: #fff;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 18px 24px;
-    border-bottom: 1px solid #eee;
-    flex-shrink: 0;
-}
-
-.cart-header h3 {
-    font-size: 25px;
-    font-weight: normal;
-    font-family: Arial, sans-serif;
-    margin: 0;
-}
-
-.cart-close {
-    font-size: 22px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    line-height: 1;
-}
-
-/* ================= BODY ================= */
-.cart-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px 24px;
-}
-
-/* ================= ITEM ================= */
-.cart-item {
-    display: flex;
-    gap: 14px;
-    padding: 16px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.cart-item img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-}
-
-.cart-item-info {
-    flex: 1;
-    font-family: Arial, sans-serif;
-}
-
-.cart-item-name {
-    font-weight: normal;
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    margin: 0;
-}
-
-.cart-item-option {
-    font-size: 13px;
-    color: #555;
-    margin: 4px 0;
-}
-
-.cart-item-price {
-    font-weight: normal;
-    font-size: 14px;
-    margin-top: 6px;
-}
-
-.cart-remove {
-    font-size: 13px;
-    color: #e00000;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    margin-top: 4px;
-}
-
-/* ================= FOOTER ================= */
-.cart-footer {
-    padding: 18px 24px;
-    border-top: 1px solid #eee;
-    background: #fff;
-}
-
-.cart-subtotal {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 14px;
-}
-
-/* ================= BUTTONS ================= */
-.cart-checkout-btn {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    background: #ffea00;
-    color: #000;
-    font-weight: 700;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 2px;
-}
-
-.cart-view-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    background: #f2f2f2;
-    color: #000;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 480px) {
-    .cart-sidebar {
-        width: 100%;
-        right: -100%;
-    }
-
-    #cartWrapper.cart-open .cart-sidebar {
-        right: 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .cart-sidebar {
-        width: 100%;
-        right: -100%;
-        top: 0;
-        height: 100vh;
-    }
-}
-@media (min-width: 1440px) {
-    .cart-sidebar {
-        width: 600px;
-        right: -600px;
-    }
-
-    #cartWrapper.cart-open .cart-sidebar {
-        right: 0;
-    }
-}
-
-
-</style>
-
+{% load static %}
 {% load humanize %}
+
+<link rel="stylesheet" href="{% static 'assets/css/cart_sidebar.css' %}">
 
 <div id="cartOverlay" onclick="closeCart()"></div>
 
@@ -239,33 +12,7 @@ header {
     </div>
 
     <div class="cart-body">
-        {% if cart_items %}
-            {% for item in cart_items %}
-                <div class="cart-item">
-                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
-
-                    <div class="cart-item-info">
-                        <p class="cart-item-name">{{ item.product.name }}</p>
-
-                        {% if item.option %}
-                            <p class="cart-item-option">
-                                <strong>Size (Litres / CMS):</strong> {{ item.option.name }}
-                            </p>
-                        {% endif %}
-
-                        <p class="cart-item-price">
-                            {{ item.quantity }} × {{ item.price|intcomma }} KES
-                        </p>
-
-                        <button class="cart-remove" data-id="{{ item.id }}">
-                            Remove
-                        </button>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No products in the cart.</p>
-        {% endif %}
+        {% include 'cart_items.html' %}
     </div>
 
     <div class="cart-footer">
@@ -278,7 +25,7 @@ header {
             Checkout
         </a>
 
-        <a href="{% url 'cart_page' %}" class="cart-view-btn">
+        <a href="{% url 'cart' %}" class="cart-view-btn">
             View Cart
         </a>
     </div>
@@ -312,4 +59,30 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Delegate click events to dynamically updated buttons
+    document.querySelector(".cart-sidebar").addEventListener("click", function(e) {
+        if (e.target.classList.contains("cart-remove")) {
+            const itemId = e.target.dataset.id;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch(`/cart/remove/${itemId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            })
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("cartSidebar").innerHTML = html;
+            })
+            .catch(err => {
+                console.error("Error removing item:", err);
+            });
+        }
+    });
+});
 </script>

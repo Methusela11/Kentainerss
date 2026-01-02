@@ -8,9 +8,8 @@ body {
    MAIN WRAPPER — NOW MATCHES NAVBAR EXACTLY
    ============================================================ */
 .product-wrapper {
-    max-width: 1300px;        /* same layout width as navbar inner */
-    margin: 40px auto;
-    padding: 0 40px;          /* aligns content with header links (Home/Shop/Cart) */
+    max-width: 1450px;
+    margin: 0 auto;
 }
 
 /* ============================================================

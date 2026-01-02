@@ -1,22 +1,30 @@
 {% load humanize %}
 
-{% for item in cart.items %}
-<div class="cart-item-row">
-    <img src="{{ item.product.image.url }}" class="mini-img">
+{% if cart_items %}
+    {% for item in cart_items %}
+        <div class="cart-item">
 
-    <div class="item-info">
-        <p class="item-name">{{ item.product.name }}</p>
+            <img src="{{ item.option.image.url }}" alt="{{ item.product.name }}">
 
-        {% if item.option %}
-        <p class="item-meta">{{ item.option.name }}</p>
-        {% endif %}
+            <div class="cart-item-info">
+                <p class="cart-item-name">{{ item.product.name }}</p>
 
-        <p class="item-price">
-            {{ item.quantity }} × {{ item.total_price|intcomma }} KES
-        </p>
+                {% if item.option %}
+                    <p class="cart-item-option">
+                        <strong>Size (Litres / CMS):</strong> {{ item.option.name }}
+                    </p>
+                {% endif %}
 
-        <a href="{% url 'remove_from_cart' item.id %}" class="remove-btn">Remove</a>
-    </div>
-</div>
-<hr>
-{% endfor %}
+                <p class="cart-item-price">
+                    {{ item.quantity }} × <strong>{{ item.price|intcomma }}</strong> KES
+                </p>
+
+                <button class="cart-remove" data-id="{{ item.id }}">
+                    Remove
+                </button>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No products in the cart.</p>
+{% endif %}

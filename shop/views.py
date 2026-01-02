@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, ProductOption, CartItem
 from django.shortcuts import render, redirect
@@ -123,10 +124,51 @@ def add_to_cart(request, product_id):
         },
     )
 
+def remove_from_cart(request, item_id):
+    if request.method == "POST":
+        cart_item = get_object_or_404(CartItem, id=item_id)
+        user = request.user if request.user.is_authenticated else None
+
+        if cart_item.user == user:
+            cart_item.delete()
+
+        # Return updated cart HTML
+        cart_items = CartItem.objects.filter(user=user)
+        cart_subtotal = cart_items.aggregate(total=Sum(F("price") * F("quantity")))["total"] or 0
+
+        return render(
+            request,
+            "cart_sidebar.html",
+            {
+                "cart_items": cart_items,
+                "cart_subtotal": cart_subtotal,
+            },
+        )
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
 def cart(request):
-    cart_items = CartItem.objects.filter(user=request.user)
-    cart_count = sum(item.quantity for item in cart_items)
-    return render(request, 'cart.html', {'cart_items': cart_items, 'cart_count': cart_count})
+    user = request.user if request.user.is_authenticated else None
+
+    cart_items = CartItem.objects.filter(user=user)
+
+    cart_count = 0
+    cart_subtotal = 0
+
+    for item in cart_items:
+        item.line_total = item.price * item.quantity
+        cart_subtotal += item.line_total
+        cart_count += item.quantity
+
+    return render(
+        request,
+        'cart.html',
+        {
+            'cart_items': cart_items,
+            'cart_count': cart_count,
+            'cart_subtotal': cart_subtotal,
+        }
+    )
+
 
 def cart_items_views(request):
     return render(request, "cart_items.html")
