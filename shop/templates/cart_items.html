@@ -1,5 +1,7 @@
+{% load static %}
 {% load humanize %}
 
+<link rel="stylesheet" href="{% static 'assets/css/cart_sidebar.css' %}">
 {% if cart_items %}
     {% for item in cart_items %}
         <div class="cart-item">
@@ -16,7 +18,7 @@
                 {% endif %}
 
                 <p class="cart-item-price">
-                    {{ item.quantity }} × <strong>{{ item.price|intcomma }}</strong> KES
+                    {{ item.quantity }} × <strong>{{ item.price|floatformat:0|intcomma }}</strong> KES
                 </p>
 
                 <button class="cart-remove" data-id="{{ item.id }}">
@@ -28,3 +30,6 @@
 {% else %}
     <p>No products in the cart.</p>
 {% endif %}
+
+
+<script src="{% static 'assets/js/cart_sidebar.js' %}"></script>

@@ -1,0 +1,130 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout – Kentainers</title>
+
+    <link rel="stylesheet" href="{% static 'assets/css/checkout.css' %}">
+</head>
+<body>
+
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<main class="checkout-wrapper">
+
+    <!-- Back to cart -->
+    <a href="{% url 'cart' %}" class="back-link">← Back to Cart</a>
+
+    <!-- Returning customer -->
+    <p class="returning">
+        Returning customer?
+        <a href="{% url 'login' %}">Click here to login</a>
+    </p>
+
+    <form method="post" class="checkout-form">
+        {% csrf_token %}
+
+        <!-- BILLING DETAILS -->
+        <section class="billing">
+            <h2>Billing details</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>First name <span>*</span></label>
+                    <input type="text" name="first_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Last name <span>*</span></label>
+                    <input type="text" name="last_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Company name (optional)</label>
+                    <input type="text" name="company">
+                </div>
+
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" value="Kenya" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>Street address <span>*</span></label>
+                    <input type="text" name="street" placeholder="House number and street name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Town / City <span>*</span></label>
+                    <input type="text" name="city" required>
+                </div>
+
+                <div class="form-group">
+                    <label>State / County <span>*</span></label>
+                    <select name="county" required>
+                        <option value="">Select county</option>
+                        <option>Nairobi County</option>
+                        <option>Kiambu</option>
+                        <option>Machakos</option>
+                        <option>Kajiado</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Postcode / ZIP <span>*</span></label>
+                    <input type="text" name="postcode" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone <span>*</span></label>
+                    <input type="text" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email address <span>*</span></label>
+                    <input type="email" name="email" required>
+                </div>
+
+            </div>
+
+            <!-- EXTRA OPTIONS (Woo-style) -->
+            <div class="extra-options">
+
+                <label class="checkbox">
+                    <input type="checkbox" name="create_account">
+                    Create an account?
+                </label>
+
+                <label class="checkbox">
+                    <input type="checkbox" name="ship_different">
+                    Ship to a different address?
+                </label>
+
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <!-- ORDER SUMMARY -->
+        <section class="order-summary">
+            <h2>Your order</h2>
+
+            {% include 'cart_items.html' %}
+        </section>
+
+        <button type="submit" class="place-order">
+            Place Order
+        </button>
+
+    </form>
+
+</main>
+
+</body>
+</html>

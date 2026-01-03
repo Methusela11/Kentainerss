@@ -169,9 +169,17 @@ def cart(request):
         }
     )
 
-
 def cart_items_views(request):
     return render(request, "cart_items.html")
+
+def checkout(request):
+    session_cart = request.session.get('cart', {})
+    cart_items = session_cart.values()
+
+    return render(request, 'checkout.html', {
+        'cart_items': cart_items
+    })
+
 
 def water_tank_storage(request):
     # Filter products by category

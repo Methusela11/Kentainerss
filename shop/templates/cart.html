@@ -5,9 +5,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cart – Kentainerss</title>
+    <title>Cart – Kentainers</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- reuse sidebar styles for cart items -->
     <link rel="stylesheet" href="{% static 'assets/css/cart_sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/cart.css' %}">
 </head>
 
 <body>
@@ -16,49 +19,63 @@
     {% include "navbar.html" %}
 </header>
 
-<div class="cart-page">
+<main class="cart-page">
 
-    <h1>Cart</h1>
+    <h1 class="cart-title">Cart</h1>
 
+    <!-- MAIN GRID -->
     <div class="cart-grid">
 
-        <!-- LEFT INFO -->
+        <!-- LEFT INFO COLUMN -->
         <aside class="cart-info">
             <p>
-                We only deliver to addresses located in Kenya.<br><br>
+                We only deliver to addresses located in Kenya.
+            </p>
+
+            <p>
                 For enquiries please contact us below:
             </p>
+
             <p>
                 <strong>Email:</strong> info@kentainers.co.ke<br>
-                <strong>Tel:</strong> +254 705713278<br>
-                <strong>Cell:</strong> +254 762120373
+                <strong>Tel:</strong> +254 705 713 278<br>
+                <strong>Cell:</strong> +254 762 120 373
             </p>
         </aside>
 
-        <!-- CART ITEMS -->
-        <section class="cart-items">
-    {% include "cart_items.html" %}
+        <!-- RIGHT CART COLUMN -->
+        <section class="cart-right">
 
-    <!-- SUMMARY -->
-    <div class="summary">
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <span>{{ cart_subtotal|intcomma }} KES</span>
-        </div>
+            <!-- CART ITEMS -->
+            <div class="cart-items">
+                {% include "cart_items.html" %}
+            </div>
 
-        <div class="summary-row summary-total">
-            <span>Total</span>
-            <span>{{ cart_subtotal|intcomma }} KES</span>
-        </div>
+            <!-- SUMMARY -->
+            <div class="summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>{{ cart_subtotal|intcomma }} KES</span>
+                </div>
 
-        <button class="checkout-btn">Proceed to checkout</button>
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span>{{ cart_subtotal|intcomma }} KES</span>
+                </div>
+
+                <button class="checkout-btn">
+                    Proceed to checkout
+                </button>
+            </div>
+
+        </section>
+
     </div>
-</section>
 
-
-    </div>
-</div>
+</main>
 
 {% include "footer.html" %}
+
+<script src="{% static 'assets/js/cart_sidebar.js' %}"></script>
 </body>
 </html>

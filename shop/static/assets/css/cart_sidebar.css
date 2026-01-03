@@ -109,7 +109,7 @@ header {
 .cart-item {
     display: flex;
     gap: 18px;
-    padding: 65px 0;
+    padding: 40px 0;
     position: relative;
 
     border-bottom: 1px solid #f1ecec;
@@ -118,8 +118,8 @@ header {
 
 
 .cart-item img {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     object-fit: contain;
 }
 

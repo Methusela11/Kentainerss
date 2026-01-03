@@ -250,71 +250,35 @@
 </div>
 
 <script>
-    const DELIVERY_REQUIRED = {{ product.offers_delivery|yesno:"true,false" }};
-</script>
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
+    const DELIVERY_REQUIRED = {{ product.offers_delivery|yesno:"true,false" }};
 
+    const addBtn = document.getElementById("addToCartBtn");
+    const btnText = addBtn.querySelector(".btn-text");
+
+    const optionSelect = document.getElementById("optionSelect");
+    const optionInput = document.getElementById("optionInput");
+
+    const qtyDisplay = document.getElementById("qty");
+    const qtyInput = document.getElementById("qtyInput");
+
+    const priceEl = document.getElementById("productPrice");
+    if (priceEl) priceEl.style.display = "none";
+
+    const zoneInput = document.getElementById("zoneInput");
     let selectedSizePrice = null;
     let selectedZone = null;
 
-    const addBtn = document.getElementById("addToCartBtn");
-    const optionSelect = document.getElementById("optionSelect");
-    const optionInput = document.getElementById("optionInput");
-    const qtyInput = document.getElementById("qtyInput");
-    const priceEl = document.getElementById("productPrice");
-
-    if (priceEl) priceEl.style.display = "none";
-
-    /* ---------- SIZE SELECTION ---------- */
-    optionSelect?.addEventListener("change", function () {
-        const selected = optionSelect.options[optionSelect.selectedIndex];
-        selectedSizePrice = selected.dataset.price
-            ? parseInt(selected.dataset.price)
-            : null;
-
-        optionInput.value = selected.value || "";
-
-        if (selectedSizePrice && priceEl) {
-            priceEl.style.display = "inline";
-            priceEl.textContent = selectedSizePrice.toLocaleString() + " KES";
-        } else if (priceEl) {
-            priceEl.style.display = "none";
-        }
-
-        updateAddButton();
-    });
-
-    /* ---------- ZONE SELECTION (ONLY IF DELIVERY) ---------- */
-    window.selectZone = function (zoneName) {
-        if (!DELIVERY_REQUIRED) return;
-
-        selectedZone = zoneName;
-
-        const zoneBtn = document.getElementById("zoneButton");
-        const zoneInput = document.getElementById("zoneInput");
-
-        if (zoneBtn) {
-            zoneBtn.innerHTML = zoneName + ' <span class="dropdown-icon">⌄</span>';
-        }
-        if (zoneInput) zoneInput.value = zoneName;
-
-        closeZoneModal();
-        updateAddButton();
-    };
-
-    /* ---------- BUTTON ENABLE LOGIC ---------- */
+    // ---------- UPDATE ADD BUTTON ----------
     function updateAddButton() {
-        const sizeOk = !!selectedSizePrice;
-        const zoneOk = DELIVERY_REQUIRED ? !!selectedZone : true;
+        const sizeOk = !!optionInput.value;
+        const zoneOk = DELIVERY_REQUIRED ? !!zoneInput.value : true;
 
         if (sizeOk && zoneOk) {
             addBtn.disabled = false;
             addBtn.classList.add("btn-enabled");
             addBtn.classList.remove("btn-disabled");
-            addBtn.textContent =
-                "Add to Basket – " + selectedSizePrice.toLocaleString() + " KES";
+            addBtn.textContent = "Add to Basket – " + (selectedSizePrice || 0).toLocaleString() + " KES";
         } else {
             addBtn.disabled = true;
             addBtn.classList.remove("btn-enabled");
@@ -329,33 +293,58 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
-});
-</script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+    // ---------- SIZE SELECTION ----------
+    if (optionSelect) {
+        optionSelect.addEventListener("change", function () {
+            const selected = optionSelect.options[optionSelect.selectedIndex];
+            selectedSizePrice = selected.dataset.price ? parseInt(selected.dataset.price) : null;
+            optionInput.value = selected.value || "";
 
-    const addBtn = document.getElementById("addToCartBtn");
-    const btnText = addBtn.querySelector(".btn-text");
-    const qtyDisplay = document.getElementById("qty");
-    const qtyInput = document.getElementById("qtyInput");
-    const optionInput = document.getElementById("optionInput");
+            if (priceEl && selectedSizePrice) {
+                priceEl.style.display = "inline";
+                priceEl.textContent = selectedSizePrice.toLocaleString() + " KES";
+            } else if (priceEl) {
+                priceEl.style.display = "none";
+            }
+
+            updateAddButton();
+        });
+    }
+
+    // ---------- QUANTITY ----------
+    document.getElementById("plus").addEventListener("click", function () {
+        let qty = parseInt(qtyDisplay.textContent, 10) || 1;
+        qty++;
+        qtyDisplay.textContent = qty;
+        qtyInput.value = qty;
+        updateAddButton();
+    });
+
+    document.getElementById("minus").addEventListener("click", function () {
+        let qty = parseInt(qtyDisplay.textContent, 10) || 1;
+        if (qty > 1) qty--;
+        qtyDisplay.textContent = qty;
+        qtyInput.value = qty;
+        updateAddButton();
+    });
+
+    // ---------- SHIPPING ZONE ----------
+    window.selectZone = function (zoneName) {
+        if (!DELIVERY_REQUIRED) return;
+
+        selectedZone = zoneName;
+
+        const zoneBtn = document.getElementById("zoneButton");
+        if (zoneBtn) zoneBtn.innerHTML = zoneName + ' <span class="dropdown-icon">⌄</span>';
+        if (zoneInput) zoneInput.value = zoneName;
+
+        if (typeof closeZoneModal === "function") closeZoneModal();
+        updateAddButton();
+    };
+
+    // ---------- ADD TO CART ----------
     const form = document.getElementById("addToCartForm");
-
-    /* ---------- SYNC QTY ---------- */
-    document.getElementById("plus").onclick = () => {
-        qtyDisplay.textContent = +qtyDisplay.textContent + 1;
-        qtyInput.value = qtyDisplay.textContent;
-    };
-
-    document.getElementById("minus").onclick = () => {
-        if (+qtyDisplay.textContent > 1) {
-            qtyDisplay.textContent--;
-            qtyInput.value = qtyDisplay.textContent;
-        }
-    };
-
-    /* ---------- ADD TO CART ---------- */
     addBtn.addEventListener("click", function () {
         if (addBtn.disabled || addBtn.classList.contains("loading")) return;
 
@@ -383,21 +372,18 @@ document.addEventListener("DOMContentLoaded", function () {
             addBtn.disabled = false;
         });
     });
+
+    // ---------- SCROLL TO INFO ----------
+    window.scrollToInfo = function () {
+        const target = document.getElementById("product-information");
+        if (!target) return;
+
+        const yOffset = -100; // adjust to header height
+        const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+    };
 });
 </script>
-
-<script>
-function scrollToInfo() {
-    const target = document.getElementById("product-information");
-    if (!target) return;
-
-    const yOffset = -100; // adjust to header height
-    const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-    window.scrollTo({ top: y, behavior: "smooth" });
-}
-</script>
-
 
 </body>
 </html>

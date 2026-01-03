@@ -1,132 +1,58 @@
 .cart-page {
-    max-width: 1450px;
+    max-width: 1420px;
     margin: 0 auto;
-    padding: 20px;
     font-family: Arial, sans-serif;
 }
 
+.cart-title {
+    font-size: 30px;
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
 .cart-grid {
-    display: flex;
+    display: grid;
+    grid-template-columns: 320px 1fr;
     gap: 40px;
-    flex-wrap: wrap;
 }
 
-/* Left info */
+/* LEFT INFO */
 .cart-info {
-    flex: 1 1 250px;
     font-size: 14px;
-    color: #333;
+    line-height: 1.7;
+    color: #444;
 }
 
-/* Cart items */
-.cart-items {
-    flex: 2 1 600px;
-}
-
-.cart-row {
+/* RIGHT CART */
+.cart-right {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 15px 0;
-    border-bottom: 1px solid #eee;
+    flex-direction: column;
+    gap: 30px;
 }
 
-.cart-img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-}
-
-.cart-details {
-    flex: 1;
-}
-
-.cart-details h3 {
-    margin: 0 0 5px;
-    font-size: 16px;
-}
-
-.cart-details .option {
-    font-size: 14px;
-    color: #555;
-}
-
-.cart-details .remove {
-    margin-top: 5px;
-    font-size: 12px;
-    color: #888;
-    cursor: pointer;
-}
-
-/* Quantity buttons */
-.qty-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.qty-btn {
-    width: 25px;
-    height: 25px;
-    border: 1px solid #ccc;
-    background: #f9f9f9;
-    cursor: pointer;
-}
-
-/* Line total */
-.line-total {
-    width: 100px;
-    text-align: right;
-    font-weight: 600;
-}
-
-/* Summary */
+/* SUMMARY */
 .summary {
-    margin-top: 20px;
-    padding-top: 10px;
-    border-top: 2px solid #000;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 16px;
+    margin-bottom: 12px;
 }
 
 .summary-total {
     font-weight: 700;
+    font-size: 16px;
 }
 
 .checkout-btn {
-    width: 50%;
-    padding: 12px 0;
-    background: #FFD700;
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px;
+    background: #000;
+    color: #fff;
     border: none;
-    font-size: 16px;
-    font-weight: 600;
     cursor: pointer;
-    margin-top: 15px;
-}
-
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .cart-grid {
-        flex-direction: column;
-    }
-
-    .cart-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .line-total {
-        width: 100%;
-        text-align: left;
-        margin-top: 5px;
-    }
-
-    .qty-control {
-        margin-top: 5px;
-    }
 }
