@@ -1,5 +1,5 @@
-.checkout-wrapper {
-    max-width: 1100px;
+.back{
+    max-width: 1450px;
     margin: 40px auto;
     padding: 0 20px;
     font-family: Arial, sans-serif;
@@ -11,14 +11,34 @@
     color: #0a1d4d;
     text-decoration: none;
 }
+.back-link span {
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.checkout-wrapper {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: Arial, sans-serif;
+}
 
 .returning {
-    text-align: center;
+    text-align: left;
     margin-bottom: 40px;
+    color: #0a1d4d;
+    font-size: 14px;
+}
+
+.returning a {
+    text-decoration: none;
+    color: #0a1d4d;
 }
 
 .checkout-form h2 {
     margin-bottom: 30px;
+    color: #0a1d4d;
+    font-weight: normal;
 }
 
 .form-grid {
@@ -40,23 +60,34 @@
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #0a1d4d;
-    font-size: 14px;
+    padding: 15px;
+    border: 2px solid #0a1d4d;
+    font-size: 15px;
 }
 
 .order-summary {
     margin-top: 50px;
 }
 
+.payment p{
+    font-size: 14px;
+}
+
 .place-order {
+    width: 100%;
     margin-top: 30px;
     padding: 14px 30px;
-    background: #0a1d4d;
-    color: white;
-    border: none;
-    font-size: 16px;
+    background: #ffe500;
+    color: #0a1d4d;
+    font-size: 17px;
     cursor: pointer;
+    border: 2px solid #142647;
+}
+
+.place-order:hover {
+    background: #1e9c1e;
+    border-color: #23236a;
+    color: #fff;
 }
 
 .extra-options {
@@ -67,6 +98,15 @@
     display: block;
     margin-bottom: 15px;
     font-size: 15px;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #0a1d4d;
+    cursor: pointer;
 }
 
 .checkbox input {
@@ -89,4 +129,140 @@ textarea {
     margin: 60px 0;
     border: none;
     border-top: 1px solid #0a1d4d;
+}
+
+.footer{
+    align-content: center;
+}
+
+.ssl{
+    display: grid;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.terms{
+    display: grid;
+    text-align: center;
+    padding: 30px 0;
+    font-size: 11px;
+}
+
+.terms a{
+    text-decoration: none;
+    color: #010d29;
+}
+
+@media (min-width: 1200px) {
+    .checkout-wrapper {
+        max-width: 760px;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .checkout-wrapper {
+        max-width: 90%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .back {
+        margin: 30px auto;
+    }
+}
+
+@media (max-width: 768px) {
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .back {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .checkout-wrapper {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .returning {
+        font-size: 13px;
+        margin-bottom: 25px;
+    }
+
+    .checkout-form h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .extra-options {
+        margin: 20px 0;
+    }
+
+    .checkbox {
+        font-size: 14px;
+    }
+
+    .place-order {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .divider {
+        margin: 40px 0;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .back-link {
+        font-size: 13px;
+    }
+
+    .back-link span {
+        font-size: 12px;
+    }
+
+    .checkout-form h2 {
+        font-size: 17px;
+    }
+
+    .payment p {
+        font-size: 13px;
+    }
+
+    input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+
+    .terms {
+        font-size: 10px;
+        padding: 20px 0;
+    }
+
+    .ssl small {
+        font-size: 12px;
+    }
 }

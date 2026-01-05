@@ -4,25 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout – Kentainers</title>
+    <title>Checkout – Kentainerss</title>
 
     <link rel="stylesheet" href="{% static 'assets/css/checkout.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
 
 <header>
     {% include 'navbar.html' %}
 </header>
+<div class="back">
+    <!-- Back to cart -->
+    <a href="{% url 'cart' %}" class="back-link"><strong><span>く</span> Back to Cart</strong></a>
+</div>
+
 
 <main class="checkout-wrapper">
 
-    <!-- Back to cart -->
-    <a href="{% url 'cart' %}" class="back-link">← Back to Cart</a>
-
     <!-- Returning customer -->
+
     <p class="returning">
-        Returning customer?
-        <a href="{% url 'login' %}">Click here to login</a>
+        <strong>
+            Returning customer?
+            <a href="{% url 'login' %}">Click here to login</a>
+        </strong>
+
     </p>
 
     <form method="post" class="checkout-form">
@@ -118,9 +125,40 @@
             {% include 'cart_items.html' %}
         </section>
 
+        <div class="extra-options">
+            <label class="checkbox">
+                <input type="checkbox" name="create_account">
+                Have a coupon?
+            </label>
+        </div>
+
+
+        <hr class="divider">
+
+        <section class="payment">
+            <h2>Payment</h2>
+            <p>DPO Pay</p>
+        </section>
+
         <button type="submit" class="place-order">
-            Place Order
+            <strong>
+                Place Order
+            </strong>
         </button>
+        <div class="footer">
+            <div class="ssl">
+                <small><i class="bi bi-lock-fill" style="font-size: 19px;"></i> SSL Secured Transaction</small>
+            </div>
+
+            <div class="terms">
+
+                <p>
+                    <span style="color: #a6a5a5;">By proceeding I accept the</span>
+                    <a href="#">Terms and Conditions</a>
+                </p>
+            </div>
+
+        </div>
 
     </form>
 
