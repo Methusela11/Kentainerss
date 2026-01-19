@@ -32,7 +32,7 @@ body {
     display: flex;
     flex-direction: column;   /* stack vertically */
     align-items: flex-end;    /* align to the right */
-    gap: 6px;
+    gap: 12px;
 }
 
 .header-actions {

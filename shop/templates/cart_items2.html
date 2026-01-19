@@ -1,0 +1,44 @@
+{% load static %}
+{% load humanize %}
+
+<link rel="stylesheet" href="{% static 'assets/css/cart_items2.css' %}">
+
+{% for item in cart_items %}
+<div class="cart-row">
+
+    <!-- IMAGE -->
+    <div class="cart-col image">
+        <img src="{{ item.option.image.url }}" alt="{{ item.product.name }}">
+    </div>
+
+    <!-- DETAILS -->
+    <div class="cart-col details">
+        <p class="cart-name">{{ item.product.name }}</p>
+
+        {% if item.option %}
+            <p class="cart-option">
+                <strong>Size (Litres / CMS):</strong> {{ item.option.name }}
+            </p>
+        {% endif %}
+
+        <p class="cart-unit-price">
+            {{ item.price|floatformat:0|intcomma }} KES
+        </p>
+
+        <button class="cart-remove" data-id="{{ item.id }}">Remove</button>
+    </div>
+
+    <!-- QUANTITY -->
+    <div class="cart-col qty">
+        <button class="qty-btn">−</button>
+        <span class="qty-value">{{ item.quantity }}</span>
+        <button class="qty-btn">+</button>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="cart-col total">
+        {{ item.total_price|intcomma }} KES
+    </div>
+
+</div>
+{% endfor %}
