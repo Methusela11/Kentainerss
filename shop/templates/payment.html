@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Payment</title>
+    <link rel="stylesheet" href="{% static 'assets/css/payment.css' %}">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="logo">
+        <a href="https://dpogroup.com/" target="_blank" rel="noopener noreferrer">
+            <img src="{% static 'assets/image/dpo/DPOAF.png' %}" alt="DPO Group">
+        </a>
+    </div>
+
+    <div class="header-right">
+
+    <div class="header-actions">
+        <select class="lang-select">
+            <option>English</option>
+        </select>
+
+        <a href="https://portal.dpopay.com/system/loginpage.asp?loginpage=provider"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="login-link">
+            <button class="login-btn">Login</button>
+        </a>
+    </div>
+
+    <div class="timer">
+        Please complete your payment within:
+        <strong>0d 0h 14m 36s</strong>
+    </div>
+
+</div>
+
+</header>
+
+
+
+<!-- MAIN -->
+<main class="container">
+
+    <!-- LEFT CARD -->
+    <div class="card">
+        <h3 class="card-title">
+            <input type="radio" checked>
+            Personal Details
+        </h3>
+
+        <div class="form-grid">
+            <input value="{{ order.first_name }}" readonly>
+            <input value="{{ order.last_name }}" readonly>
+
+            <input value="{{ order.company }}" readonly>
+            <input value="{{ order.city }}" readonly>
+
+            <select disabled>
+                <option>Kenya (+254)</option>
+            </select>
+
+            <select disabled>
+                <option>Kenya</option>
+            </select>
+
+            <input value="{{ order.phone }}" readonly>
+            <input value="{{ order.postcode }}" readonly>
+
+            <input value="{{ order.email }}" readonly>
+        </div>
+
+        <button class="continue-btn">
+            Continue
+        </button>
+    </div>
+
+    <!-- RIGHT CARD -->
+    <div class="card summary">
+        <div class="summary-header">
+            <h4>KENTAINERS LIMITED</h4>
+            <span class="caret">▾</span>
+        </div>
+
+        <div class="summary-row">
+            <span>PAYMENT REFERENCE</span>
+            <strong>{{ order.payment_reference }}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>PROVIDER REF NO.</span>
+            <strong>{{ order.id }}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>SERVICE DATE</span>
+            <strong>{{ order.created_at|date:"D, d/M/y" }}</strong>
+        </div>
+
+        <hr>
+
+        <div class="total">
+            <span>TOTAL</span>
+            <div class="amount">
+                <select class="currency-select">
+                    <option>KES</option>
+                </select>
+                <strong>{{ order.total_amount|floatformat:2 }}</strong>
+            </div>
+        </div>
+
+        <p class="currency-note">
+            Choose your preferred currency
+        </p>
+    </div>
+
+</main>
+
+<!-- CHOOSE PAYMENT METHOD -->
+<div class="container">
+    <div class="card collapsed">
+        <h3 class="card-title">
+            <input type="radio">
+            Choose Payment Method
+        </h3>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="dpo-footer">
+    <div class="dpo-footer-line"></div>
+
+    <div class="dpo-footer-logos">
+        <img src="{% static 'assets/image/dpo/logo-footer-visa.svg' %}">
+        <img src="{% static 'assets/image/dpo/logo-footer-mastercard.svg' %}">
+        <img src="{% static 'assets/image/dpo/logo-footer-pci.svg' %}">
+        <img src="{% static 'assets/image/dpo/logo-footer-safekey.svg' %}">
+    </div>
+
+    <div class="dpo-footer-links">
+        <a href="#">DPO Group Homepage</a>
+        <span>|</span>
+        <a href="#">Terms & Conditions</a>
+    </div>
+</footer>
+
+</body>
+</html>

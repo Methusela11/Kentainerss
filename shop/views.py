@@ -1,7 +1,9 @@
+from decimal import Decimal
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ProductOption, CartItem
+from .models import Product, ProductOption, CartItem, OrderItem, Order
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -47,8 +49,6 @@ def home(request):
 def shop(request):
     products = Product.objects.all()
     return render(request, "shop.html", {"products": products})
-
-
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -173,12 +173,84 @@ def cart_items_views(request):
     return render(request, "cart_items.html")
 
 def checkout(request):
-    session_cart = request.session.get('cart', {})
-    cart_items = session_cart.values()
+    user = request.user if request.user.is_authenticated else None
 
-    return render(request, 'checkout.html', {
-        'cart_items': cart_items
+    cart_items = CartItem.objects.filter(user=user)
+
+    if not cart_items.exists():
+        messages.warning(request, "Your cart is empty.")
+        return redirect('cart')
+
+    # -------------------
+    # Calculate total
+    # -------------------
+    total = Decimal("0.00")
+
+    for item in cart_items:
+        item.line_total = item.price * item.quantity  # calculate line total
+        total += item.line_total  # add to total
+
+    # -------------------
+    # Handle form submit
+    # -------------------
+    if request.method == "POST":
+        try:
+            order = Order.objects.create(
+                user=user,
+                first_name=request.POST.get("first_name"),
+                last_name=request.POST.get("last_name"),
+                company=request.POST.get("company"),
+                street=request.POST.get("street"),
+                city=request.POST.get("city"),
+                county=request.POST.get("county"),
+                postcode=request.POST.get("postcode"),
+                phone=request.POST.get("phone"),
+                email=request.POST.get("email"),
+                total_amount=total,
+            )
+
+            # -------------------
+            # Create Order Items
+            # -------------------
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    option=item.option,
+                    product_name=item.product.name,
+                    option_name=item.option.name if item.option else None,
+                    price=item.price,
+                    quantity=item.quantity,
+                )
+
+            # -------------------
+            # Clear cart
+            # -------------------
+            cart_items.delete()
+
+            # -------------------
+            # Redirect to payment page
+            # -------------------
+            return redirect("payment_page", order_id=order.id)
+
+        except Exception as e:
+            messages.error(request, f"Checkout failed: {str(e)}")
+            return redirect("checkout")
+
+    return render(request, "checkout.html", {
+        "cart_items": cart_items,
+        "total": total,
     })
+
+
+def payment_page(request, order_id):
+    # Get the order
+    order = get_object_or_404(Order, id=order_id)
+
+    context = {
+        "order": order
+    }
+    return render(request, "payment.html", context)
 
 
 def water_tank_storage(request):

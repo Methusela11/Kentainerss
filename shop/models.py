@@ -139,6 +139,71 @@ class Shipping(models.Model):
     def __str__(self):
         return self.label
 
+# ===========================
+# ORDERS & CHECKOUT MODELS
+# ===========================
+
+class Order(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    # Billing / Customer Info
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    company = models.CharField(max_length=150, blank=True, null=True)
+
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    county = models.CharField(max_length=100)
+    postcode = models.CharField(max_length=20)
+
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+
+    # Order Info
+    total_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+    payment_reference = models.CharField(max_length=100, blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.first_name} {self.last_name}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order,
+        related_name="items",
+        on_delete=models.CASCADE
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    option = models.ForeignKey(
+        ProductOption,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    product_name = models.CharField(max_length=255)
+    option_name = models.CharField(max_length=255, blank=True, null=True)
+
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.product_name} x{self.quantity}"
 
 
 

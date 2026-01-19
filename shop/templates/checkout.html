@@ -1,3 +1,4 @@
+{% load humanize %}
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -61,7 +62,7 @@
                     <input type="text" value="Kenya" disabled>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="address">
                     <label>Street address <span>*</span></label>
                     <input type="text" name="street" placeholder="House number and street name" required>
                 </div>
@@ -71,16 +72,72 @@
                     <input type="text" name="city" required>
                 </div>
 
-                <div class="form-group">
-                    <label>State / County <span>*</span></label>
-                    <select name="county" required>
-                        <option value="">Select county</option>
-                        <option>Nairobi County</option>
-                        <option>Kiambu</option>
-                        <option>Machakos</option>
-                        <option>Kajiado</option>
-                    </select>
-                </div>
+               <div class="form-group">
+                   <label>State / County <span>*</span></label>
+
+                       <div class="custom-select" id="countyDropdown">
+                           <div class="select-trigger">
+                               <span class="selected" style="color: #0b1a4a">Select county</span>
+                               <i class="bi bi-chevron-down"></i>
+                           </div>
+                           <div class="select-menu">
+                               <input type="text" placeholder="Search…" class="select-search">
+                               <ul class="select-options">
+                                   <li data-value="Baringo">Baringo</li>
+                                   <li data-value="Bomet">Bomet</li>
+                                   \<li data-value="Bungoma">Bungoma</li>
+                                   <li data-value="Busia">Busia</li>
+                                   <li data-value="Elgeyo-Marakwet">Elgeyo-Marakwet</li>
+                                   <li data-value="Embu">Embu</li>
+                                   <li data-value="Garissa">Garissa</li>
+                                   <li data-value="Homa Bay">Homa Bay</li>
+                                   <li data-value="Isiolo">Isiolo</li>
+                                   <li data-value="Kajiado">Kajiado</li>
+                                   <li data-value="Kakamega">Kakamega</li>
+                                   <li data-value="Kericho">Kericho</li>
+                                   <li data-value="Kiambu">Kiambu</li>
+                                   <li data-value="Kilifi">Kilifi</li>
+                                   <li data-value="Kirinyaga">Kirinyaga</li>
+                                   <li data-value="Kisii">Kisii</li>
+                                   <li data-value="Kisumu">Kisumu</li>
+                                   <li data-value="Kitui">Kitui</li>
+                                   <li data-value="Kwale">Kwale</li>
+                                   <li data-value="Laikipia">Laikipia</li>
+                                   <li data-value="Lamu">Lamu</li>
+                                   <li data-value="Machakos">Machakos</li>
+                                   <li data-value="Makueni">Makueni</li>
+                                   <li data-value="Mandera">Mandera</li>
+                                   <li data-value="Marsabit">Marsabit</li>
+                                   <li data-value="Meru">Meru</li>
+                                   <li data-value="Migori">Migori</li>
+                                   <li data-value="Mombasa">Mombasa</li>
+                                   <li data-value="Murang’a">Murang’a</li>
+                                   <li data-value="Nairobi County">Nairobi County</li>
+                                   <li data-value="Nakuru">Nakuru</li>
+                                   <li data-value="Nandi">Nandi</li>
+                                   <li data-value="Narok">Narok</li>
+                                   <li data-value="Nyamira">Nyamira</li>
+                                   <li data-value="Nyandarua">Nyandarua</li>
+                                   <li data-value="Nyeri">Nyeri</li>
+                                   <li data-value="Samburu">Samburu</li>
+                                   <li data-value="Siaya">Siaya</li>
+                                   <li data-value="Taita Taveta">Taita Taveta</li>
+                                   <li data-value="Tana River">Tana River</li>
+                                   <li data-value="Tharaka-Nithi">Tharaka-Nithi</li>
+                                   <li data-value="Trans Nzoia">Trans Nzoia</li>
+                                   <li data-value="Turkana">Turkana</li>
+                                   <li data-value="Uasin Gishu">Uasin Gishu</li>
+                                   <li data-value="Vihiga">Vihiga</li>
+                                   <li data-value="Wajir">Wajir</li>
+                                   <li data-value="West Pokot">West Pokot</li>
+                               </ul>
+                           </div>
+                           <!-- real form value -->
+                           <input type="hidden" name="county" required>
+                       </div>
+               </div>
+
+
 
                 <div class="form-group">
                     <label>Postcode / ZIP <span>*</span></label>
@@ -101,29 +158,116 @@
 
             <!-- EXTRA OPTIONS (Woo-style) -->
             <div class="extra-options">
+            <label class="checkbox">
+                <input type="checkbox" id="createAccountCheckbox" name="create_account">
+                Create an account?
+            </label>
 
-                <label class="checkbox">
-                    <input type="checkbox" name="create_account">
-                    Create an account?
-                </label>
-
-                <label class="checkbox">
-                    <input type="checkbox" name="ship_different">
-                    Ship to a different address?
-                </label>
-
+            <div id="createAccountFields" style="display:none;">
+                <label>Create account password <span>*</span></label>
+                <input type="password" name="password" placeholder="Password">
             </div>
+                <br>
+
+            <label class="checkbox">
+                <input type="checkbox" id="shipDifferentCheckbox" name="ship_different">
+                Ship to a different address?
+            </label>
+        </div>
 
         </section>
+
+        <section id="shippingFields" style="display:none;">
+    <h2>Shipping address</h2>
+
+    <div class="form-grid">
+        <div class="form-group">
+                    <label>First name <span>*</span></label>
+                    <input type="text" name="first_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Last name <span>*</span></label>
+                    <input type="text" name="last_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Company name (optional)</label>
+                    <input type="text" name="company">
+                </div>
+
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" value="Kenya" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>Street address <span>*</span></label>
+                    <input type="text" name="street" placeholder="House number and street name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Town / City <span>*</span></label>
+                    <input type="text" name="city" required>
+                </div>
+    </div>
+</section>
+
 
         <hr class="divider">
 
         <!-- ORDER SUMMARY -->
         <section class="order-summary">
-            <h2>Your order</h2>
 
-            {% include 'cart_items.html' %}
-        </section>
+    <h2>Your order</h2>
+
+    {% for item in cart_items %}
+    <div class="order-row">
+
+        <div class="order-left">
+            <div class="order-image-wrapper">
+                <img src="{{ item.product.image.url }}" class="order-img">
+                <span class="order-qty-badge">{{ item.quantity }}</span>
+            </div>
+
+
+            <div class="order-info">
+                <strong>{{ item.product.name }}</strong>
+
+                {% if item.option %}
+                    <div class="meta">
+                        <strong>Size (Litres / CMs):</strong> {{ item.option.name }}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="order-price">
+            {{ item.line_total|floatformat:0|intcomma }} KES
+        </div>
+
+
+    </div>
+        <hr style="border: 0; border-top: 1px solid #cccccc; margin: 10px 0;">
+    {% endfor %}
+
+    <!-- Subtotal -->
+    <div class="summary-row">
+        <span>Subtotal</span>
+        <strong>{{ total|floatformat:0|intcomma }} KES</strong>
+    </div>
+
+        <hr style="border: 0; border-top: 1px solid #cccccc; margin: 5px 0;">
+
+    <!-- Total -->
+    <div class="summary-total">
+        <strong>Total</strong>
+        <strong>{{ total|floatformat:0|intcomma }} KES</strong>
+    </div>
+
+</section>
+
 
         <div class="extra-options">
             <label class="checkbox">
@@ -139,12 +283,21 @@
             <h2>Payment</h2>
             <p>DPO Pay</p>
         </section>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
 
-        <button type="submit" class="place-order">
-            <strong>
-                Place Order
-            </strong>
+
+        <button type="submit" class="place-order" id="placeOrderBtn">
+            Place Order
         </button>
+
+
+
         <div class="footer">
             <div class="ssl">
                 <small><i class="bi bi-lock-fill" style="font-size: 19px;"></i> SSL Secured Transaction</small>
@@ -163,6 +316,86 @@
     </form>
 
 </main>
+
+<script>
+document.getElementById("placeOrderBtn").addEventListener("click", function(){
+    this.disabled = true;
+    this.innerText = "Processing Payment...";
+    this.form.submit();
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const dropdown = document.getElementById("countyDropdown");
+    if (!dropdown) return;
+
+    const trigger = dropdown.querySelector(".select-trigger");
+    const menu = dropdown.querySelector(".select-menu");
+    const search = dropdown.querySelector(".select-search");
+    const options = dropdown.querySelectorAll(".select-options li");
+    const selected = dropdown.querySelector(".selected");
+    const hiddenInput = dropdown.querySelector("input[type='hidden']");
+
+    /* OPEN / CLOSE */
+    trigger.addEventListener("click", function (e) {
+        e.stopPropagation();
+        menu.classList.toggle("open");
+        search.focus();
+    });
+
+    /* SELECT OPTION */
+    options.forEach(option => {
+        option.addEventListener("click", function () {
+            selected.textContent = this.textContent;
+            hiddenInput.value = this.dataset.value;
+            menu.classList.remove("open");
+        });
+    });
+
+    /* SEARCH */
+    search.addEventListener("input", function () {
+        const value = this.value.toLowerCase();
+        options.forEach(option => {
+            option.style.display = option.textContent.toLowerCase().includes(value)
+                ? "block"
+                : "none";
+        });
+    });
+
+    /* CLOSE ON OUTSIDE CLICK */
+    document.addEventListener("click", function () {
+        menu.classList.remove("open");
+    });
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const createAccountCheckbox = document.getElementById("createAccountCheckbox");
+    const createAccountFields = document.getElementById("createAccountFields");
+
+    const shipDifferentCheckbox = document.getElementById("shipDifferentCheckbox");
+    const shippingFields = document.getElementById("shippingFields");
+
+    if (createAccountCheckbox) {
+        createAccountCheckbox.addEventListener("change", function () {
+            createAccountFields.style.display = this.checked ? "block" : "none";
+        });
+    }
+
+    if (shipDifferentCheckbox) {
+        shipDifferentCheckbox.addEventListener("change", function () {
+            shippingFields.style.display = this.checked ? "block" : "none";
+        });
+    }
+
+});
+</script>
+
 
 </body>
 </html>
