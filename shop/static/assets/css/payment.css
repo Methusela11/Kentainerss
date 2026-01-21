@@ -192,3 +192,132 @@ body {
 .dpo-footer-links span {
     color: #999;
 }
+
+/* =============================== */
+/* RESPONSIVE FIXES — KEEP CLASSES */
+/* =============================== */
+
+/* -------- Tablets -------- */
+@media (max-width: 1024px) {
+
+    .container {
+        padding: 30px 20px;
+        gap: 20px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 460px;
+    }
+}
+
+/* -------- Mobile -------- */
+@media (max-width: 768px) {
+
+    /* HEADER */
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        gap: 14px;
+    }
+
+    .logo {
+        align-items: center;
+    }
+
+    .header-right {
+        width: 100%;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .lang-select {
+        font-size: 13px;
+    }
+
+    .login-btn {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+
+    .timer {
+        padding: 0;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    /* MAIN STACK */
+    .container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+        padding: 20px;
+    }
+
+    /* FORM → SINGLE COLUMN */
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .continue-btn {
+        width: 100%;
+    }
+
+    /* SUMMARY */
+    .summary h4 {
+        font-size: 15px;
+    }
+
+    .summary-row {
+        font-size: 13px;
+    }
+
+    .total {
+        margin-top: 15px;
+    }
+
+    /* FOOTER */
+    .dpo-footer-logos {
+        flex-wrap: wrap;
+        gap: 18px;
+    }
+
+    .dpo-footer-links {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .dpo-footer-links span {
+        display: none;
+    }
+}
+
+/* -------- Small Phones -------- */
+@media (max-width: 480px) {
+
+    .header {
+        padding: 16px;
+    }
+
+    .logo img {
+        height: 32px;
+    }
+
+    .card {
+        border-radius: 4px;
+        padding: 18px;
+    }
+
+    .currency-note {
+        font-size: 12px;
+    }
+}

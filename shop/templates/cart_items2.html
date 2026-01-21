@@ -3,42 +3,90 @@
 
 <link rel="stylesheet" href="{% static 'assets/css/cart_items2.css' %}">
 
+<input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+
+<div class="cart-wrapper">
+
 {% for item in cart_items %}
-<div class="cart-row">
+<div class="cart-row"
+     data-item-id="{{ item.id }}"
+     data-unit-price="{{ item.price }}">
 
     <!-- IMAGE -->
     <div class="cart-col image">
-        <img src="{{ item.option.image.url }}" alt="{{ item.product.name }}">
+        <a href="{% url 'product_detail' item.product.slug %}">
+            <img src="{{ item.option.image.url }}" alt="{{ item.product.name }}">
+        </a>
     </div>
 
     <!-- DETAILS -->
     <div class="cart-col details">
-        <p class="cart-name">{{ item.product.name }}</p>
+        <p class="product-type">
+            <a href="{% url 'product_detail' item.product.slug %}" style="color: #142647; text-decoration: none;">
+                {{ item.product.name }}
+            </a>
+        </p>
 
-        {% if item.option %}
-            <p class="cart-option">
-                <strong>Size (Litres / CMS):</strong> {{ item.option.name }}
-            </p>
-        {% endif %}
+        <p class="cart-name">
+            <strong>Size (Litres / CMS):</strong>
+            {{ item.option.name }}
+        </p>
 
         <p class="cart-unit-price">
             {{ item.price|floatformat:0|intcomma }} KES
         </p>
 
-        <button class="cart-remove" data-id="{{ item.id }}">Remove</button>
+        <button class="cart-remove" data-id="{{ item.id }}">
+            Remove
+        </button>
     </div>
 
     <!-- QUANTITY -->
-    <div class="cart-col qty">
-        <button class="qty-btn">−</button>
-        <span class="qty-value">{{ item.quantity }}</span>
-        <button class="qty-btn">+</button>
-    </div>
+<div class="cart-col qty">
+    <button class="qty-btn qty-decrease" data-id="{{ item.id }}" type="button">−</button>
+
+    <span class="qty-value">{{ item.quantity }}</span>
+
+    <button class="qty-btn qty-increase" data-id="{{ item.id }}" type="button">+</button>
+</div>
+
 
     <!-- TOTAL -->
-    <div class="cart-col total">
-        {{ item.total_price|intcomma }} KES
-    </div>
+<div class="cart-col total" style="color: #23236a; font-size: 14px;">
+    {{ item.line_total|floatformat:0|intcomma }} KES
+</div>
 
 </div>
 {% endfor %}
+
+<!-- UPDATE BASKET -->
+<div class="update-basket-wrap">
+    <button id="updateBasketBtn" disabled style="font-family: Arial, sans-serif; font-size: 14px;">
+        <strong>
+            🗘 Update basket
+        </strong>
+    </button>
+</div>
+
+{#<!-- TOTALS -->#}
+{#<div class="cart-summary">#}
+{#    <div class="summary-row">#}
+{#        <span>Subtotal</span>#}
+{#        <span>{{ cart_subtotal|intcomma }} KES</span>#}
+{#    </div>#}
+{##}
+{#    <div class="summary-row total">#}
+{#        <span>Total</span>#}
+{#        <span>{{ cart_total|intcomma }} KES</span>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#<div class="checkout-wrap">#}
+{#    <a href="{% url 'checkout' %}" class="checkout-btn">#}
+{#        Proceed to checkout#}
+{#    </a>#}
+{#</div>#}
+
+</div>
+
+<script src="{% static 'assets/js/cart_items2.js' %}"></script>

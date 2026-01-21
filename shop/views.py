@@ -3,6 +3,8 @@ from decimal import Decimal
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
+
 from .models import Product, ProductOption, CartItem, OrderItem, Order
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -242,6 +244,27 @@ def checkout(request):
         "total": total,
     })
 
+@require_POST
+def update_cart_quantity(request, item_id):
+    action = request.POST.get("action")
+    cart_item = get_object_or_404(CartItem, id=item_id)
+
+    user = request.user if request.user.is_authenticated else None
+
+    if cart_item.user != user:
+        return JsonResponse({"error": "Unauthorized"}, status=403)
+
+    if action == "increase":
+        cart_item.quantity += 1
+    elif action == "decrease" and cart_item.quantity > 1:
+        cart_item.quantity -= 1
+
+    cart_item.save()
+
+    return JsonResponse({
+        "success": True,
+        "quantity": cart_item.quantity,
+    })
 
 def payment_page(request, order_id):
     # Get the order

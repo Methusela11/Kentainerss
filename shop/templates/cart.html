@@ -47,12 +47,12 @@
                 <div class="summary">
                     <div class="summary-row">
                         <span>Subtotal</span>
-                        <span>{{ cart_subtotal|intcomma }} KES</span>
+                        <strong>{{ cart_subtotal|floatformat:0|intcomma }} KES</strong>
                     </div>
 
                     <div class="summary-row total">
-                        <span>Total</span>
-                        <span>{{ cart_subtotal|intcomma }} KES</span>
+                        <strong>Total</strong>
+                        <strong>{{ cart_subtotal|floatformat:0|intcomma }} KES</strong>
                     </div>
 
                     <div class="checkout-wrap">
