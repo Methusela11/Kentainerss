@@ -55,6 +55,7 @@ document.addEventListener("pointerdown", function (e) {
     qtySpan.textContent = qty;
     totalCell.textContent =
         (qty * unitPrice).toLocaleString() + " KES";
+    enableUpdateBasket();
 
     // Backend sync (no reload)
     fetch(`/cart/update-quantity/${btn.dataset.id}/`, {
@@ -69,3 +70,42 @@ document.addEventListener("pointerdown", function (e) {
         qtySpan.textContent = qty - 1;
     });
 });
+
+const updateBasketBtn = document.getElementById("updateBasketBtn");
+
+function enableUpdateBasket() {
+    if (updateBasketBtn) {
+        updateBasketBtn.disabled = false;
+        updateBasketBtn.classList.add("active");
+    }
+}
+
+updateBasketBtn?.addEventListener("click", function () {
+
+    recalculateTotals();
+
+    this.disabled = true;
+    this.classList.remove("active");
+});
+
+function recalculateTotals() {
+    let subtotal = 0;
+
+    document.querySelectorAll(".cart-row").forEach(row => {
+        const qty = parseInt(row.querySelector(".qty-value").textContent);
+        const unitPrice = parseFloat(row.dataset.unitPrice);
+        subtotal += qty * unitPrice;
+    });
+
+    const subtotalEl = document.getElementById("cartSubtotal");
+    const totalEl = document.getElementById("cartTotal");
+
+    if (subtotalEl) {
+        subtotalEl.textContent = subtotal.toLocaleString() + " KES";
+    }
+
+    if (totalEl) {
+        totalEl.textContent = subtotal.toLocaleString() + " KES";
+    }
+}
+

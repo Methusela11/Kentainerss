@@ -85,7 +85,7 @@
                                <ul class="select-options">
                                    <li data-value="Baringo">Baringo</li>
                                    <li data-value="Bomet">Bomet</li>
-                                   \<li data-value="Bungoma">Bungoma</li>
+                                   <li data-value="Bungoma">Bungoma</li>
                                    <li data-value="Busia">Busia</li>
                                    <li data-value="Elgeyo-Marakwet">Elgeyo-Marakwet</li>
                                    <li data-value="Embu">Embu</li>
@@ -183,12 +183,12 @@
     <div class="form-grid">
         <div class="form-group">
                     <label>First name <span>*</span></label>
-                    <input type="text" name="first_name" required>
+                    <input type="text" name="first_name">
                 </div>
 
                 <div class="form-group">
                     <label>Last name <span>*</span></label>
-                    <input type="text" name="last_name" required>
+                    <input type="text" name="last_name">
                 </div>
 
                 <div class="form-group">
@@ -203,12 +203,12 @@
 
                 <div class="form-group">
                     <label>Street address <span>*</span></label>
-                    <input type="text" name="street" placeholder="House number and street name" required>
+                    <input type="text" name="street" placeholder="House number and street name">
                 </div>
 
                 <div class="form-group">
                     <label>Town / City <span>*</span></label>
-                    <input type="text" name="city" required>
+                    <input type="text" name="city">
                 </div>
     </div>
 </section>
@@ -283,13 +283,6 @@
             <h2>Payment</h2>
             <p>DPO Pay</p>
         </section>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
 
 
         <button type="submit" class="place-order" id="placeOrderBtn">
@@ -318,12 +311,38 @@
 </main>
 
 <script>
-document.getElementById("placeOrderBtn").addEventListener("click", function(){
-    this.disabled = true;
-    this.innerText = "Processing Payment...";
-    this.form.submit();
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btn = document.getElementById("placeOrderBtn");
+    const billingSection = document.querySelector(".billing");
+    const form = btn.closest("form");
+
+    btn.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        // Validate only billing inputs
+        const billingInputs = billingSection.querySelectorAll("input[required]");
+        let valid = true;
+
+        billingInputs.forEach(input => {
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                valid = false;
+                return false;
+            }
+        });
+
+        if (!valid) return;
+
+        // Success
+        btn.disabled = true;
+        btn.innerText = "Processing Payment...";
+        form.submit();
+    });
+
 });
 </script>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -375,27 +394,32 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const createAccountCheckbox = document.getElementById("createAccountCheckbox");
-    const createAccountFields = document.getElementById("createAccountFields");
-
-    const shipDifferentCheckbox = document.getElementById("shipDifferentCheckbox");
+    const shipCheckbox = document.getElementById("shipDifferentCheckbox");
     const shippingFields = document.getElementById("shippingFields");
+    const shippingInputs = shippingFields.querySelectorAll("input");
 
-    if (createAccountCheckbox) {
-        createAccountCheckbox.addEventListener("change", function () {
-            createAccountFields.style.display = this.checked ? "block" : "none";
-        });
-    }
+    shipCheckbox.addEventListener("change", function () {
 
-    if (shipDifferentCheckbox) {
-        shipDifferentCheckbox.addEventListener("change", function () {
-            shippingFields.style.display = this.checked ? "block" : "none";
-        });
-    }
+        if (this.checked) {
+            shippingFields.style.display = "block";
+
+            // Make shipping fields required
+            shippingInputs.forEach(input => {
+                input.setAttribute("required", "required");
+            });
+
+        } else {
+            shippingFields.style.display = "none";
+
+            // Remove required so validation passes
+            shippingInputs.forEach(input => {
+                input.removeAttribute("required");
+            });
+        }
+    });
 
 });
 </script>
-
 
 </body>
 </html>

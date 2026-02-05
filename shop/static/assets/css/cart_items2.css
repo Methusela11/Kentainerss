@@ -97,13 +97,32 @@
     border: none;
     height: 50px;
     width: 180px;
-    color: #babdbd;
+    color: #8c8e8e;
+    opacity: 0.5;
     cursor: not-allowed;
+    transition: all 0.25s ease;
+}
+
+#updateBasketBtn.active {
+    opacity: 1;
+    cursor: pointer;
 }
 
 #updateBasketBtn.active {
     color: #000;
     cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .update-basket-wrap {
+        width: 100%;
+    }
+
+    #updateBasketBtn {
+        width: 100%;
+        display: block;
+    }
 }
 
 /* ================= SUMMARY ================= */

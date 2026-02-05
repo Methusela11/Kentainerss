@@ -45,23 +45,27 @@
                 </div>
 
                 <div class="summary">
-                    <div class="summary-row">
-                        <span>Subtotal</span>
-                        <strong>{{ cart_subtotal|floatformat:0|intcomma }} KES</strong>
-                    </div>
+    <div class="summary-row">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal">
+            {{ cart_subtotal|floatformat:0|intcomma }} KES
+        </strong>
+    </div>
 
-                    <div class="summary-row total">
-                        <strong>Total</strong>
-                        <strong>{{ cart_subtotal|floatformat:0|intcomma }} KES</strong>
-                    </div>
+    <div class="summary-row total">
+        <strong>Total</strong>
+        <strong id="cartTotal">
+            {{ cart_subtotal|floatformat:0|intcomma }} KES
+        </strong>
+    </div>
 
-                    <div class="checkout-wrap">
-                        <a href="{% url 'checkout' %}" class="checkout-btn">
-                            Proceed to checkout
-                        </a>
-                    </div>
+    <div class="checkout-wrap">
+        <a href="{% url 'checkout' %}" class="checkout-btn">
+            Proceed to checkout
+        </a>
+    </div>
+</div>
 
-                </div>
             {% else %}
                 <div class="empty-cart">
                     <p>Your cart is currently empty.</p>
@@ -75,5 +79,7 @@
 </main>
 
 {% include "footer.html" %}
+
+<script src="{% static 'assets/js/cart_items2.js' %}"></script>
 </body>
 </html>

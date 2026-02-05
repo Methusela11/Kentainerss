@@ -1,22 +1,19 @@
 .back {
     position: fixed;
     top: 80px;
-    left: 50%;
+    left: 16%;
     transform: translateX(-50%);
-
-    max-width: 1450px;
-    width: 100%;
 
     padding: 10px 20px;
     z-index: 999;
 
-    background: #fff;
+    background: transparent;
     font-family: Arial, sans-serif;
 }
 
 .back-link {
     display: inline-block;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     color: #0a1d4d;
     text-decoration: none;
 }
@@ -160,6 +157,9 @@
     font-weight: bold;
 }
 
+.payment{
+    margin-bottom: 100px;
+}
 .payment p{
     font-size: 14px;
 }
@@ -271,7 +271,7 @@ textarea {
 
 @media (max-width: 1199px) {
     .checkout-wrapper {
-        max-width: 80%;
+        max-width: 100%;
     }
 
     .form-grid {
