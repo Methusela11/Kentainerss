@@ -249,7 +249,7 @@ textarea {
 .terms{
     display: grid;
     text-align: center;
-    padding: 30px 0;
+    padding-top: 30px;
     font-size: 11px;
 }
 

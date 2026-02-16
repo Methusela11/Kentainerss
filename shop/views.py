@@ -46,7 +46,7 @@ def logout_view(request):
 
 def home(request):
     products = Product.objects.order_by('-id')[:10]  # fetch latest 10
-    return render(request, "home.html", {"products": products})
+    return render(request, "index.html", {"products": products})
 
 def shop(request):
     products = Product.objects.all()
@@ -176,72 +176,61 @@ def cart_items_views(request):
 
 def checkout(request):
     user = request.user if request.user.is_authenticated else None
-
     cart_items = CartItem.objects.filter(user=user)
 
     if not cart_items.exists():
-        messages.warning(request, "Your cart is empty.")
-        return redirect('cart')
+        return redirect("cart")
 
-    # -------------------
-    # Calculate total
-    # -------------------
     total = Decimal("0.00")
 
     for item in cart_items:
-        item.line_total = item.price * item.quantity  # calculate line total
-        total += item.line_total  # add to total
+        total += item.price * item.quantity
 
-    # -------------------
-    # Handle form submit
-    # -------------------
     if request.method == "POST":
-        try:
-            order = Order.objects.create(
-                user=user,
-                first_name=request.POST.get("first_name"),
-                last_name=request.POST.get("last_name"),
-                company=request.POST.get("company"),
-                street=request.POST.get("street"),
-                city=request.POST.get("city"),
-                county=request.POST.get("county"),
-                postcode=request.POST.get("postcode"),
-                phone=request.POST.get("phone"),
-                email=request.POST.get("email"),
-                total_amount=total,
+
+        # ✅ Create Order from billing form
+        order = Order.objects.create(
+            user=user,
+
+            first_name=request.POST.get("first_name"),
+            last_name=request.POST.get("last_name"),
+            company=request.POST.get("company"),
+
+            street=request.POST.get("street"),
+            city=request.POST.get("city"),
+            county=request.POST.get("county"),
+            postcode=request.POST.get("postcode"),
+
+            phone=request.POST.get("phone"),
+            email=request.POST.get("email"),
+
+            total_amount=total
+        )
+
+        # ✅ Save order items
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                option=item.option,
+                product_name=item.product.name,
+                option_name=item.option.name if item.option else "",
+                price=item.price,
+                quantity=item.quantity
             )
 
-            # -------------------
-            # Create Order Items
-            # -------------------
-            for item in cart_items:
-                OrderItem.objects.create(
-                    order=order,
-                    product=item.product,
-                    option=item.option,
-                    product_name=item.product.name,
-                    option_name=item.option.name if item.option else None,
-                    price=item.price,
-                    quantity=item.quantity,
-                )
+        order.payment_reference = f"KENT-{order.id}"
+        order.save()
 
-            # -------------------
-            # Clear cart
-            # -------------------
-            cart_items.delete()
+        # # OPTIONAL: Clear cart
+        # cart_items.delete()
 
-            # -------------------
-            # Redirect to payment page
-            # -------------------
-            return redirect("payment_page", order_id=order.id)
-
-        except Exception as e:
-            messages.error(request, f"Checkout failed: {str(e)}")
-            return redirect("checkout")
+        # ✅ Redirect to payment page
+        return redirect("payment_page", order_id=order.id)
 
     return render(request, "checkout.html", {
         "cart_items": cart_items,
-        "total": total,
+        "total": total
     })
 
 @require_POST
@@ -267,13 +256,11 @@ def update_cart_quantity(request, item_id):
     })
 
 def payment_page(request, order_id):
-    # Get the order
     order = get_object_or_404(Order, id=order_id)
 
-    context = {
+    return render(request, "payment.html", {
         "order": order
-    }
-    return render(request, "payment.html", context)
+    })
 
 
 def water_tank_storage(request):

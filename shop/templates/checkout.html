@@ -133,7 +133,7 @@
                                </ul>
                            </div>
                            <!-- real form value -->
-                           <input type="hidden" name="county" required>
+                           <input type="hidden" name="county">
                        </div>
                </div>
 
@@ -183,17 +183,17 @@
     <div class="form-grid">
         <div class="form-group">
                     <label>First name <span>*</span></label>
-                    <input type="text" name="first_name">
+                    <input type="text" name="shipping_first_name">
                 </div>
 
                 <div class="form-group">
                     <label>Last name <span>*</span></label>
-                    <input type="text" name="last_name">
+                    <input type="text" name="shipping_last_name">
                 </div>
 
                 <div class="form-group">
                     <label>Company name (optional)</label>
-                    <input type="text" name="company">
+                    <input type="text" name="shipping_company">
                 </div>
 
                 <div class="form-group">
@@ -203,12 +203,12 @@
 
                 <div class="form-group">
                     <label>Street address <span>*</span></label>
-                    <input type="text" name="street" placeholder="House number and street name">
+                    <input type="text" name="shipping_street" placeholder="House number and street name">
                 </div>
 
                 <div class="form-group">
                     <label>Town / City <span>*</span></label>
-                    <input type="text" name="city">
+                    <input type="text" name="shipping_city">
                 </div>
     </div>
 </section>
@@ -226,7 +226,7 @@
 
         <div class="order-left">
             <div class="order-image-wrapper">
-                <img src="{{ item.product.image.url }}" class="order-img">
+                <img src="{{ item.option.image.url }}" class="order-img">
                 <span class="order-qty-badge">{{ item.quantity }}</span>
             </div>
 
@@ -316,11 +316,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const btn = document.getElementById("placeOrderBtn");
     const billingSection = document.querySelector(".billing");
     const form = btn.closest("form");
+    const countyInput = document.querySelector("input[name='county']");
 
     btn.addEventListener("click", function (e) {
         e.preventDefault();
 
-        // Validate only billing inputs
         const billingInputs = billingSection.querySelectorAll("input[required]");
         let valid = true;
 
@@ -328,15 +328,19 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!input.checkValidity()) {
                 input.reportValidity();
                 valid = false;
-                return false;
             }
         });
 
+        // ⭐ County check
+        if (!countyInput.value) {
+            alert("Please select a county");
+            valid = false;
+        }
+
         if (!valid) return;
 
-        // Success
         btn.disabled = true;
-        btn.innerText = "Processing Payment...";
+        btn.innerText = "Place Order";
         form.submit();
     });
 

@@ -19,24 +19,24 @@
         </div>
 
         <div class="header-right">
+            <div class="header-actions">
+                <select class="lang-select">
+                    <option>English</option>
+                    <option>France</option>
+                    <option>Swahili</option>
+                </select>
 
-    <div class="header-actions">
-        <select class="lang-select">
-            <option>English</option>
-        </select>
+                <a href="https://portal.dpopay.com/system/loginpage.asp?loginpage=provider"
+                   target="_blank" rel="noopener noreferrer" class="login-btn">
+                    Login
+                </a>
+            </div>
+            <div class="timer">
+                Please complete your payment within:
+                <strong>0d 0h 14m 53s</strong>
+            </div>
 
-        <a href="https://portal.dpopay.com/system/loginpage.asp?loginpage=provider"
-           target="_blank" rel="noopener noreferrer" class="login-btn">
-            Login
-        </a>
-    </div>
-
-    <div class="timer">
-        Please complete your payment within:
-        <strong>0d 0h 14m 53s</strong>
-    </div>
-
-</div>
+        </div>
 
 
     </div>
@@ -51,27 +51,36 @@
             <span class="radio active"></span>
             Personal Details
         </div>
+        <div class="divider"></div>
 
         <div class="form-grid">
-            <input value="{{ order.first_name }}">
-            <input value="{{ order.last_name }}">
 
-            <input value="{{ order.company }}">
-            <input value="{{ order.city }}">
+    <!-- Row 1 -->
+    <input value="{{ order.first_name }}">
+    <input value="{{ order.last_name }}">
 
-            <select disabled>
-                <option>Kenya (+254)</option>
-            </select>
+    <!-- Row 2 -->
+    <input value="{{ order.street }}">
+    <input value="{{ order.city }}">
 
-            <select>
-                <option>{{ order.county }}</option>
-            </select>
+    <!-- Row 3 -->
+    <select disabled>
+        <option>Kenya (+254)</option>
+    </select>
 
-            <input value="{{ order.phone }}">
-            <input value="{{ order.postcode }}">
+    <select disabled>
+        <option>Kenya</option>
+    </select>
 
-            <input value="{{ order.email }}" class="full">
-        </div>
+    <!-- Row 4 -->
+    <input value="{{ order.phone }}">
+    <input value="{{ order.postcode }}">
+
+    <!-- Row 5 -->
+    <input value="{{ order.email }}" class="full">
+
+</div>
+
 
         <div class="btn-row">
             <button class="continue-btn">Continue</button>
@@ -108,6 +117,7 @@
             <div class="amount">
                 <select class="currency-select">
                     <option>KES</option>
+                    <option>USD</option>
                 </select>
                 <strong>{{ order.total_amount|floatformat:2 }}</strong>
             </div>
@@ -118,35 +128,40 @@
 
 </main>
 
-<!-- PAYMENT METHOD -->
-<div class="container">
-    <div class="card collapsed">
-        <div class="card-title">
-            <span class="radio inactive"></span>
-            Choose Payment Method
+<div class="container grid">
+    <div>
+        <div class="card collapsed">
+            <div class="card-title">
+                <span class="radio inactive"></span>
+                Choose Payment Method
+            </div>
         </div>
     </div>
+    <div></div>
 </div>
+
 
 <!-- FOOTER -->
 <footer class="dpo-footer">
-    <div class="footer-line"></div>
-
     <div class="footer-logos">
         <img src="{% static 'assets/image/dpo/logo-footer-visa.svg' %}">
         <img src="{% static 'assets/image/dpo/logo-footer-mastercard.svg' %}">
         <img src="{% static 'assets/image/dpo/logo-footer-pci.svg' %}">
         <img src="{% static 'assets/image/dpo/logo-footer-safekey.svg' %}">
     </div>
-
+    <div class="footer-line"></div>
     <div class="footer-links">
-        <a href="https://dpogroup.com/" target="_blank" rel="noopener noreferrer"
-           style="text-decoration: none;">
-           DPO Group Homepage
-        </a>
-        <span>|</span>
-        <a href="#" style="text-decoration: none;">Terms & Conditions</a>
-    </div>
+    <a href="https://dpogroup.com/" target="_blank" rel="noopener noreferrer">
+        DPO Group Homepage
+    </a>
+
+    <span class="divider-bar">|</span>
+
+    <a href="#">
+        Terms & Conditions
+    </a>
+</div>
+
 </footer>
 
 </body>

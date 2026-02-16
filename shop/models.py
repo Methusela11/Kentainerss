@@ -121,6 +121,10 @@ class CartItem(models.Model):
     class Meta:
         unique_together = ('user', 'product', 'option')
 
+    @property
+    def line_total(self):
+        return self.price * self.quantity
+
 class ProductImage(models.Model):
     product = models.ForeignKey(
         Product,
@@ -157,7 +161,7 @@ class Order(models.Model):
     company = models.CharField(max_length=150, blank=True, null=True)
 
     street = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
+    city = models.CharField(max_length=100, default="")
     county = models.CharField(max_length=100)
     postcode = models.CharField(max_length=20)
 
