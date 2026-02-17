@@ -92,7 +92,7 @@
 
     <!-- HEADER -->
     <div class="summary-header" id="summaryToggle">
-        <h4>KENTAINERSS LIMITED</h4>
+        <h4 style="font-size: 18px">KENTAINERSS LIMITED</h4>
         <span class="caret" id="caret">▾</span>
     </div>
 
@@ -168,7 +168,6 @@
             </div>
         </div>
     </div>
-    <div></div>
 </div>
 
 
@@ -199,10 +198,12 @@
     const toggle = document.getElementById("summaryToggle");
     const dropdown = document.getElementById("summaryDropdown");
     const caret = document.getElementById("caret");
+    const summaryCard = document.querySelector(".card.summary");
 
     toggle.addEventListener("click", () => {
         dropdown.classList.toggle("collapsed");
         caret.classList.toggle("rotate");
+        summaryCard.classList.toggle("expanded");
     });
 </script>
 
