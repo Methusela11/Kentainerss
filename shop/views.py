@@ -219,9 +219,6 @@ def checkout(request):
                 quantity=item.quantity
             )
 
-        order.payment_reference = f"KENT-{order.id}"
-        order.save()
-
         # # OPTIONAL: Clear cart
         # cart_items.delete()
 

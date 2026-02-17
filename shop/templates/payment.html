@@ -88,11 +88,40 @@
     </section>
 
     <!-- SUMMARY -->
-    <aside class="card summary">
-        <div class="summary-header">
-            <h4>KENTAINERS LIMITED</h4>
-            <span class="caret">▾</span>
+<aside class="card summary">
+
+    <!-- HEADER -->
+    <div class="summary-header" id="summaryToggle">
+        <h4>KENTAINERSS LIMITED</h4>
+        <span class="caret" id="caret">▾</span>
+    </div>
+
+    <!-- MERCHANT INFO (hidden until expanded) -->
+    <div class="summary-dropdown collapsed" id="summaryDropdown">
+
+        <div class="summary-sub">
+    Activities - {{ order.items.first.product_name }}
+</div>
+
+
+        <div class="summary-meta">
+            <div>
+                <span>WEBSITE</span>
+                <small>&nbsp;</small>
+            </div>
+            <div>
+                <span>E-MAIL</span>
+                <a href="mailto:esales@kentainers.asti-group.com">
+                    esales@kentainers.asti-group.com
+                </a>
+            </div>
         </div>
+
+        <div class="divider"></div>
+    </div>
+
+    <!-- CORE INFO -->
+    <div class="summary-core">
 
         <div class="summary-row">
             <span>PAYMENT REFERENCE</span>
@@ -101,30 +130,32 @@
 
         <div class="summary-row">
             <span>PROVIDER REF NO.</span>
-            <strong>{{ order.id }}</strong>
+            <strong>52{{ order.id }}</strong>
         </div>
 
-        <div class="summary-row">
+        <div class="summary-row full">
             <span>SERVICE DATE</span>
             <strong>{{ order.created_at|date:"D, d/M/y" }}</strong>
         </div>
 
-        <div class="divider"></div>
+    </div>
 
-        <div class="total">
-            <span class="label">TOTAL</span>
+    <div class="divider"></div>
 
-            <div class="amount">
-                <select class="currency-select">
-                    <option>KES</option>
-                    <option>USD</option>
-                </select>
-                <strong>{{ order.total_amount|floatformat:2 }}</strong>
-            </div>
-
-            <small>Choose your preferred currency</small>
+    <!-- TOTAL -->
+    <div class="total">
+        <span class="label">TOTAL</span>
+        <div class="amount">
+            <select class="currency-select">
+                <option>KES</option>
+                <option>USD</option>
+            </select>
+            <strong>{{ order.total_amount|floatformat:2 }}</strong>
         </div>
-    </aside>
+        <small>Choose your preferred currency</small>
+    </div>
+
+</aside>
 
 </main>
 
@@ -163,6 +194,17 @@
 </div>
 
 </footer>
+
+<script>
+    const toggle = document.getElementById("summaryToggle");
+    const dropdown = document.getElementById("summaryDropdown");
+    const caret = document.getElementById("caret");
+
+    toggle.addEventListener("click", () => {
+        dropdown.classList.toggle("collapsed");
+        caret.classList.toggle("rotate");
+    });
+</script>
 
 </body>
 </html>

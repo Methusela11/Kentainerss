@@ -146,16 +146,11 @@ class Shipping(models.Model):
 # ===========================
 # ORDERS & CHECKOUT MODELS
 # ===========================
+import random
 
 class Order(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
-    # Billing / Customer Info
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     company = models.CharField(max_length=150, blank=True, null=True)
@@ -168,15 +163,25 @@ class Order(models.Model):
     phone = models.CharField(max_length=20)
     email = models.EmailField()
 
-    # Order Info
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
     is_paid = models.BooleanField(default=False)
-    payment_reference = models.CharField(max_length=100, blank=True, null=True)
+
+    payment_reference = models.CharField(max_length=20, unique=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.payment_reference:
+            while True:
+                ref = generate_payment_reference()
+                if not Order.objects.filter(payment_reference=ref).exists():
+                    self.payment_reference = ref
+                    break
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"Order #{self.id} - {self.first_name} {self.last_name}"
+        return f"{self.payment_reference} - {self.first_name} {self.last_name}"
+
 
 
 class OrderItem(models.Model):
@@ -209,7 +214,7 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.product_name} x{self.quantity}"
 
-
-
+def generate_payment_reference():
+    return "R" + str(random.randint(10000000, 99999999))
 
 
