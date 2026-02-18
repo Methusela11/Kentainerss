@@ -34,8 +34,9 @@
             </div>
             <div class="timer">
                 Please complete your payment within:
-                <strong>0d 0h 14m 53s</strong>
+                <strong id="countdown">0d 0h 15m 00s</strong>
             </div>
+
 
         </div>
 
@@ -222,7 +223,6 @@
     });
 </script>
 
-//currency
 <script>
     const currencySelect = document.getElementById("currencySelect");
     const totalAmountEl = document.getElementById("totalAmount");
@@ -261,6 +261,38 @@
             conversionInfoEl.classList.add("hidden");
         }
     });
+</script>
+
+<script>
+    // 15 minutes in seconds
+    let timeLeft = 15 * 60;
+
+    const countdownEl = document.getElementById("countdown");
+
+    function updateTimer() {
+
+        let days = Math.floor(timeLeft / (24 * 60 * 60));
+        let hours = Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60));
+        let minutes = Math.floor((timeLeft % (60 * 60)) / 60);
+        let seconds = timeLeft % 60;
+
+        // Always show 2 digits for minutes & seconds
+        minutes = minutes.toString().padStart(2, "0");
+        seconds = seconds.toString().padStart(2, "0");
+
+        countdownEl.textContent =
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (timeLeft > 0) {
+            timeLeft--;
+        } else {
+            clearInterval(timerInterval);
+            countdownEl.textContent = "Session Expired";
+        }
+    }
+
+    updateTimer(); // Run immediately
+    const timerInterval = setInterval(updateTimer, 1000);
 </script>
 
 </body>
