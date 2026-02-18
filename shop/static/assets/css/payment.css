@@ -406,6 +406,30 @@ select:disabled {
     margin-left: auto;
 }
 
+/* Hide content initially */
+.hidden {
+    display: none;
+}
+
+.card.collapsed .card-content {
+    display: none;
+}
+
+.card.expanded .card-content {
+    display: block;
+}
+
+/* Smooth animation */
+.card-content {
+    transition: all .3s ease;
+}
+
+/* Optional style */
+.method {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
 /* Hidden utility */
 .hidden {
     display: none;
@@ -434,41 +458,61 @@ select:disabled {
     text-align: right;
 }
 
-/* FOOTER */
+/* ============================= */
+/* TRUE DPO FOOTER MATCH */
+/* ============================= */
+
 .dpo-footer {
+    background: #ffffff;
     border-top: 1px solid #eef1f4;
     text-align: center;
-    background: white;
 }
 
-.footer-line {
-    margin-top: 2px;
-    height: 4px;
-    background: linear-gradient(to right, #7a003c, #0f62fe);
+/* Logos row */
+.footer-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    padding: 10px 0 18px;
 }
 
 .footer-logos img {
     height: 50px;
-    margin: 0 16px;
+    opacity: 0.95;
 }
 
+/* Colored gradient line */
+.footer-line {
+    height: 3px;
+    background: linear-gradient(
+        to right,
+        #7a003c,
+        #0f62fe
+    );
+}
+
+/* Links row */
 .footer-links {
-    margin: 20px 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
-    font-size: 20px;
+    gap: 18px;
+    font-size: 13px;
+    padding: 18px 0 26px;
 }
 
 .footer-links a {
     text-decoration: none;
     color: #406eaa;
+    font-weight: 500;
+    font-size: 18px;
 }
 
 .divider-bar {
-    color: #406eaa;
+    color: #9aa1a9;
 }
+
 
 /* ============================= */
 /* DPO TRUE MOBILE MATCH */
@@ -572,18 +616,21 @@ select:disabled {
 
     /* Button */
     .continue-btn {
-        width: 100%;
+        width: 25%;
         height: 42px;
         font-size: 14px;
+        justify-content: center;
     }
 
     .btn-row {
-        margin-top: 14px;
+        margin-top: 20px;
     }
 
     /* Summary Typography */
     .summary-header {
+        display: flex;
         margin-bottom: 12px;
+        justify-content: center;
     }
 
     .summary-header h4 {
