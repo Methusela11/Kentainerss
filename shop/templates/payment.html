@@ -92,7 +92,7 @@
 
     <!-- HEADER -->
     <div class="summary-header" id="summaryToggle">
-        <h4 style="font-size: 18px">KENTAINERSS LIMITED</h4>
+        <h4>KENTAINERSS LIMITED</h4>
         <span class="caret" id="caret">▾</span>
     </div>
 
@@ -142,18 +142,32 @@
 
     <div class="divider"></div>
 
-    <!-- TOTAL -->
-    <div class="total">
-        <span class="label">TOTAL</span>
-        <div class="amount">
-            <select class="currency-select">
-                <option>KES</option>
-                <option>USD</option>
+<div class="total">
+    <h2 class="label">TOTAL</h2>
+
+    <div class="amount">
+        <div class="amount-box">
+            <select class="currency-select" id="currencySelect">
+                <option value="KES" selected>KES</option>
+                <option value="USD">USD</option>
             </select>
-            <strong>{{ order.total_amount|floatformat:2 }}</strong>
+
+            <strong id="totalAmount"
+                    data-kes="{{ order.total_amount|floatformat:2 }}">
+                {{ order.total_amount|floatformat:2 }}
+            </strong>
         </div>
-        <small>Choose your preferred currency</small>
     </div>
+
+    <!-- Conversion Rate -->
+    <div id="conversionRate" class="conversion-rate hidden"></div>
+
+    <!-- Info Box -->
+    <div id="conversionInfo" class="conversion-info hidden"></div>
+
+    <small>Choose your preferred currency</small>
+</div>
+
 
 </aside>
 
@@ -204,6 +218,47 @@
         dropdown.classList.toggle("collapsed");
         caret.classList.toggle("rotate");
         summaryCard.classList.toggle("expanded");
+    });
+</script>
+
+//currency
+<script>
+    const currencySelect = document.getElementById("currencySelect");
+    const totalAmountEl = document.getElementById("totalAmount");
+    const conversionRateEl = document.getElementById("conversionRate");
+    const conversionInfoEl = document.getElementById("conversionInfo");
+
+    const kesAmount = parseFloat(totalAmountEl.dataset.kes);
+
+    // 🔥 Exchange Rate
+    const exchangeRate = 155; // 1 USD = 155 KES
+    const rateToUSD = (1 / exchangeRate).toFixed(4);
+
+    currencySelect.addEventListener("change", function () {
+
+        if (this.value === "USD") {
+
+            let converted = kesAmount / exchangeRate;
+
+            totalAmountEl.textContent = "USD " + converted.toFixed(2);
+
+            // Show conversion rate
+            conversionRateEl.textContent =
+                "  Conversion rate: 1 KES = " + rateToUSD + " USD";
+            conversionRateEl.classList.remove("hidden");
+
+            // Show info box
+            conversionInfoEl.textContent =
+                "Your chosen payment method will be charged the above total in USD.";
+            conversionInfoEl.classList.remove("hidden");
+
+        } else {
+
+            totalAmountEl.textContent = kesAmount.toFixed(2);
+
+            conversionRateEl.classList.add("hidden");
+            conversionInfoEl.classList.add("hidden");
+        }
     });
 </script>
 
