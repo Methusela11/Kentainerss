@@ -53,7 +53,7 @@
             <!-- SIZE DROPDOWN -->
             {% if options %}
                 <select id="optionSelect" class="select-field">
-                <option value="" disabled selected>Select Size (Litres / CMs)</option>
+                <option value="">Select Size (Litres / CMs)</option>
                     {% for opt in options %}
                         <option value="{{ opt.id }}"
                                 data-price="{{ opt.price }}">
@@ -414,9 +414,6 @@ document.addEventListener("DOMContentLoaded", function () {
     addBtn.addEventListener("click", function () {
         if (addBtn.disabled || addBtn.classList.contains("loading")) return;
 
-        addBtn.classList.add("loading");
-        btnText.textContent = "Adding…";
-
         fetch(form.action, {
             method: "POST",
             headers: {
@@ -434,7 +431,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     .getElementById("cartWrapper")
                     .classList.add("cart-open");
 
-                btnText.textContent = "Added ✓";
                 addBtn.classList.remove("loading");
             })
             .catch(() => {

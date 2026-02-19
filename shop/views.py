@@ -157,7 +157,7 @@ def cart(request):
     cart_count = 0
 
     for item in cart_items:
-        cart_subtotal += item.line_total   # ✅ use property
+        cart_subtotal += item.line_total
         cart_count += item.quantity
 
     return render(
