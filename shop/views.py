@@ -1,10 +1,10 @@
 from decimal import Decimal
-
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
-
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.contrib.humanize.templatetags.humanize import intcomma
 from .models import Product, ProductOption, CartItem, OrderItem, Order
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -153,12 +153,11 @@ def cart(request):
 
     cart_items = CartItem.objects.filter(user=user)
 
-    cart_count = 0
     cart_subtotal = 0
+    cart_count = 0
 
     for item in cart_items:
-        item.line_total = item.price * item.quantity
-        cart_subtotal += item.line_total
+        cart_subtotal += item.line_total   # ✅ use property
         cart_count += item.quantity
 
     return render(
@@ -170,6 +169,7 @@ def cart(request):
             'cart_subtotal': cart_subtotal,
         }
     )
+
 
 def cart_items_views(request):
     return render(request, "cart_items.html")
@@ -259,6 +259,27 @@ def payment_page(request, order_id):
         "order": order
     })
 
+@csrf_exempt
+def update_basket(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        updates = data.get("updates", [])
+        user = request.user if request.user.is_authenticated else None
+
+        subtotal = 0
+
+        for item in updates:
+            cart_item = CartItem.objects.filter(id=item["id"], user=user).first()
+            if cart_item:
+                cart_item.quantity = int(item["quantity"])
+                cart_item.save()
+                subtotal += cart_item.line_total
+
+        subtotal_display = f"{intcomma(int(subtotal))} KES"
+
+        return JsonResponse({"success": True, "cart_subtotal": subtotal_display})
+
+    return JsonResponse({"success": False}, status=400)
 
 def water_tank_storage(request):
     # Filter products by category

@@ -21,6 +21,7 @@ urlpatterns = [
     path('water-tanks/', views.water_tank_storage, name='water_tank_storage'),
     path('sanitation/', views.sanitation_storage, name='sanitation'),
     path('agriculture/', views.agriculture, name='agriculture'),
+    path("cart/update-basket/", views.update_basket, name="update_basket"),
     path('material-handling/', views.material_handling, name='material_handling'),
     path('water_supply_and_accessories/', views.water_supply_and_accessories, name='water_supply_and_accessories'),
     path('special_products_and_others/', views.special_products_and_others, name='special_products_and_others'),

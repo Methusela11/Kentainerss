@@ -81,31 +81,34 @@ function enableUpdateBasket() {
 }
 
 updateBasketBtn?.addEventListener("click", function () {
+    const csrfToken = document.getElementById("csrf-token").value;
 
-    recalculateTotals();
-
-    this.disabled = true;
-    this.classList.remove("active");
-});
-
-function recalculateTotals() {
-    let subtotal = 0;
-
+    const updates = [];
     document.querySelectorAll(".cart-row").forEach(row => {
-        const qty = parseInt(row.querySelector(".qty-value").textContent);
-        const unitPrice = parseFloat(row.dataset.unitPrice);
-        subtotal += qty * unitPrice;
+        updates.push({
+            id: row.dataset.itemId,
+            quantity: row.querySelector(".qty-value").textContent
+        });
     });
 
-    const subtotalEl = document.getElementById("cartSubtotal");
-    const totalEl = document.getElementById("cartTotal");
+    fetch("/cart/update-basket/", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrfToken,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ updates })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // Refresh totals from backend response
+            document.getElementById("cartSubtotal").textContent = data.cart_subtotal;
+            document.getElementById("cartTotal").textContent = data.cart_subtotal;
 
-    if (subtotalEl) {
-        subtotalEl.textContent = subtotal.toLocaleString() + " KES";
-    }
-
-    if (totalEl) {
-        totalEl.textContent = subtotal.toLocaleString() + " KES";
-    }
-}
-
+            this.disabled = true;
+            this.classList.remove("active");
+        }
+    })
+    .catch(err => console.error(err));
+});
