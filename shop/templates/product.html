@@ -21,8 +21,6 @@
     </div>
 </div>
 
-{% csrf_token %}
-
 <main class="product-wrapper">
     <div class="product-grid">
 
@@ -251,6 +249,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
     const DELIVERY_REQUIRED = {{ product.offers_delivery|yesno:"true,false" }};
 
     const addBtn = document.getElementById("addToCartBtn");
@@ -266,10 +265,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (priceEl) priceEl.style.display = "none";
 
     const zoneInput = document.getElementById("zoneInput");
+    const zoneModal = document.getElementById("zoneModal");
+    const zoneButton = document.getElementById("zoneButton");
+
     let selectedSizePrice = null;
     let selectedZone = null;
 
-    // ---------- UPDATE ADD BUTTON ----------
+    /* ========================================
+       UPDATE ADD BUTTON
+    ======================================== */
     function updateAddButton() {
         const sizeOk = !!optionInput.value;
         const zoneOk = DELIVERY_REQUIRED ? !!zoneInput.value : true;
@@ -278,32 +282,44 @@ document.addEventListener("DOMContentLoaded", function () {
             addBtn.disabled = false;
             addBtn.classList.add("btn-enabled");
             addBtn.classList.remove("btn-disabled");
-            addBtn.textContent = "Add to Basket – " + (selectedSizePrice || 0).toLocaleString() + " KES";
+
+            btnText.textContent =
+                "Add to Basket – " +
+                (selectedSizePrice || 0).toLocaleString() +
+                " KES";
         } else {
             addBtn.disabled = true;
             addBtn.classList.remove("btn-enabled");
             addBtn.classList.add("btn-disabled");
 
             if (!sizeOk && DELIVERY_REQUIRED && !zoneOk) {
-                addBtn.textContent = "Select Size & Shipping Zone";
+                btnText.textContent = "Select Size & Shipping Zone";
             } else if (!sizeOk) {
-                addBtn.textContent = "Select Size";
+                btnText.textContent = "Select Size";
             } else if (DELIVERY_REQUIRED && !zoneOk) {
-                addBtn.textContent = "Select Shipping Zone";
+                btnText.textContent = "Select Shipping Zone";
             }
         }
     }
 
-    // ---------- SIZE SELECTION ----------
+    /* ========================================
+       SIZE SELECTION
+    ======================================== */
     if (optionSelect) {
         optionSelect.addEventListener("change", function () {
-            const selected = optionSelect.options[optionSelect.selectedIndex];
-            selectedSizePrice = selected.dataset.price ? parseInt(selected.dataset.price) : null;
+            const selected =
+                optionSelect.options[optionSelect.selectedIndex];
+
+            selectedSizePrice = selected.dataset.price
+                ? parseInt(selected.dataset.price)
+                : null;
+
             optionInput.value = selected.value || "";
 
             if (priceEl && selectedSizePrice) {
                 priceEl.style.display = "inline";
-                priceEl.textContent = selectedSizePrice.toLocaleString() + " KES";
+                priceEl.textContent =
+                    selectedSizePrice.toLocaleString() + " KES";
             } else if (priceEl) {
                 priceEl.style.display = "none";
             }
@@ -312,13 +328,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ---------- QUANTITY ----------
+    /* ========================================
+       QUANTITY
+    ======================================== */
     document.getElementById("plus").addEventListener("click", function () {
         let qty = parseInt(qtyDisplay.textContent, 10) || 1;
         qty++;
         qtyDisplay.textContent = qty;
         qtyInput.value = qty;
-        updateAddButton();
     });
 
     document.getElementById("minus").addEventListener("click", function () {
@@ -326,25 +343,74 @@ document.addEventListener("DOMContentLoaded", function () {
         if (qty > 1) qty--;
         qtyDisplay.textContent = qty;
         qtyInput.value = qty;
-        updateAddButton();
     });
 
-    // ---------- SHIPPING ZONE ----------
+    /* ========================================
+       SHIPPING ZONE MODAL CONTROL
+    ======================================== */
+
+    // Open modal
+    window.openZoneModal = function () {
+        if (!zoneModal) return;
+
+        zoneModal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    };
+
+    // Close modal
+    window.closeZoneModal = function () {
+        if (!zoneModal) return;
+
+        zoneModal.style.display = "none";
+        document.body.style.overflow = "auto";
+    };
+
+    // Close when clicking overlay
+    if (zoneModal) {
+        zoneModal.addEventListener("click", function (e) {
+            if (e.target === zoneModal) {
+                closeZoneModal();
+            }
+        });
+    }
+
+    // Close with ESC
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            closeZoneModal();
+        }
+    });
+
+    // Select zone
     window.selectZone = function (zoneName) {
         if (!DELIVERY_REQUIRED) return;
 
         selectedZone = zoneName;
+        zoneInput.value = zoneName;
 
-        const zoneBtn = document.getElementById("zoneButton");
-        if (zoneBtn) zoneBtn.innerHTML = zoneName + ' <span class="dropdown-icon">⌄</span>';
-        if (zoneInput) zoneInput.value = zoneName;
+        if (zoneButton) {
+            zoneButton.innerHTML =
+                zoneName + ' <span class="dropdown-icon">⌄</span>';
+        }
 
-        if (typeof closeZoneModal === "function") closeZoneModal();
+        // Highlight active zone
+        document.querySelectorAll(".zones-grid div").forEach(div => {
+            div.classList.remove("active");
+            const title = div.querySelector("h4");
+            if (title && title.textContent === zoneName) {
+                div.classList.add("active");
+            }
+        });
+
+        closeZoneModal();
         updateAddButton();
     };
 
-    // ---------- ADD TO CART ----------
+    /* ========================================
+       ADD TO CART (AJAX)
+    ======================================== */
     const form = document.getElementById("addToCartForm");
+
     addBtn.addEventListener("click", function () {
         if (addBtn.disabled || addBtn.classList.contains("loading")) return;
 
@@ -354,34 +420,46 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(form.action, {
             method: "POST",
             headers: {
-                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                "X-CSRFToken":
+                    document.querySelector(
+                        '[name=csrfmiddlewaretoken]'
+                    ).value
             },
             body: new FormData(form)
         })
-        .then(res => res.text())
-        .then(html => {
-            document.getElementById("cartSidebar").innerHTML = html;
-            document.getElementById("cartWrapper").classList.add("cart-open");
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("cartSidebar").innerHTML = html;
+                document
+                    .getElementById("cartWrapper")
+                    .classList.add("cart-open");
 
-            btnText.textContent = "Added ✓";
-            addBtn.classList.remove("loading");
-        })
-        .catch(() => {
-            btnText.textContent = "Try Again";
-            addBtn.classList.remove("loading");
-            addBtn.disabled = false;
-        });
+                btnText.textContent = "Added ✓";
+                addBtn.classList.remove("loading");
+            })
+            .catch(() => {
+                btnText.textContent = "Try Again";
+                addBtn.classList.remove("loading");
+            });
     });
 
-    // ---------- SCROLL TO INFO ----------
+    /* ========================================
+       SCROLL TO INFO
+    ======================================== */
     window.scrollToInfo = function () {
-        const target = document.getElementById("product-information");
+        const target =
+            document.getElementById("product-information");
         if (!target) return;
 
-        const yOffset = -100; // adjust to header height
-        const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        const yOffset = -100;
+        const y =
+            target.getBoundingClientRect().top +
+            window.pageYOffset +
+            yOffset;
+
         window.scrollTo({ top: y, behavior: "smooth" });
     };
+
 });
 </script>
 

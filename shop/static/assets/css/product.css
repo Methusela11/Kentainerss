@@ -304,6 +304,21 @@ body {
     padding: 20px;
 }
 
+.zones-grid div {
+    padding: 12px;
+    border-radius: 6px;
+    transition: 0.2s ease;
+}
+
+.zones-grid div:hover {
+    background: #f3f6ff;
+}
+
+.zones-grid div.active {
+    background: #e6ecff;
+    border: 1px solid #143b91;
+}
+
 .trust-section {
     display: flex;
     justify-content: center;
