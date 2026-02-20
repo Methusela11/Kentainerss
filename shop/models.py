@@ -117,6 +117,11 @@ class CartItem(models.Model):
     option = models.ForeignKey(ProductOption, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
+    shipping_zone = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
 
     class Meta:
         unique_together = ('user', 'product', 'option')

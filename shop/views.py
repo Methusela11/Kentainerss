@@ -83,6 +83,7 @@ def add_to_cart(request, product_id):
 
     option_id = request.POST.get("option_id")
     quantity = int(request.POST.get("quantity", 1))
+    shipping_zone = request.POST.get("shipping_zone")  # ✅ ADD THIS
 
     product = get_object_or_404(Product, id=product_id)
     price = product.price
@@ -94,28 +95,30 @@ def add_to_cart(request, product_id):
 
     user = request.user if request.user.is_authenticated else None
 
-    # Try to get existing cart item
     cart_item = CartItem.objects.filter(
         user=user,
         product=product,
-        option=option
+        option=option,
+        shipping_zone=shipping_zone   # ✅ INCLUDE THIS
     ).first()
 
     if cart_item:
         cart_item.quantity += quantity
-        cart_item.price = price
         cart_item.save()
     else:
         CartItem.objects.create(
             user=user,
             product=product,
             option=option,
+            shipping_zone=shipping_zone,  # ✅ SAVE IT
             price=price,
             quantity=quantity
         )
 
     cart_items = CartItem.objects.filter(user=user)
-    cart_subtotal = cart_items.aggregate(total=Sum(F("price") * F("quantity")))["total"] or 0
+    cart_subtotal = cart_items.aggregate(
+        total=Sum(F("price") * F("quantity"))
+    )["total"] or 0
 
     return render(
         request,
@@ -125,6 +128,7 @@ def add_to_cart(request, product_id):
             "cart_subtotal": cart_subtotal,
         },
     )
+
 
 def remove_from_cart(request, item_id):
     if request.method == "POST":

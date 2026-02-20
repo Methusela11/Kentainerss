@@ -17,6 +17,14 @@
                     </p>
                 {% endif %}
 
+                {% if item.shipping_zone %}
+                    <p class="cart-name">
+                        <strong>Shipping zone:</strong>
+                        {{ item.shipping_zone }}
+                    </p>
+                {% endif %}
+
+
                 <p class="cart-item-price">
                     {{ item.quantity }} × <strong>{{ item.price|floatformat:0|intcomma }}</strong> KES
                 </p>
