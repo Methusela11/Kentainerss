@@ -1,0 +1,236 @@
+{% load humanize %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Payment – Kentainerss</title>
+    <link rel="stylesheet" href="{% static 'assets/css/payment.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/choosepayment.css' %}">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-inner">
+
+        <div class="logo">
+            <a href="https://dpogroup.com/" target="_blank" rel="noopener noreferrer">
+                <img src="{% static 'assets/image/dpo/DPOAF.png' %}" alt="DPO Group">
+            </a>
+        </div>
+
+        <div class="header-right">
+            <div class="header-actions">
+                <select class="lang-select">
+                    <option>English</option>
+                    <option>France</option>
+                    <option>Swahili</option>
+                </select>
+
+                <a href="https://portal.dpopay.com/system/loginpage.asp?loginpage=provider"
+                   target="_blank" rel="noopener noreferrer" class="login-btn">
+                    Login
+                </a>
+            </div>
+            <div class="timer">
+                Please complete your payment within:
+                <strong id="countdown">0d 0h 15m 00s</strong>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="container grid">
+
+<div class="wrapper">
+
+    <!-- LEFT SIDE -->
+    <div>
+
+        <div class="step-card">
+            <div class="step-header">Personal Details</div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-header active">Choose Payment Method</div>
+
+            <div class="payment-card">
+
+                <div class="tabs">
+                    <div class="tab active">Card</div>
+                    <div class="tab">Mobile</div>
+                    <div class="tab">Pesalink</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" placeholder="Card Holder Name">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" placeholder="Card Number">
+                </div>
+
+                <div class="row">
+                    <input type="text" placeholder="MM / YY">
+                    <input type="text" placeholder="Security Code (CVV)">
+                </div>
+
+                <div class="checkbox">
+                    <input type="checkbox"> Save all my details for future payments
+                </div>
+
+                <hr>
+
+                <div class="checkbox">
+                    <input type="checkbox"> I agree to DPO's terms and conditions
+                </div>
+
+                <button class="pay-btn">Pay Now</button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="summary">
+        <h4>KENTAINERS LIMITED</h4>
+
+        <div class="summary-row">
+            Payment Reference: <strong>R77281909</strong>
+        </div>
+
+        <div class="summary-row">
+            Provider Ref No: <strong>5740</strong>
+        </div>
+
+        <div class="summary-row">
+            Service Date: <strong>Fri, 20/Feb/26</strong>
+        </div>
+
+        <div class="total-box">
+            <span>TOTAL (KES)</span>
+            <span>266523.00</span>
+        </div>
+    </div>
+
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="dpo-footer">
+    <div class="footer-logos">
+        <img src="{% static 'assets/image/dpo/logo-footer-visa.svg' %}" alt="visa">
+        <img src="{% static 'assets/image/dpo/logo-footer-mastercard.svg' %}" alt="mastercard">
+        <img src="{% static 'assets/image/dpo/logo-footer-pci.svg' %}" alt="pci">
+        <img src="{% static 'assets/image/dpo/logo-footer-safekey.svg' %}" alt="safekey">
+    </div>
+    <div class="footer-line"></div>
+    <div class="footer-links">
+    <a href="https://dpogroup.com/" target="_blank" rel="noopener noreferrer">
+        DPO Group Homepage
+    </a>
+
+    <span class="divider-bar">|</span>
+
+    <a href="#">
+        Terms & Conditions
+    </a>
+</div>
+
+</footer>
+
+<script>
+    const toggle = document.getElementById("summaryToggle");
+    const dropdown = document.getElementById("summaryDropdown");
+    const caret = document.getElementById("caret");
+    const summaryCard = document.querySelector(".card.summary");
+
+    toggle.addEventListener("click", () => {
+        dropdown.classList.toggle("collapsed");
+        caret.classList.toggle("rotate");
+        summaryCard.classList.toggle("expanded");
+    });
+</script>
+
+<script>
+    const currencySelect = document.getElementById("currencySelect");
+    const totalAmountEl = document.getElementById("totalAmount");
+    const conversionRateEl = document.getElementById("conversionRate");
+    const conversionInfoEl = document.getElementById("conversionInfo");
+
+    const kesAmount = parseFloat(totalAmountEl.dataset.kes);
+
+    // 🔥 Exchange Rate
+    const exchangeRate = 155; // 1 USD = 155 KES
+    const rateToUSD = (1 / exchangeRate).toFixed(4);
+
+    currencySelect.addEventListener("change", function () {
+
+        if (this.value === "USD") {
+
+            let converted = kesAmount / exchangeRate;
+
+            totalAmountEl.textContent = "USD " + converted.toFixed(2);
+
+            // Show conversion rate
+            conversionRateEl.textContent =
+                "Conversion rate: 1 KES = " + rateToUSD + " USD";
+            conversionRateEl.classList.remove("hidden");
+
+            // Show info box
+            conversionInfoEl.textContent =
+                "Your chosen payment method will be charged the above total in USD.";
+            conversionInfoEl.classList.remove("hidden");
+
+        } else {
+
+            totalAmountEl.textContent = kesAmount.toFixed(2);
+
+            conversionRateEl.classList.add("hidden");
+            conversionInfoEl.classList.add("hidden");
+        }
+    });
+</script>
+
+<script>
+    // 15 minutes in seconds
+    let timeLeft = 15 * 60;
+
+    const countdownEl = document.getElementById("countdown");
+
+    function updateTimer() {
+
+        let days = Math.floor(timeLeft / (24 * 60 * 60));
+        let hours = Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60));
+        let minutes = Math.floor((timeLeft % (60 * 60)) / 60);
+        let seconds = timeLeft % 60;
+
+        // Always show 2 digits for minutes & seconds
+        minutes = minutes.toString().padStart(2, "0");
+        seconds = seconds.toString().padStart(2, "0");
+
+        countdownEl.textContent =
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (timeLeft > 0) {
+            timeLeft--;
+        } else {
+            clearInterval(timerInterval);
+            countdownEl.textContent = "Session Expired";
+        }
+    }
+
+    updateTimer(); // Run immediately
+    const timerInterval = setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>

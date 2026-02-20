@@ -264,6 +264,15 @@ body {
     position: relative;
 }
 
+.card.collapsed {
+    padding: 16px;
+}
+
+.card.collapsed .form-grid,
+.card.collapsed .btn-row {
+    display: none;
+}
+
 /* ACTIVE DOT */
 .radio.active::after {
     content: "";
