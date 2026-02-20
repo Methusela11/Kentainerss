@@ -127,6 +127,7 @@
 .order-info {
     font-size: 14px;
     color: #0a1d4d;
+    margin-top: -10px;
 }
 
 .order-info .meta {

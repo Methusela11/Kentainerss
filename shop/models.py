@@ -124,7 +124,7 @@ class CartItem(models.Model):
     )
 
     class Meta:
-        unique_together = ('user', 'product', 'option')
+        unique_together = ('user', 'product', 'option', 'shipping_zone')
 
     @property
     def line_total(self):
