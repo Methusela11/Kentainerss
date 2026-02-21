@@ -62,11 +62,6 @@
 
                     {% endfor %}
                 </select>
-
-            {% else %}
-                <select class="select-field">
-                    <option>Select Size (Litres / CMs)</option>
-                </select>
             {% endif %}
 
             <!-- SHIPPING ZONE BUTTON -->
@@ -246,7 +241,9 @@
         </div>
     </div>
 </div>
-
+<script>
+    const PRODUCT_TYPE = "{{ product.type }}";  // "viable" or "simple"
+</script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -271,36 +268,79 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedSizePrice = null;
     let selectedZone = null;
 
+    updateAddButton();
+
     /* ========================================
        UPDATE ADD BUTTON
     ======================================== */
     function updateAddButton() {
-        const sizeOk = !!optionInput.value;
-        const zoneOk = DELIVERY_REQUIRED ? !!zoneInput.value : true;
 
-        if (sizeOk && zoneOk) {
-            addBtn.disabled = false;
-            addBtn.classList.add("btn-enabled");
-            addBtn.classList.remove("btn-disabled");
+    const isViable = PRODUCT_TYPE === "viable";
+    const isSimple = PRODUCT_TYPE === "simple";
 
-            btnText.textContent =
-                "Add to Basket – " +
-                (selectedSizePrice || 0).toLocaleString() +
-                " KES";
-        } else {
-            addBtn.disabled = true;
-            addBtn.classList.remove("btn-enabled");
-            addBtn.classList.add("btn-disabled");
+    const sizeSelected = !!optionInput.value;
+    const zoneSelected = !!zoneInput.value;
 
-            if (!sizeOk && DELIVERY_REQUIRED && !zoneOk) {
-                btnText.textContent = "Select Size & Shipping Zone";
-            } else if (!sizeOk) {
-                btnText.textContent = "Select Size";
-            } else if (DELIVERY_REQUIRED && !zoneOk) {
-                btnText.textContent = "Select Shipping Zone";
-            }
+    let enableButton = false;
+
+    /* ================================
+       LOGIC MATRIX
+    ================================= */
+
+    if (isViable && DELIVERY_REQUIRED) {
+        // Viable + Shipping → size + zone required
+        enableButton = sizeSelected && zoneSelected;
+    }
+
+    else if (isViable && !DELIVERY_REQUIRED) {
+        // Viable only → size required
+        enableButton = sizeSelected;
+    }
+
+    else if (isSimple && DELIVERY_REQUIRED) {
+        // Simple + Shipping → zone required
+        enableButton = zoneSelected;
+    }
+
+    else if (isSimple && !DELIVERY_REQUIRED) {
+        // Simple only → nothing required
+        enableButton = true;
+    }
+
+    /* ================================
+       APPLY STATE
+    ================================= */
+
+    if (enableButton) {
+        addBtn.disabled = false;
+        addBtn.classList.add("btn-enabled");
+        addBtn.classList.remove("btn-disabled");
+
+        // Show price correctly
+        let priceToShow = selectedSizePrice || {{ product.price|floatformat:0 }};
+        btnText.textContent =
+            "Add to Basket – " +
+            Number(priceToShow).toLocaleString() +
+            " KES";
+    } else {
+        addBtn.disabled = true;
+        addBtn.classList.remove("btn-enabled");
+        addBtn.classList.add("btn-disabled");
+
+        if (isViable && DELIVERY_REQUIRED) {
+            btnText.textContent = "Select Size & Shipping Zone";
+        }
+        else if (isViable) {
+            btnText.textContent = "Select Size";
+        }
+        else if (isSimple && DELIVERY_REQUIRED) {
+            btnText.textContent = "Select Shipping Zone";
+        }
+        else {
+            btnText.textContent = "Add to Basket";
         }
     }
+}
 
     /* ========================================
        SIZE SELECTION
