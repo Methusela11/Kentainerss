@@ -38,8 +38,14 @@
 
     <!-- PAYMENT TABS -->
     <div class="payment-tabs">
-        <div class="tab" data-method="card">Card</div>
-        <div class="tab active" data-method="mobile">Mobile</div>
+        <div class="tab" data-method="card">
+            <i class="bi bi-card"></i>
+            Card
+        </div>
+        <div class="tab active" data-method="mobile">
+            <i class="bi bi-phone"></i>
+            Mobile
+        </div>
         <div class="tab" data-method="pesalink">Pesalink 🔒</div>
     </div>
 
@@ -55,18 +61,74 @@
 
             <div class="mobile-options">
                 <div class="mobile-box active" data-provider="mpesa">
-                    <img src="{% static 'assets/image/dpo/mpesa.png' %}" alt="mpesa">
+                    <img src="{% static 'assets/image/serviceproviders/mpesa.png' %}" alt="mpesa">
                 </div>
 
                 <div class="mobile-box" data-provider="airtel">
-                    <img src="{% static 'assets/image/dpo/airtel.png' %}" alt="airtel">
+                    <img src="{% static 'assets/image/serviceproviders/airtel.png' %}" alt="airtel">
                 </div>
             </div>
 
-            <input type="text"
-                   id="mobileNumber"
-                   placeholder="Enter Mobile Number"
-                   maxlength="10">
+            <div id="mobileNumberWrapper" class="hidden">
+
+    <label class="mobile-label">
+        Enter a telephone number for payment here:
+    </label>
+
+    <div class="phone-input">
+        <span class="prefix">+254</span>
+        <input type="text"
+               id="mobileNumber"
+               maxlength="9">
+    </div>
+
+    <div class="mobile-total">
+        (Payment in KES) Total:
+        <strong id="mobileTotalAmount">
+            {{ order.total_amount|floatformat:2|intcomma }}
+        </strong>
+    </div>
+
+</div>
+            <style>
+                .mobile-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.phone-input {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.prefix {
+    margin-top: 0;
+    margin-right: 8px;
+    color: #444;
+}
+
+.phone-input input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 15px;
+    width: 100%;
+    max-width: 150px;
+}
+
+.mobile-total {
+    font-size: 14px;
+    color: #444;
+}
+
+.mobile-total strong {
+    margin-left: 4px;
+    color: #2f6fed;
+}
+            </style>
 
         </div>
 
@@ -75,20 +137,7 @@
             <div class="coming-soon">
                 Card payments coming soon.
             </div>
-        </div>
-
-        <!-- PESALINK -->
-        <div class="payment-panel hidden" id="pesalinkPanel">
-            <div class="coming-soon">
-                Pesalink coming soon.
-            </div>
-        </div>
-
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- TERMS -->
+            <!-- TERMS -->
     <div class="terms">
         <input type="checkbox" id="termsCheck">
         <label for="termsCheck">
@@ -99,6 +148,29 @@
     <button class="pay-btn" id="payBtn" disabled>
         Pay via Mobile
     </button>
+        </div>
+
+        <!-- PESALINK -->
+        <div class="payment-panel hidden" id="pesalinkPanel">
+            <div class="coming-soon">
+                Pesalink coming soon.
+            </div>
+        </div>
+        <!-- TERMS -->
+    <div class="terms">
+        <input type="checkbox" id="termsCheck">
+        <label for="termsCheck">
+            I agree to DPO’s <a href="#">terms and conditions</a>
+        </label>
+    </div>
+
+    <button class="pay-btn" id="payBtn" disabled>
+        Pay via Mobile
+    </button>
+
+    </div>
+
+    <div class="divider"></div>
 
 </section>
 
@@ -300,6 +372,7 @@
 
             if (method === "mobile") {
                 document.getElementById("mobilePanel").classList.remove("hidden");
+                mobileNumberInput.classList.add("hidden");
                 payBtn.textContent = "Pay via Mobile";
             }
 
@@ -315,21 +388,31 @@
         });
     });
 
-    // MOBILE PROVIDER SELECT
-    mobileBoxes.forEach(box => {
-        box.addEventListener("click", function() {
-            mobileBoxes.forEach(b => b.classList.remove("active"));
-            this.classList.add("active");
-        });
-    });
-
     // TERMS ENABLE BUTTON
     termsCheck.addEventListener("change", function() {
         payBtn.disabled = !this.checked;
         payBtn.style.background = this.checked ? "#2f6fed" : "#8fb4dc";
     });
 </script>
+<script>
+    const mobileNumberWrapper = document.getElementById("mobileNumberWrapper");
 
+mobileBoxes.forEach(box => {
+    box.addEventListener("click", function() {
+
+        mobileBoxes.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        const provider = this.dataset.provider;
+
+        if (provider === "mpesa" || provider === "airtel") {
+            mobileNumberWrapper.classList.remove("hidden");
+        } else {
+            mobileNumberWrapper.classList.add("hidden");
+        }
+    });
+});
+</script>
 </body>
 </html>
 

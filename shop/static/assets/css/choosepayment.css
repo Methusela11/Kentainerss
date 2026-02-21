@@ -289,6 +289,20 @@ body {
     transform: translate(-50%, -50%);
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: 1.55fr 0.95fr;
+    gap: 28px;
+
+    align-items: stretch;   /* 🔥 THIS IS THE KEY */
+}
+
+.card.summary {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 /* INACTIVE */
 .radio.inactive {
     border-color: #6e98e8;
@@ -481,7 +495,6 @@ select:disabled {
 .payment-tabs {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #eef1f4;
     margin-bottom: 24px;
 }
 
@@ -491,8 +504,8 @@ select:disabled {
     padding: 14px 0;
     font-size: 14px;
     cursor: pointer;
+    border: none;
     color: #6b6b6b;
-    border-bottom: 2px solid transparent;
 }
 
 .tab.active {
@@ -793,6 +806,9 @@ select:disabled {
     /* Kill any desktop column forcing */
     .form-grid > * {
         grid-column: 1 / -1;
+    }
+    .mobile-box{
+        gap: 25px;
     }
 
     /* Full width email */
