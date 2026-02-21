@@ -14,10 +14,14 @@
 
     <!-- IMAGE -->
     <div class="cart-col image">
-        <a href="{% url 'product_detail' item.product.slug %}">
+    <a href="{% url 'product_detail' item.product.slug %}">
+        {% if item.option and item.option.image %}
             <img src="{{ item.option.image.url }}" alt="{{ item.product.name }}">
-        </a>
-    </div>
+        {% else %}
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+        {% endif %}
+    </a>
+</div>
 
     <!-- DETAILS -->
     <div class="cart-col details">
