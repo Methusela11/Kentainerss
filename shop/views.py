@@ -263,8 +263,12 @@ def payment_page(request, order_id):
         "order": order
     })
 
-def choose_payment(request):
-    return render(request, "choosepayment.html")
+def choose_payment(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    return render(request, "choosepayment.html", {
+        "order": order
+    })
 
 @csrf_exempt
 def update_basket(request):

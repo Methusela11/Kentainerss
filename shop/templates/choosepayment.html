@@ -5,146 +5,194 @@
 <head>
     <meta charset="UTF-8">
     <title>Online Payment – Kentainerss</title>
-    <link rel="stylesheet" href="{% static 'assets/css/payment.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/choosepayment.css' %}">
+    <link rel="stylesheet" href=" ">
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-    <div class="header-inner">
-
-        <div class="logo">
-            <a href="https://dpogroup.com/" target="_blank" rel="noopener noreferrer">
-                <img src="{% static 'assets/image/dpo/DPOAF.png' %}" alt="DPO Group">
-            </a>
-        </div>
-
-        <div class="header-right">
-            <div class="header-actions">
-                <select class="lang-select">
-                    <option>English</option>
-                    <option>France</option>
-                    <option>Swahili</option>
-                </select>
-
-                <a href="https://portal.dpopay.com/system/loginpage.asp?loginpage=provider"
-                   target="_blank" rel="noopener noreferrer" class="login-btn">
-                    Login
-                </a>
-            </div>
-            <div class="timer">
-                Please complete your payment within:
-                <strong id="countdown">0d 0h 15m 00s</strong>
-            </div>
-
-
-        </div>
-
-
-    </div>
+<header>
+    {% include "dponavbar.html" %}
 </header>
 
-<!-- MAIN -->
 <main class="container grid">
 
-<div class="wrapper">
-
-    <!-- LEFT SIDE -->
+    <!-- LEFT COLUMN WRAPPER -->
     <div>
 
-        <div class="step-card">
-            <div class="step-header">Personal Details</div>
+        <!-- PERSONAL DETAILS (COLLAPSED) -->
+        <section class="card collapsed">
+            <div class="card-title">
+                <span class="radio inactive"></span>
+                Personal Details
+                <a href="#" class="edit-link">Edit</a>
+            </div>
+        </section>
+
+        <section class="card" style="margin-top: 24px;">
+
+    <div class="card-title active">
+        <span class="radio active"></span>
+        Choose Payment Method
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- PAYMENT TABS -->
+    <div class="payment-tabs">
+        <div class="tab" data-method="card">Card</div>
+        <div class="tab active" data-method="mobile">Mobile</div>
+        <div class="tab" data-method="pesalink">Pesalink 🔒</div>
+    </div>
+
+    <!-- PAYMENT CONTENT -->
+    <div id="paymentContent">
+
+        <!-- MOBILE PANEL (ACTIVE BY DEFAULT) -->
+        <div class="payment-panel" id="mobilePanel">
+
+            <select class="mobile-country">
+                <option>Kenya</option>
+            </select>
+
+            <div class="mobile-options">
+                <div class="mobile-box active" data-provider="mpesa">
+                    <img src="{% static 'assets/image/dpo/mpesa.png' %}" alt="mpesa">
+                </div>
+
+                <div class="mobile-box" data-provider="airtel">
+                    <img src="{% static 'assets/image/dpo/airtel.png' %}" alt="airtel">
+                </div>
+            </div>
+
+            <input type="text"
+                   id="mobileNumber"
+                   placeholder="Enter Mobile Number"
+                   maxlength="10">
+
         </div>
 
-        <div class="step-card">
-            <div class="step-header active">Choose Payment Method</div>
+        <!-- CARD -->
+        <div class="payment-panel hidden" id="cardPanel">
+            <div class="coming-soon">
+                Card payments coming soon.
+            </div>
+        </div>
 
-            <div class="payment-card">
-
-                <div class="tabs">
-                    <div class="tab active">Card</div>
-                    <div class="tab">Mobile</div>
-                    <div class="tab">Pesalink</div>
-                </div>
-
-                <div class="form-group">
-                    <input type="text" placeholder="Card Holder Name">
-                </div>
-
-                <div class="form-group">
-                    <input type="text" placeholder="Card Number">
-                </div>
-
-                <div class="row">
-                    <input type="text" placeholder="MM / YY">
-                    <input type="text" placeholder="Security Code (CVV)">
-                </div>
-
-                <div class="checkbox">
-                    <input type="checkbox"> Save all my details for future payments
-                </div>
-
-                <hr>
-
-                <div class="checkbox">
-                    <input type="checkbox"> I agree to DPO's terms and conditions
-                </div>
-
-                <button class="pay-btn">Pay Now</button>
-
+        <!-- PESALINK -->
+        <div class="payment-panel hidden" id="pesalinkPanel">
+            <div class="coming-soon">
+                Pesalink coming soon.
             </div>
         </div>
 
     </div>
 
-    <!-- RIGHT SIDE -->
-    <div class="summary">
-        <h4>KENTAINERS LIMITED</h4>
+    <div class="divider"></div>
+
+    <!-- TERMS -->
+    <div class="terms">
+        <input type="checkbox" id="termsCheck">
+        <label for="termsCheck">
+            I agree to DPO’s <a href="#">terms and conditions</a>
+        </label>
+    </div>
+
+    <button class="pay-btn" id="payBtn" disabled>
+        Pay via Mobile
+    </button>
+
+</section>
+
+    </div>
+
+    <!-- SUMMARY -->
+<aside class="card summary">
+
+    <!-- HEADER -->
+    <div class="summary-header" id="summaryToggle">
+        <h4>KENTAINERSS LIMITED</h4>
+        <span class="caret" id="caret">▾</span>
+    </div>
+
+    <!-- MERCHANT INFO (hidden until expanded) -->
+    <div class="summary-dropdown collapsed" id="summaryDropdown">
+
+        <div class="summary-sub">
+    Activities - {{ order.items.first.product_name }}
+</div>
+
+
+        <div class="summary-meta">
+            <div>
+                <span>WEBSITE</span>
+                <small>&nbsp;</small>
+            </div>
+            <div>
+                <span>E-MAIL</span>
+                <a href="mailto:esales@kentainers.asti-group.com">
+                    esales@kentainers.asti-group.com
+                </a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+    </div>
+
+    <!-- CORE INFO -->
+    <div class="summary-core">
 
         <div class="summary-row">
-            Payment Reference: <strong>R77281909</strong>
+            <span>PAYMENT REFERENCE</span>
+            <strong>{{ order.payment_reference }}</strong>
         </div>
 
         <div class="summary-row">
-            Provider Ref No: <strong>5740</strong>
+            <span>PROVIDER REF NO.</span>
+            <strong>52{{ order.id }}</strong>
         </div>
 
-        <div class="summary-row">
-            Service Date: <strong>Fri, 20/Feb/26</strong>
+        <div class="summary-row full">
+            <span>SERVICE DATE</span>
+            <strong>{{ order.created_at|date:"D, d/M/y" }}</strong>
         </div>
 
-        <div class="total-box">
-            <span>TOTAL (KES)</span>
-            <span>266523.00</span>
+    </div>
+
+    <div class="divider"></div>
+
+<div class="total">
+    <h2 class="label">TOTAL</h2>
+
+    <div class="amount">
+        <div class="amount-box">
+            <select class="currency-select" id="currencySelect">
+                <option value="KES" selected>KES</option>
+                <option value="USD">USD</option>
+                <option value="KES">KES</option>
+            </select>
+
+            <p id="totalAmount" style="color: #2f6fed"
+                    data-kes="{{ order.total_amount|floatformat:2 }}">
+                {{ order.total_amount|floatformat:2|intcomma }}
+            </p>
         </div>
     </div>
 
+    <!-- Conversion Rate -->
+    <div id="conversionRate" class="conversion-rate hidden"></div>
+
+    <!-- Info Box -->
+    <div id="conversionInfo" class="conversion-info hidden"></div>
+
+    <small>Choose your preferred currency</small>
 </div>
+
+
+</aside>
 
 </main>
 
-<!-- FOOTER -->
-<footer class="dpo-footer">
-    <div class="footer-logos">
-        <img src="{% static 'assets/image/dpo/logo-footer-visa.svg' %}" alt="visa">
-        <img src="{% static 'assets/image/dpo/logo-footer-mastercard.svg' %}" alt="mastercard">
-        <img src="{% static 'assets/image/dpo/logo-footer-pci.svg' %}" alt="pci">
-        <img src="{% static 'assets/image/dpo/logo-footer-safekey.svg' %}" alt="safekey">
-    </div>
-    <div class="footer-line"></div>
-    <div class="footer-links">
-    <a href="https://dpogroup.com/" target="_blank" rel="noopener noreferrer">
-        DPO Group Homepage
-    </a>
-
-    <span class="divider-bar">|</span>
-
-    <a href="#">
-        Terms & Conditions
-    </a>
-</div>
-
+<footer style="background-color: white">
+    {% include "dpofooter.html" %}
 </footer>
 
 <script>
@@ -232,5 +280,56 @@
     const timerInterval = setInterval(updateTimer, 1000);
 </script>
 
+<script>
+    const tabs = document.querySelectorAll(".tab");
+    const panels = document.querySelectorAll(".payment-panel");
+    const payBtn = document.getElementById("payBtn");
+    const termsCheck = document.getElementById("termsCheck");
+    const mobileBoxes = document.querySelectorAll(".mobile-box");
+
+    // TAB SWITCHING
+    tabs.forEach(tab => {
+        tab.addEventListener("click", function() {
+
+            tabs.forEach(t => t.classList.remove("active"));
+            this.classList.add("active");
+
+            panels.forEach(p => p.classList.add("hidden"));
+
+            const method = this.dataset.method;
+
+            if (method === "mobile") {
+                document.getElementById("mobilePanel").classList.remove("hidden");
+                payBtn.textContent = "Pay via Mobile";
+            }
+
+            if (method === "card") {
+                document.getElementById("cardPanel").classList.remove("hidden");
+                payBtn.textContent = "Pay via Card";
+            }
+
+            if (method === "pesalink") {
+                document.getElementById("pesalinkPanel").classList.remove("hidden");
+                payBtn.textContent = "Pay via Pesalink";
+            }
+        });
+    });
+
+    // MOBILE PROVIDER SELECT
+    mobileBoxes.forEach(box => {
+        box.addEventListener("click", function() {
+            mobileBoxes.forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+        });
+    });
+
+    // TERMS ENABLE BUTTON
+    termsCheck.addEventListener("change", function() {
+        payBtn.disabled = !this.checked;
+        payBtn.style.background = this.checked ? "#2f6fed" : "#8fb4dc";
+    });
+</script>
+
 </body>
 </html>
+
