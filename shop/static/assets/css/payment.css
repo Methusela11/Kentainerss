@@ -599,69 +599,6 @@ select:disabled {
 /* ============================= */
 
 @media (max-width: 680px) {
-
-    /* Header */
-    .header {
-        height: auto;
-    }
-
-    .header-inner {
-        padding: 10px 14px;
-        align-items: flex-start;
-    }
-
-    .logo img {
-        height: 26px;
-    }
-
-    .header-right {
-        align-items: flex-end;
-    }
-
-    .header-actions {
-        gap: 10px;
-    }
-
-    .lang-select,
-    .login-btn {
-        height: 30px;
-        font-size: 13px;
-    }
-
-    .timer {
-        margin-top: 4px;
-        font-size: 11px;
-    }
-
-    /* Card density */
-    .card {
-        padding: 16px;
-        border-radius: 6px;
-    }
-
-    input,
-    select {
-        height: 40px;
-        font-size: 13px;
-        padding: 0 14px;
-    }
-
-    .card-title {
-        font-size: 16px;
-    }
-
-    /* Button */
-    .continue-btn {
-        width: 25%;
-        height: 42px;
-        font-size: 14px;
-        justify-content: center;
-    }
-
-    .btn-row {
-        margin-top: 20px;
-    }
-
     /* Summary Typography */
     .summary-header {
         display: flex;

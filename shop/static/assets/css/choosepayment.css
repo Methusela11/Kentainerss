@@ -294,7 +294,7 @@ body {
     grid-template-columns: 1.55fr 0.95fr;
     gap: 28px;
 
-    align-items: stretch;   /* 🔥 THIS IS THE KEY */
+    align-items: stretch;
 }
 
 .card.summary {
@@ -318,53 +318,6 @@ body {
     grid-column: 1 / -1;
 }
 
-input,
-select {
-    height: 46px;
-    padding: 0 16px;
-    border: 1px solid #e6eaef;
-    border-radius: 4px;
-    background: #ffffff;
-    font-size: 14px;
-    transition: border .2s ease, box-shadow .2s ease;
-}
-
-input:focus,
-select:focus {
-    outline: none;
-    border-color: #2f6fed;
-    box-shadow: 0 0 0 2px rgba(47,111,237,.12);
-}
-
-input[readonly],
-select:disabled {
-    color: #404040;
-    background: #fafbfd;
-}
-
-/* BUTTON */
-.btn-row {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 22px;
-}
-
-.continue-btn {
-    width: 100px;
-    height: 46px;
-    background: #406eaa;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(47,111,237,.25);
-}
-
-.continue-btn a{
-    text-decoration: none;
-}
-
 /* SUMMARY */
 .summary-header {
     display: flex;
@@ -375,7 +328,7 @@ select:disabled {
 .divider {
     height: 1px;
     width: 100%;
-    background: #6c6d6e;
+    background: #39393a;
     margin: 18px 0;
 }
 
@@ -383,42 +336,6 @@ select:disabled {
 /* TOTAL SECTION - TRUE DPO MATCH */
 /* ============================= */
 
-.total {
-    margin-top: 10px;
-}
-
-.total .label {
-    color: #6b6b6b;
-    font-weight: 600;
-}
-
-.total {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-/* Row layout */
-.total .amount {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-/* Grey box */
-.total .amount-box {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: #f3f5f7;
-    border-radius: 4px;
-    padding: 8px 14px;
-    border: 1px solid #e3e6ea;
-    min-width: 180px;
-    height: 45px;
-    justify-content: space-between;
-    margin-top: -60px;
-}
 /* Conversion Rate Text */
 .conversion-rate {
     font-size: 12px;
@@ -484,7 +401,7 @@ select:disabled {
     width: 120px;
     height: 80px;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -510,12 +427,12 @@ select:disabled {
 
 .tab.active {
     color: #2f6fed;
-    border-bottom: 2px solid #2f6fed;
+    border-bottom: 1px solid #2f6fed;
     font-weight: 500;
 }
 
 .mobile-box.active {
-    border: 2px solid #2f6fed;
+    border: 1px solid #2e10ef;
 }
 
 #mobileNumber {
@@ -578,52 +495,6 @@ select:disabled {
     text-align: center;
 }
 
-/* Logos row */
-.footer-logos {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 28px;
-    padding: 10px 0 18px;
-}
-
-.footer-logos img {
-    height: 50px;
-    opacity: 0.95;
-}
-
-/* Colored gradient line */
-.footer-line {
-    height: 3px;
-    background: linear-gradient(
-        to right,
-        #7a003c,
-        #0f62fe
-    );
-}
-
-/* Links row */
-.footer-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-    font-size: 13px;
-    padding: 18px 0 26px;
-}
-
-.footer-links a {
-    text-decoration: none;
-    color: #406eaa;
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.divider-bar {
-    color: #9aa1a9;
-}
-
-
 /* ============================= */
 /* DPO TRUE MOBILE MATCH */
 /* ============================= */
@@ -669,66 +540,14 @@ select:disabled {
 
 @media (max-width: 680px) {
 
-    /* Header */
-    .header {
-        height: auto;
-    }
-
-    .header-inner {
-        padding: 10px 14px;
-        align-items: flex-start;
-    }
-
-    .logo img {
-        height: 26px;
-    }
-
-    .header-right {
-        align-items: flex-end;
-    }
-
-    .header-actions {
-        gap: 10px;
-    }
-
-    .lang-select,
-    .login-btn {
-        height: 30px;
-        font-size: 13px;
-    }
-
-    .timer {
-        margin-top: 4px;
-        font-size: 11px;
-    }
-
     /* Card density */
     .card {
         padding: 16px;
         border-radius: 6px;
     }
 
-    input,
-    select {
-        height: 40px;
-        font-size: 13px;
-        padding: 0 14px;
-    }
-
     .card-title {
         font-size: 16px;
-    }
-
-    /* Button */
-    .continue-btn {
-        width: 25%;
-        height: 42px;
-        font-size: 14px;
-        justify-content: center;
-    }
-
-    .btn-row {
-        margin-top: 20px;
     }
 
     /* Summary Typography */
@@ -782,6 +601,7 @@ select:disabled {
 
     .divider {
         margin: 12px 0;
+        background: #39393a;
     }
 
     /* Footer */

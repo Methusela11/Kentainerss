@@ -22,8 +22,8 @@
         <section class="card collapsed">
             <div class="card-title">
                 <span class="radio inactive"></span>
-                Personal Details
-                <a href="#" class="edit-link">Edit</a>
+                <span class="title-text">Personal Details</span>
+                <a href="{% url 'payment_page' order.id %}" style="color: #146a9a;text-decoration: none; padding-left: 350px; font-weight: normal;">Edit</a>
             </div>
         </section>
 
@@ -79,19 +79,18 @@
         <span class="prefix">+254</span>
         <input type="text"
                id="mobileNumber"
-               maxlength="9">
+               maxlength="9"
+               inputmode="numeric"
+               pattern="[0-9]*">
     </div>
 
     <div class="mobile-total">
-        (Payment in KES) Total:
-        <strong id="mobileTotalAmount">
-            {{ order.total_amount|floatformat:2|intcomma }}
-        </strong>
+        (Payment in KES) Total:<strong id="mobileTotalAmount" style="color: #60605f">{{ order.total_amount|floatformat:2|intcomma }}</strong>
     </div>
 
 </div>
-            <style>
-                .mobile-label {
+<style>
+.mobile-label {
     display: block;
     font-size: 14px;
     margin-bottom: 8px;
@@ -137,17 +136,6 @@
             <div class="coming-soon">
                 Card payments coming soon.
             </div>
-            <!-- TERMS -->
-    <div class="terms">
-        <input type="checkbox" id="termsCheck">
-        <label for="termsCheck">
-            I agree to DPO’s <a href="#">terms and conditions</a>
-        </label>
-    </div>
-
-    <button class="pay-btn" id="payBtn" disabled>
-        Pay via Mobile
-    </button>
         </div>
 
         <!-- PESALINK -->
@@ -156,7 +144,11 @@
                 Pesalink coming soon.
             </div>
         </div>
-        <!-- TERMS -->
+
+    </div>
+
+    <div class="divider"></div>
+    <!-- TERMS -->
     <div class="terms">
         <input type="checkbox" id="termsCheck">
         <label for="termsCheck">
@@ -167,10 +159,6 @@
     <button class="pay-btn" id="payBtn" disabled>
         Pay via Mobile
     </button>
-
-    </div>
-
-    <div class="divider"></div>
 
 </section>
 
