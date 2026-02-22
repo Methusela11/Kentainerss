@@ -182,7 +182,7 @@ body {
 
 .add-btn {
     width: 100%;
-    background: #ffe500;
+    background: #faf606;
     padding: 17px;
     border-radius: 6px;
     margin-top: 35px;
@@ -201,7 +201,7 @@ body {
 }
 
 .add-btn:disabled {
-    background-color: #ffe500;
+    background-color: #ffe70e;
     color: #142647;
     cursor: not-allowed;
     opacity: 0.7;

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Online Payment – Kentainerss</title>
-    <link rel="stylesheet" href=" ">
+    <link rel="stylesheet" href="{% static 'assets/css/choosepayment.css' %}">
 </head>
 <body>
 
@@ -23,7 +23,7 @@
             <div class="card-title">
                 <span class="radio inactive"></span>
                 <span class="title-text">Personal Details</span>
-                <a href="{% url 'payment_page' order.id %}" style="color: #146a9a;text-decoration: none; padding-left: 350px; font-weight: normal;">Edit</a>
+                <a href="{% url 'payment_page' order.id %}">Edit</a>
             </div>
         </section>
 
@@ -89,59 +89,19 @@
     </div>
 
 </div>
-<style>
-.mobile-label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.phone-input {
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
-    margin-bottom: 12px;
-}
-
-.prefix {
-    margin-top: 0;
-    margin-right: 8px;
-    color: #444;
-}
-
-.phone-input input {
-    border: none;
-    outline: none;
-    flex: 1;
-    font-size: 15px;
-    width: 100%;
-    max-width: 150px;
-}
-
-.mobile-total {
-    font-size: 14px;
-    color: #444;
-}
-
-.mobile-total strong {
-    margin-left: 4px;
-    color: #2f6fed;
-}
-            </style>
-
-        </div>
+</div>
 
         <!-- CARD -->
         <div class="payment-panel hidden" id="cardPanel">
             <div class="coming-soon">
-                Card payments coming soon.
+                Card payments are coming soon.
             </div>
         </div>
 
         <!-- PESALINK -->
         <div class="payment-panel hidden" id="pesalinkPanel">
             <div class="coming-soon">
-                Pesalink coming soon.
+                Pesalink are coming soon.
             </div>
         </div>
 
@@ -151,12 +111,15 @@
     <!-- TERMS -->
     <div class="terms">
         <input type="checkbox" id="termsCheck">
-        <label for="termsCheck">
-            I agree to DPO’s <a href="#">terms and conditions</a>
+        <label for="termsCheck" style="font-size: 14px;">
+            I agree to DPO’s
+            <a href="https://secure.3gdirectpay.com/terms.php?ID=61374B54-427B-49F4-BCCE-663316FF0878" target="_blank">
+                terms and conditions
+            </a>
         </label>
     </div>
 
-    <button class="pay-btn" id="payBtn" disabled>
+    <button class="pay-btn" id="payBtn">
         Pay via Mobile
     </button>
 
