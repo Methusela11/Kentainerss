@@ -344,3 +344,6 @@ def projects(request):
 
 def aquasantec_detail(request):
     return render(request, "projects/aquasantec_detail.html")
+
+def nacada_detail(request):
+    return render(request, "projects/nacada_detail.html")
