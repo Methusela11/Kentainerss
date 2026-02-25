@@ -29,6 +29,7 @@ urlpatterns = [
     path('projects/', views.projects, name='projects'),
     path('projects/aquasantec-celebrates-dual-recognition-in-sustainability-quality-excellence/', views.aquasantec_detail, name='aquasantec_detail'),
     path('projects/supporting-recovery-through-water-security-our-partnership-with-nacada-kenya/', views.nacada_detail, name='nacada_detail'),
+    path('projects/another-milestone-we-officially-join-united-nations-global-impact/', views.unglobal_detail, name='unglobal_detail'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

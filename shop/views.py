@@ -347,3 +347,6 @@ def aquasantec_detail(request):
 
 def nacada_detail(request):
     return render(request, "projects/nacada_detail.html")
+
+def unglobal_detail(request):
+    return render(request, "projects/unglobal_detail.html")
