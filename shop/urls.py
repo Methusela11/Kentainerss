@@ -27,6 +27,11 @@ urlpatterns = [
     path('water_supply_and_accessories/', views.water_supply_and_accessories, name='water_supply_and_accessories'),
     path('special_products_and_others/', views.special_products_and_others, name='special_products_and_others'),
     path('projects/', views.projects, name='projects'),
+    path(
+        'projects/aquasantec-celebrates-dual-recognition-in-sustainability-quality-excellence/',
+        views.aquasantec_detail,
+        name='aquasantec_detail'
+    ),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

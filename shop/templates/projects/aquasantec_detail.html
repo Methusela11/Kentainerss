@@ -1,0 +1,63 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aquasantec Celebrates Dual Recognition</title>
+    <link rel="stylesheet" href="{% static 'assets/css/aquasantec_detail.css' %}">
+</head>
+<body>
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<main>
+<!-- CONTENT -->
+<section class="detail-wrapper">
+
+    <h1 class="detail-title">
+        Aquasantec Celebrates Dual Recognition in Sustainability & Quality Excellence
+    </h1>
+
+    <div class="detail-content">
+        <p>
+            Aquasantec is proud to announce two major achievements that reflect our commitment to sustainability, innovation, and trusted quality across Africa.
+        </p>
+
+        <p>
+            We placed <strong>Top 3 in Africa</strong> in the <strong>“Beyond Sustainability”</strong> category at the Sustainability & ESG Africa Awards 2025 in Johannesburg — recognizing our leadership in circular manufacturing, community empowerment, and responsible production.
+        </p>
+
+        <p>
+            We are also honored to receive the <strong>Quality Seal of Excellence</strong> at the East Africa Brand Quality Awards — a testament to our world-class standards, reliability, and continuous innovation.
+        </p>
+
+        <p>
+            These recognitions celebrate the dedication of our people, the trust of our customers, and our mission to build a more inclusive and sustainable Africa.
+        </p>
+
+        <p><strong>Excellence isn’t our goal — it’s our standard.</strong></p>
+    </div>
+
+
+    <!-- IMAGE GALLERY -->
+    <div class="detail-gallery">
+        <img src="{% static 'images/aqua1.jpg' %}">
+        <img src="{% static 'images/aqua2.jpg' %}">
+        <img src="{% static 'images/aqua3.jpg' %}">
+        <img src="{% static 'images/aqua4.jpg' %}">
+    </div>
+
+</section>
+</main>
+
+<footer>
+    {% include 'footer.html' %}
+</footer>
+
+</body>
+</html>

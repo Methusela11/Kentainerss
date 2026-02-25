@@ -4,11 +4,13 @@ body {
 }
 
 /* PAGE */
-.page-wrapper {
-    padding: 50px 100px;
+.project-wrapper {
+    max-width: 1420px;
+    margin: 0 auto;
 }
 
 .page-title {
+    font-weight: normal;
     font-size: 48px;
     color: #1e3a8a;
     margin-bottom: 40px;
@@ -33,10 +35,6 @@ body {
     color: #1e3a8a;
     text-decoration: none;
     line-height: 1.6;
-}
-
-.project-link:hover {
-    text-decoration: underline;
 }
 
 .bottom-left {

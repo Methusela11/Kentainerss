@@ -340,3 +340,7 @@ def special_products_and_others(request):
 
 def projects(request):
     return render(request, "projects.html")
+
+
+def aquasantec_detail(request):
+    return render(request, "projects/aquasantec_detail.html")
