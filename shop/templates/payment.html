@@ -1,5 +1,6 @@
-{% load humanize %}
 {% load static %}
+{% load humanize %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,33 @@
     <title>Online Payment – Kentainerss</title>
     <link rel="stylesheet" href="{% static 'assets/css/payment.css' %}">
 </head>
+
 <body>
+
+<div id="timeoutOverlay" class="timeout-overlay hidden">
+
+    <div class="timeout-card">
+        <div class="timeout-icon">⚠</div>
+
+        <h2>Payment Page Timeout</h2>
+
+        <p>
+
+            Dear Customer,
+            Please note that your payment was timed out and the transaction is cancelled.
+            To make payment please start the order/booking process again.
+
+        </p>
+
+        <div style="margin-top:20px;">
+            <a href="{% url 'home' %}" class="continue-btn">
+                Start Again
+            </a>
+        </div>
+    </div>
+
+</div>
+
 <header>
     {% include "dponavbar.html" %}
 </header>
@@ -17,9 +44,9 @@
     <!-- PERSONAL DETAILS -->
     <section class="card">
         <div class="card-title active">
-    <span class="radio active"></span>
-    Personal Details
-</div>
+            <span class="radio active"></span>
+            Personal Details
+        </div>
         <div class="divider"></div>
 
         <div class="form-grid">

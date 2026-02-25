@@ -10,6 +10,7 @@ body {
     margin: 0;
     font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont;
     color: #2e2e2e;
+    padding-top: 94px;
     background: linear-gradient(
         to bottom,
         #e1e0df 0%,
@@ -19,6 +20,11 @@ body {
 }
 
 .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
     background: #fff;
     border-bottom: 1px solid #eef1f4;
     height: 94px;
@@ -79,9 +85,12 @@ body {
 
 @media (max-width: 680px) {
 
-    /* Header */
     .header {
         height: auto;
+    }
+
+    body {
+        padding-top: 80px; /* slightly smaller offset for mobile */
     }
 
     .header-inner {

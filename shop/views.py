@@ -130,27 +130,21 @@ def add_to_cart(request, product_id):
     )
 
 
+@require_POST
 def remove_from_cart(request, item_id):
-    if request.method == "POST":
-        cart_item = get_object_or_404(CartItem, id=item_id)
-        user = request.user if request.user.is_authenticated else None
+    user = request.user if request.user.is_authenticated else None
 
-        if cart_item.user == user:
-            cart_item.delete()
+    cart_item = CartItem.objects.filter(
+        id=item_id,
+        user=user
+    ).first()
 
-        # Return updated cart HTML
-        cart_items = CartItem.objects.filter(user=user)
-        cart_subtotal = cart_items.aggregate(total=Sum(F("price") * F("quantity")))["total"] or 0
+    if not cart_item:
+        return JsonResponse({"error": "Item not found"}, status=404)
 
-        return render(
-            request,
-            "cart_sidebar.html",
-            {
-                "cart_items": cart_items,
-                "cart_subtotal": cart_subtotal,
-            },
-        )
-    return JsonResponse({"error": "Invalid request"}, status=400)
+    cart_item.delete()
+
+    return JsonResponse({"success": True})
 
 def cart(request):
     user = request.user if request.user.is_authenticated else None
@@ -236,20 +230,21 @@ def checkout(request):
 
 @require_POST
 def update_cart_quantity(request, item_id):
-    action = request.POST.get("action")
-    cart_item = get_object_or_404(CartItem, id=item_id)
-
     user = request.user if request.user.is_authenticated else None
 
-    if cart_item.user != user:
+    cart_item = CartItem.objects.filter(
+        id=item_id,
+        user=user
+    ).first()
+
+    if not cart_item:
         return JsonResponse({"error": "Unauthorized"}, status=403)
 
-    if action == "increase":
-        cart_item.quantity += 1
-    elif action == "decrease" and cart_item.quantity > 1:
-        cart_item.quantity -= 1
+    quantity = request.POST.get("quantity")
 
-    cart_item.save()
+    if quantity:
+        cart_item.quantity = int(quantity)
+        cart_item.save()
 
     return JsonResponse({
         "success": True,

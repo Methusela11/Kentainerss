@@ -1,5 +1,6 @@
 {% load humanize %}
 {% load static %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -238,6 +239,13 @@
                     <div class="meta">
                         <strong>Size (Litres / CMs):</strong> {{ item.option.name }}
                     </div>
+                {% endif %}
+
+                {% if item.shipping_zone %}
+                    <p class="cart-name">
+                        <strong>Shipping zone:</strong>
+                        {{ item.shipping_zone }}
+                    </p>
                 {% endif %}
 
             </div>

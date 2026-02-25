@@ -12,15 +12,11 @@ document.addEventListener("click", function (e) {
             "X-CSRFToken": csrfToken,
         },
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Remove failed");
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
         }
-        return response.text();
-    })
-    .then(() => {
-        // Reload page cart to refresh totals + rows
-        location.reload();
     })
     .catch(err => console.error(err));
 });
@@ -71,44 +67,46 @@ document.addEventListener("pointerdown", function (e) {
     });
 });
 
-const updateBasketBtn = document.getElementById("updateBasketBtn");
+document.addEventListener("DOMContentLoaded", function () {
+    const updateBasketBtn = document.getElementById("updateBasketBtn");
 
-function enableUpdateBasket() {
-    if (updateBasketBtn) {
-        updateBasketBtn.disabled = false;
-        updateBasketBtn.classList.add("active");
+    function enableUpdateBasket() {
+        if (updateBasketBtn) {
+            updateBasketBtn.disabled = false;
+            updateBasketBtn.classList.add("active");
+        }
     }
-}
 
-updateBasketBtn?.addEventListener("click", function () {
-    const csrfToken = document.getElementById("csrf-token").value;
+    window.enableUpdateBasket = enableUpdateBasket;
 
-    const updates = [];
-    document.querySelectorAll(".cart-row").forEach(row => {
-        updates.push({
-            id: row.dataset.itemId,
-            quantity: row.querySelector(".qty-value").textContent
+    updateBasketBtn?.addEventListener("click", function () {
+        const csrfToken = document.getElementById("csrf-token").value;
+
+        const updates = [];
+        document.querySelectorAll(".cart-row").forEach(row => {
+            updates.push({
+                id: row.dataset.itemId,
+                quantity: row.querySelector(".qty-value").textContent
+            });
+        });
+
+        fetch("/cart/update-basket/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ updates })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("cartSubtotal").textContent = data.cart_subtotal;
+                document.getElementById("cartTotal").textContent = data.cart_subtotal;
+
+                this.disabled = true;
+                this.classList.remove("active");
+            }
         });
     });
-
-    fetch("/cart/update-basket/", {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrfToken,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ updates })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            // Refresh totals from backend response
-            document.getElementById("cartSubtotal").textContent = data.cart_subtotal;
-            document.getElementById("cartTotal").textContent = data.cart_subtotal;
-
-            this.disabled = true;
-            this.classList.remove("active");
-        }
-    })
-    .catch(err => console.error(err));
 });

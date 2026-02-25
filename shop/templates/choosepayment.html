@@ -1,12 +1,40 @@
+
 {% load humanize %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Online Payment – Kentainerss</title>
     <link rel="stylesheet" href="{% static 'assets/css/choosepayment.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/payment.css' %}">
 </head>
+
+<div id="timeoutOverlay" class="timeout-overlay hidden">
+
+    <div class="timeout-card">
+        <div class="timeout-icon">⚠</div>
+
+        <h2>{% trans "Payment Page Timeout" %}</h2>
+
+        <p>
+            {% blocktrans %}
+            Dear Customer,
+            Please note that your payment was timed out and the transaction is cancelled.
+            To make payment please start the order/booking process again.
+            {% endblocktrans %}
+        </p>
+
+        <div style="margin-top:20px;">
+            <a href="{% url 'home' %}" class="continue-btn">
+                {% trans "Start Again" %}
+            </a>
+        </div>
+    </div>
+
+</div>
+
 <body>
 
 <header>
@@ -23,7 +51,7 @@
             <div class="card-title">
                 <span class="radio inactive"></span>
                 <span class="title-text">Personal Details</span>
-                <a href="{% url 'payment_page' order.id %}">Edit</a>
+                <a href="{% url 'payment_page' order.id %}" class="edit-link">Edit</a>
             </div>
         </section>
 
@@ -36,18 +64,31 @@
 
     <div class="divider"></div>
 
-    <!-- PAYMENT TABS -->
-    <div class="payment-tabs">
-        <div class="tab" data-method="card">
-            <i class="bi bi-card"></i>
-            Card
-        </div>
-        <div class="tab active" data-method="mobile">
-            <i class="bi bi-phone"></i>
-            Mobile
-        </div>
-        <div class="tab" data-method="pesalink">Pesalink 🔒</div>
+   <!-- PAYMENT TABS -->
+<div class="payment-tabs">
+
+    <div class="tab" data-method="card">
+        <img class="tab-icon" src="{% static 'assets/image/icons/payment/verifiedcard.png' %}" alt="Pesalink Icon" />
+        <span>Card</span>
     </div>
+
+    <div class="tab active" data-method="mobile">
+        <!-- Mobile Icon -->
+        <img class="tab-icon" src="{% static 'assets/image/icons/mobile.png' %}" alt="Pesalink Icon" />
+        <span>Mobile</span>
+    </div>
+
+    <div class="tab" data-method="pesalink">
+        <!-- Lock Icon -->
+        <img class="tab-icon" src="https://secure.3gdirectpay.com/payv3/assets/svg/icons/pesalink.svg" alt="Pesalink Icon" />
+        <span>Pesalink
+            <span>
+                <img src="{% static 'assets/image/icons/padlock.png' %}" style="height: 10px; width: auto;" alt="">
+            </span>
+        </span>
+    </div>
+
+</div>
 
     <!-- PAYMENT CONTENT -->
     <div id="paymentContent">
@@ -55,9 +96,11 @@
         <!-- MOBILE PANEL (ACTIVE BY DEFAULT) -->
         <div class="payment-panel" id="mobilePanel">
 
-            <select class="mobile-country">
-                <option>Kenya</option>
-            </select>
+            <label>
+                <select class="mobile-country">
+                    <option>Kenya</option>
+                </select>
+            </label>
 
             <div class="mobile-options">
                 <div class="mobile-box active" data-provider="mpesa">
@@ -99,7 +142,7 @@
         </div>
 
         <!-- PESALINK -->
-        <div class="payment-panel hidden" id="pesalinkPanel">
+        <div class="payment-panel hidden" id="pesalinkPanel" disabled>
             <div class="coming-soon">
                 Pesalink are coming soon.
             </div>
@@ -111,7 +154,7 @@
     <!-- TERMS -->
     <div class="terms">
         <input type="checkbox" id="termsCheck">
-        <label for="termsCheck" style="font-size: 14px;">
+        <label for="termsCheck" style="font-size: 16px;">
             I agree to DPO’s
             <a href="https://secure.3gdirectpay.com/terms.php?ID=61374B54-427B-49F4-BCCE-663316FF0878" target="_blank">
                 terms and conditions
@@ -187,17 +230,17 @@
 
     <div class="amount">
         <div class="amount-box">
-            <select class="currency-select" id="currencySelect">
-                <option value="KES" selected>KES</option>
-                <option value="USD">USD</option>
-                <option value="KES">KES</option>
-            </select>
+    <select class="currency-select" id="currencySelect">
+        <option value="KES" selected>KES</option>
+        <option value="USD">USD</option>
+    </select>
 
-            <p id="totalAmount" style="color: #2f6fed"
-                    data-kes="{{ order.total_amount|floatformat:2 }}">
-                {{ order.total_amount|floatformat:2|intcomma }}
-            </p>
-        </div>
+    <span id="totalAmount"
+          data-kes="{{ order.total_amount|floatformat:2 }}"
+          class="total-amount">
+        {{ order.total_amount|floatformat:2|intcomma }}
+    </span>
+</div>
     </div>
 
     <!-- Conversion Rate -->
@@ -219,100 +262,105 @@
 </footer>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ================= SUMMARY TOGGLE ================= */
+
     const toggle = document.getElementById("summaryToggle");
     const dropdown = document.getElementById("summaryDropdown");
     const caret = document.getElementById("caret");
-    const summaryCard = document.querySelector(".card.summary");
 
-    toggle.addEventListener("click", () => {
-        dropdown.classList.toggle("collapsed");
-        caret.classList.toggle("rotate");
-        summaryCard.classList.toggle("expanded");
-    });
-</script>
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            dropdown.classList.toggle("collapsed");
+            caret.classList.toggle("rotate");
+        });
+    }
 
-<script>
+
+    /* ================= CURRENCY CONVERSION ================= */
+
     const currencySelect = document.getElementById("currencySelect");
     const totalAmountEl = document.getElementById("totalAmount");
     const conversionRateEl = document.getElementById("conversionRate");
     const conversionInfoEl = document.getElementById("conversionInfo");
 
-    const kesAmount = parseFloat(totalAmountEl.dataset.kes);
+    if (currencySelect && totalAmountEl) {
 
-    // 🔥 Exchange Rate
-    const exchangeRate = 155; // 1 USD = 155 KES
-    const rateToUSD = (1 / exchangeRate).toFixed(4);
+        const kesAmount = parseFloat(totalAmountEl.dataset.kes);
+        const exchangeRate = 155; // 1 USD = 155 KES
+        const rateToUSD = (1 / exchangeRate).toFixed(4);
 
-    currencySelect.addEventListener("change", function () {
+        currencySelect.addEventListener("change", function () {
 
-        if (this.value === "USD") {
+            if (this.value === "USD") {
 
-            let converted = kesAmount / exchangeRate;
+                const converted = kesAmount / exchangeRate;
 
-            totalAmountEl.textContent = "USD " + converted.toFixed(2);
+                totalAmountEl.textContent = converted.toFixed(2);
 
-            // Show conversion rate
-            conversionRateEl.textContent =
-                "Conversion rate: 1 KES = " + rateToUSD + " USD";
-            conversionRateEl.classList.remove("hidden");
+                conversionRateEl.textContent =
+                    "Conversion rate: 1 KES = " + rateToUSD + " USD";
 
-            // Show info box
-            conversionInfoEl.textContent =
-                "Your chosen payment method will be charged the above total in USD.";
-            conversionInfoEl.classList.remove("hidden");
+                conversionInfoEl.textContent =
+                    "Your chosen payment method will be charged the above total in USD.";
 
-        } else {
+                conversionRateEl.classList.remove("hidden");
+                conversionInfoEl.classList.remove("hidden");
 
-            totalAmountEl.textContent = kesAmount.toFixed(2);
+            } else {
 
-            conversionRateEl.classList.add("hidden");
-            conversionInfoEl.classList.add("hidden");
-        }
-    });
-</script>
+                totalAmountEl.textContent = kesAmount.toFixed(2);
 
-<script>
-    // 15 minutes in seconds
-    let timeLeft = 15 * 60;
+                conversionRateEl.classList.add("hidden");
+                conversionInfoEl.classList.add("hidden");
+            }
+        });
+    }
+
+
+    /* ================= COUNTDOWN TIMER ================= */
 
     const countdownEl = document.getElementById("countdown");
 
-    function updateTimer() {
+    if (countdownEl) {
 
-        let days = Math.floor(timeLeft / (24 * 60 * 60));
-        let hours = Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60));
-        let minutes = Math.floor((timeLeft % (60 * 60)) / 60);
-        let seconds = timeLeft % 60;
+        let timeLeft = 15 * 60; // 15 minutes
 
-        // Always show 2 digits for minutes & seconds
-        minutes = minutes.toString().padStart(2, "0");
-        seconds = seconds.toString().padStart(2, "0");
+        function updateTimer() {
 
-        countdownEl.textContent =
-            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
 
-        if (timeLeft > 0) {
-            timeLeft--;
-        } else {
-            clearInterval(timerInterval);
-            countdownEl.textContent = "Session Expired";
+            minutes = minutes.toString().padStart(2, "0");
+            seconds = seconds.toString().padStart(2, "0");
+
+            countdownEl.textContent = `${minutes}:${seconds}`;
+
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                clearInterval(timerInterval);
+                countdownEl.textContent = "Session Expired";
+            }
         }
+
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
     }
 
-    updateTimer(); // Run immediately
-    const timerInterval = setInterval(updateTimer, 1000);
-</script>
 
-<script>
+    /* ================= PAYMENT TABS ================= */
+
     const tabs = document.querySelectorAll(".tab");
     const panels = document.querySelectorAll(".payment-panel");
     const payBtn = document.getElementById("payBtn");
-    const termsCheck = document.getElementById("termsCheck");
+    const mobileNumberWrapper = document.getElementById("mobileNumberWrapper");
     const mobileBoxes = document.querySelectorAll(".mobile-box");
+    const termsCheck = document.getElementById("termsCheck");
 
-    // TAB SWITCHING
     tabs.forEach(tab => {
-        tab.addEventListener("click", function() {
+        tab.addEventListener("click", function () {
 
             tabs.forEach(t => t.classList.remove("active"));
             this.classList.add("active");
@@ -323,8 +371,8 @@
 
             if (method === "mobile") {
                 document.getElementById("mobilePanel").classList.remove("hidden");
-                mobileNumberInput.classList.add("hidden");
                 payBtn.textContent = "Pay via Mobile";
+                mobileNumberWrapper.classList.add("hidden"); // reset phone input
             }
 
             if (method === "card") {
@@ -339,29 +387,43 @@
         });
     });
 
-    // TERMS ENABLE BUTTON
-    termsCheck.addEventListener("change", function() {
-        payBtn.disabled = !this.checked;
-        payBtn.style.background = this.checked ? "#2f6fed" : "#8fb4dc";
-    });
-</script>
-<script>
-    const mobileNumberWrapper = document.getElementById("mobileNumberWrapper");
+
+    /* ================= MOBILE PROVIDER SELECTION ================= */
 
 mobileBoxes.forEach(box => {
-    box.addEventListener("click", function() {
+    box.addEventListener("click", function () {
 
         mobileBoxes.forEach(b => b.classList.remove("active"));
         this.classList.add("active");
 
         const provider = this.dataset.provider;
 
+        // Show/hide the mobile number input
         if (provider === "mpesa" || provider === "airtel") {
             mobileNumberWrapper.classList.remove("hidden");
         } else {
             mobileNumberWrapper.classList.add("hidden");
         }
+
+        // **Reset the phone input whenever switching providers**
+        const mobileNumberInput = document.getElementById("mobileNumber");
+        if (mobileNumberInput) {
+            mobileNumberInput.value = "";
+        }
     });
+});
+
+
+    /* ================= TERMS CHECK ================= */
+
+    if (termsCheck && payBtn) {
+        payBtn.disabled = true;
+
+        termsCheck.addEventListener("change", function () {
+            payBtn.disabled = !this.checked;
+        });
+    }
+
 });
 </script>
 </body>

@@ -18,6 +18,36 @@ body {
     );
 }
 
+/* TIMEOUT OVERLAY */
+.timeout-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(240, 242, 245, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.timeout-card {
+    background: white;
+    width: 420px;
+    max-width: 90%;
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.timeout-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
 .card.summary {
     width: 380px;
     max-width: 100%;
