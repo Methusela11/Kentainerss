@@ -3,17 +3,19 @@
 ============================ */
 * {
     box-sizing: border-box;
+    font-family: Georgia, serif;
 }
 
 html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    font-family: sans-serif;
+    font-family: Georgia, serif;
 }
 
 body {
-    padding-top: 70px; /* navbar height */
+    padding-top: 70px;
+    font-family: Georgia, serif;
 }
 
 /* ============================

@@ -222,4 +222,24 @@ class OrderItem(models.Model):
 def generate_payment_reference():
     return "R" + str(random.randint(10000000, 99999999))
 
+from django.contrib.auth.models import User
+from django.db import models
+
+class CustomerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
+    company = models.CharField(max_length=150, blank=True)
+
+    street = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    county = models.CharField(max_length=100, blank=True)
+    postcode = models.CharField(max_length=20, blank=True)
+
+    phone = models.CharField(max_length=20, blank=True)
+    email = models.EmailField(blank=True)
+
+    def __str__(self):
+        return self.user.username
 

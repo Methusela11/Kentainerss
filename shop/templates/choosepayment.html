@@ -1,4 +1,3 @@
-
 {% load humanize %}
 {% load static %}
 
@@ -16,19 +15,19 @@
     <div class="timeout-card">
         <div class="timeout-icon">⚠</div>
 
-        <h2>{% trans "Payment Page Timeout" %}</h2>
+        <h2>Payment Page Timeout</h2>
 
         <p>
-            {% blocktrans %}
+
             Dear Customer,
             Please note that your payment was timed out and the transaction is cancelled.
             To make payment please start the order/booking process again.
-            {% endblocktrans %}
+
         </p>
 
         <div style="margin-top:20px;">
             <a href="{% url 'home' %}" class="continue-btn">
-                {% trans "Start Again" %}
+                Start Again
             </a>
         </div>
     </div>

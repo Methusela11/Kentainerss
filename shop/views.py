@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import F, Sum
+from .models import CustomerProfile
 
 # Signup
 def signup_view(request):
@@ -180,32 +181,42 @@ def checkout(request):
         return redirect("cart")
 
     total = Decimal("0.00")
-
     for item in cart_items:
         total += item.price * item.quantity
 
+    profile = None
+    if user:
+        profile, created = CustomerProfile.objects.get_or_create(user=user)
+
     if request.method == "POST":
 
-        # ✅ Create Order from billing form
         order = Order.objects.create(
             user=user,
-
             first_name=request.POST.get("first_name"),
             last_name=request.POST.get("last_name"),
             company=request.POST.get("company"),
-
             street=request.POST.get("street"),
             city=request.POST.get("city"),
             county=request.POST.get("county"),
             postcode=request.POST.get("postcode"),
-
             phone=request.POST.get("phone"),
             email=request.POST.get("email"),
-
             total_amount=total
         )
 
-        # ✅ Save order items
+        # ✅ SAVE TO PROFILE (IMPORTANT PART)
+        if user:
+            profile.first_name = request.POST.get("first_name")
+            profile.last_name = request.POST.get("last_name")
+            profile.company = request.POST.get("company")
+            profile.street = request.POST.get("street")
+            profile.city = request.POST.get("city")
+            profile.county = request.POST.get("county")
+            profile.postcode = request.POST.get("postcode")
+            profile.phone = request.POST.get("phone")
+            profile.email = request.POST.get("email")
+            profile.save()
+
         for item in cart_items:
             OrderItem.objects.create(
                 order=order,
@@ -217,15 +228,12 @@ def checkout(request):
                 quantity=item.quantity
             )
 
-        # # OPTIONAL: Clear cart
-        # cart_items.delete()
-
-        # ✅ Redirect to payment page
         return redirect("payment_page", order_id=order.id)
 
     return render(request, "checkout.html", {
         "cart_items": cart_items,
-        "total": total
+        "total": total,
+        "profile": profile
     })
 
 @require_POST
@@ -329,3 +337,6 @@ def special_products_and_others(request):
         'products': products
     }
     return render(request, 'specialproducts.html', context)
+
+def projects(request):
+    return render(request, "projects.html")

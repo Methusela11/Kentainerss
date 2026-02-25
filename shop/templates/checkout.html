@@ -37,125 +37,141 @@
     <form method="post" class="checkout-form">
         {% csrf_token %}
 
-        <!-- BILLING DETAILS -->
-        <section class="billing">
-            <h2>Billing details</h2>
+<!-- BILLING DETAILS -->
+<section class="billing">
+    <h2>Billing details</h2>
 
-            <div class="form-grid">
+    <div class="form-grid">
 
-                <div class="form-group">
-                    <label>First name <span>*</span></label>
-                    <input type="text" name="first_name" required>
+        <div class="form-group">
+            <label>First name <span>*</span></label>
+            <input type="text" name="first_name"
+                   value="{{ profile.first_name|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Last name <span>*</span></label>
+            <input type="text" name="last_name"
+                   value="{{ profile.last_name|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Company name (optional)</label>
+            <input type="text" name="company"
+                   value="{{ profile.company|default:'' }}">
+        </div>
+
+        <div class="form-group">
+            <label>Country</label>
+            <input type="text" value="Kenya" disabled>
+        </div>
+
+        <div class="form-group" id="address">
+            <label>Street address <span>*</span></label>
+            <input type="text" name="street"
+                   placeholder="House number and street name"
+                   value="{{ profile.street|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Town / City <span>*</span></label>
+            <input type="text" name="city"
+                   value="{{ profile.city|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>State / County <span>*</span></label>
+
+            <div class="custom-select" id="countyDropdown">
+                <div class="select-trigger">
+                    <span class="selected" style="color:#0b1a4a;">
+                        {% if profile.county %}
+                            {{ profile.county }}
+                        {% else %}
+                            Select county
+                        {% endif %}
+                    </span>
+                    <i class="bi bi-chevron-down"></i>
                 </div>
 
-                <div class="form-group">
-                    <label>Last name <span>*</span></label>
-                    <input type="text" name="last_name" required>
+                <div class="select-menu">
+                    <input type="text" placeholder="Search…" class="select-search">
+                    <ul class="select-options">
+                        <li data-value="Baringo">Baringo</li>
+                        <li data-value="Bomet">Bomet</li>
+                        <li data-value="Bungoma">Bungoma</li>
+                        <li data-value="Busia">Busia</li>
+                        <li data-value="Elgeyo-Marakwet">Elgeyo-Marakwet</li>
+                        <li data-value="Embu">Embu</li>
+                        <li data-value="Garissa">Garissa</li>
+                        <li data-value="Homa Bay">Homa Bay</li>
+                        <li data-value="Isiolo">Isiolo</li>
+                        <li data-value="Kajiado">Kajiado</li>
+                        <li data-value="Kakamega">Kakamega</li>
+                        <li data-value="Kericho">Kericho</li>
+                        <li data-value="Kiambu">Kiambu</li>
+                        <li data-value="Kilifi">Kilifi</li>
+                        <li data-value="Kirinyaga">Kirinyaga</li>
+                        <li data-value="Kisii">Kisii</li>
+                        <li data-value="Kisumu">Kisumu</li>
+                        <li data-value="Kitui">Kitui</li>
+                        <li data-value="Kwale">Kwale</li>
+                        <li data-value="Laikipia">Laikipia</li>
+                        <li data-value="Lamu">Lamu</li>
+                        <li data-value="Machakos">Machakos</li>
+                        <li data-value="Makueni">Makueni</li>
+                        <li data-value="Mandera">Mandera</li>
+                        <li data-value="Marsabit">Marsabit</li>
+                        <li data-value="Meru">Meru</li>
+                        <li data-value="Migori">Migori</li>
+                        <li data-value="Mombasa">Mombasa</li>
+                        <li data-value="Murang’a">Murang’a</li>
+                        <li data-value="Nairobi County">Nairobi County</li>
+                        <li data-value="Nakuru">Nakuru</li>
+                        <li data-value="Nandi">Nandi</li>
+                        <li data-value="Narok">Narok</li>
+                        <li data-value="Nyamira">Nyamira</li>
+                        <li data-value="Nyandarua">Nyandarua</li>
+                        <li data-value="Nyeri">Nyeri</li>
+                        <li data-value="Samburu">Samburu</li>
+                        <li data-value="Siaya">Siaya</li>
+                        <li data-value="Taita Taveta">Taita Taveta</li>
+                        <li data-value="Tana River">Tana River</li>
+                        <li data-value="Tharaka-Nithi">Tharaka-Nithi</li>
+                        <li data-value="Trans Nzoia">Trans Nzoia</li>
+                        <li data-value="Turkana">Turkana</li>
+                        <li data-value="Uasin Gishu">Uasin Gishu</li>
+                        <li data-value="Vihiga">Vihiga</li>
+                        <li data-value="Wajir">Wajir</li>
+                        <li data-value="West Pokot">West Pokot</li>
+                    </ul>
                 </div>
 
-                <div class="form-group">
-                    <label>Company name (optional)</label>
-                    <input type="text" name="company">
-                </div>
-
-                <div class="form-group">
-                    <label>Country</label>
-                    <input type="text" value="Kenya" disabled>
-                </div>
-
-                <div class="form-group" id="address">
-                    <label>Street address <span>*</span></label>
-                    <input type="text" name="street" placeholder="House number and street name" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Town / City <span>*</span></label>
-                    <input type="text" name="city" required>
-                </div>
-
-               <div class="form-group">
-                   <label>State / County <span>*</span></label>
-
-                       <div class="custom-select" id="countyDropdown">
-                           <div class="select-trigger">
-                               <span class="selected" style="color: #0b1a4a">Select county</span>
-                               <i class="bi bi-chevron-down"></i>
-                           </div>
-                           <div class="select-menu">
-                               <input type="text" placeholder="Search…" class="select-search">
-                               <ul class="select-options">
-                                   <li data-value="Baringo">Baringo</li>
-                                   <li data-value="Bomet">Bomet</li>
-                                   <li data-value="Bungoma">Bungoma</li>
-                                   <li data-value="Busia">Busia</li>
-                                   <li data-value="Elgeyo-Marakwet">Elgeyo-Marakwet</li>
-                                   <li data-value="Embu">Embu</li>
-                                   <li data-value="Garissa">Garissa</li>
-                                   <li data-value="Homa Bay">Homa Bay</li>
-                                   <li data-value="Isiolo">Isiolo</li>
-                                   <li data-value="Kajiado">Kajiado</li>
-                                   <li data-value="Kakamega">Kakamega</li>
-                                   <li data-value="Kericho">Kericho</li>
-                                   <li data-value="Kiambu">Kiambu</li>
-                                   <li data-value="Kilifi">Kilifi</li>
-                                   <li data-value="Kirinyaga">Kirinyaga</li>
-                                   <li data-value="Kisii">Kisii</li>
-                                   <li data-value="Kisumu">Kisumu</li>
-                                   <li data-value="Kitui">Kitui</li>
-                                   <li data-value="Kwale">Kwale</li>
-                                   <li data-value="Laikipia">Laikipia</li>
-                                   <li data-value="Lamu">Lamu</li>
-                                   <li data-value="Machakos">Machakos</li>
-                                   <li data-value="Makueni">Makueni</li>
-                                   <li data-value="Mandera">Mandera</li>
-                                   <li data-value="Marsabit">Marsabit</li>
-                                   <li data-value="Meru">Meru</li>
-                                   <li data-value="Migori">Migori</li>
-                                   <li data-value="Mombasa">Mombasa</li>
-                                   <li data-value="Murang’a">Murang’a</li>
-                                   <li data-value="Nairobi County">Nairobi County</li>
-                                   <li data-value="Nakuru">Nakuru</li>
-                                   <li data-value="Nandi">Nandi</li>
-                                   <li data-value="Narok">Narok</li>
-                                   <li data-value="Nyamira">Nyamira</li>
-                                   <li data-value="Nyandarua">Nyandarua</li>
-                                   <li data-value="Nyeri">Nyeri</li>
-                                   <li data-value="Samburu">Samburu</li>
-                                   <li data-value="Siaya">Siaya</li>
-                                   <li data-value="Taita Taveta">Taita Taveta</li>
-                                   <li data-value="Tana River">Tana River</li>
-                                   <li data-value="Tharaka-Nithi">Tharaka-Nithi</li>
-                                   <li data-value="Trans Nzoia">Trans Nzoia</li>
-                                   <li data-value="Turkana">Turkana</li>
-                                   <li data-value="Uasin Gishu">Uasin Gishu</li>
-                                   <li data-value="Vihiga">Vihiga</li>
-                                   <li data-value="Wajir">Wajir</li>
-                                   <li data-value="West Pokot">West Pokot</li>
-                               </ul>
-                           </div>
-                           <!-- real form value -->
-                           <input type="hidden" name="county">
-                       </div>
-               </div>
-
-
-
-                <div class="form-group">
-                    <label>Postcode / ZIP <span>*</span></label>
-                    <input type="text" name="postcode" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Phone <span>*</span></label>
-                    <input type="text" name="phone" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Email address <span>*</span></label>
-                    <input type="email" name="email" required>
-                </div>
-
+                <!-- real value -->
+                <input type="hidden" name="county"
+                       value="{{ profile.county|default:'' }}">
             </div>
+        </div>
+
+        <div class="form-group">
+            <label>Postcode / ZIP <span>*</span></label>
+            <input type="text" name="postcode"
+                   value="{{ profile.postcode|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone <span>*</span></label>
+            <input type="text" name="phone"
+                   value="{{ profile.phone|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email address <span>*</span></label>
+            <input type="email" name="email"
+                   value="{{ profile.email|default:'' }}" required>
+        </div>
+
+    </div>
 
             <!-- EXTRA OPTIONS (Woo-style) -->
             <div class="extra-options">
@@ -384,6 +400,11 @@ document.addEventListener("DOMContentLoaded", function () {
             menu.classList.remove("open");
         });
     });
+    // Preselect saved county on page load
+const savedCounty = hiddenInput.value;
+if (savedCounty) {
+    selected.textContent = savedCounty;
+}
 
     /* SEARCH */
     search.addEventListener("input", function () {

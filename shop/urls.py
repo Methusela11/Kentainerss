@@ -26,6 +26,7 @@ urlpatterns = [
     path('material-handling/', views.material_handling, name='material_handling'),
     path('water_supply_and_accessories/', views.water_supply_and_accessories, name='water_supply_and_accessories'),
     path('special_products_and_others/', views.special_products_and_others, name='special_products_and_others'),
+    path('projects/', views.projects, name='projects'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

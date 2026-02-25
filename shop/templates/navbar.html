@@ -31,7 +31,7 @@
             </span>
         </li>
 
-        <li><a href="#">Projects</a></li>
+        <li><a href="{% url 'projects' %}">Projects</a></li>
         <li><a href="#">Search</a></li>
 
         {% if user.is_authenticated %}
@@ -86,16 +86,16 @@
 
             <div class="kc-menu-columns">
                 <ul class="kc-menu-list">
-                    <li><a href="{% url 'shop' %}" data-image="{% static 'assets/image/water_tanks_and_storage/kentank_upright.png' %}">View All</a></li>
-                    <li><a href="{% url 'water_tank_storage' %}" data-image="{% static 'assets/image/water_tanks_and_storage/wtas.png' %}">Water Tanks & Storage</a></li>
-                    <li><a href="{% url 'sanitation' %}" data-image="{% static 'assets/image/sanitation/sanitation.png' %}">Sanitation</a></li>
-                    <li><a href="{% url 'agriculture' %}" data-image="{% static 'assets/image/agriculture/agriculture.png' %}">Agriculture</a></li>
+                    <li><a href="{% url 'shop' %}" data-image="{% static 'assets/image/water_tanks_and_storage/kentank/KENTANK-3-e1629362456714.png' %}">View All</a></li>
+                    <li><a href="{% url 'water_tank_storage' %}" data-image="{% static 'assets/image/water_tanks_and_storage/kentank/KENTANK-3-e1629362456714.png' %}">Water Tanks & Storage</a></li>
+                    <li><a href="{% url 'sanitation' %}" data-image="{% static 'assets/image/sanitation/handwash/2-1-e1629797792781-uai-258x258.png' %}">Sanitation</a></li>
+                    <li><a href="{% url 'agriculture' %}" data-image="{% static 'assets/image/agriculture/cattle_trough/Cattle-Trough-e1630306655430-uai-258x258.png' %}">Agriculture</a></li>
                 </ul>
 
                 <ul class="kc-menu-list">
-                    <li><a href="{% url 'material_handling' %}" data-image="{% static 'assets/image/material_handling/bins.png' %}">Material Handling</a></li>
-                    <li><a href="{% url 'water_supply_and_accessories' %}" data-image="{% static 'assets/image/water_supply_and_accessories/water_supply.png' %}">Water Supply & Accessories</a></li>
-                    <li><a href="{% url 'special_products_and_others' %}" data-image="{% static 'assets/image/special_products_and_others/special_products.png' %}">Special Products & Others</a></li>
+                    <li><a href="{% url 'material_handling' %}" data-image="{% static 'assets/image/material_handling/bins/Dustbin-Dm-10-opened-e1630321256153-uai-258x258.png' %}">Material Handling</a></li>
+                    <li><a href="{% url 'water_supply_and_accessories' %}" data-image="{% static 'assets/image/water_supply_and_accessories/kentank/KENTANK-3-e1629362456714-uai-258x258.png' %}">Water Supply & Accessories</a></li>
+                    <li><a href="{% url 'special_products_and_others' %}" data-image="{% static 'assets/image/special_products_and_others/qdesk/Qdesk-2-e1629726059861-uai-258x258.png' %}">Special Products & Others</a></li>
                 </ul>
             </div>
 
@@ -108,7 +108,7 @@
 </div>
 
 
-            <a href="#">Projects</a>
+            <a href="{% url 'projects' %}">Projects</a>
         </div>
 
         <!-- Center Logo -->
