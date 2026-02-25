@@ -1,0 +1,92 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kentainers Roadshow: A Journey of Impact Across Kenya</title>
+    <link rel="stylesheet" href="{% static 'assets/css/projects/roadshow_detail.css' %}">
+</head>
+<body>
+
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<main>
+
+<section class="detail-wrapper">
+
+    <h1 class="detail-title">
+        Kentainers Roadshow: A Journey of Impact Across Kenya
+    </h1>
+
+    <div class="detail-content">
+
+        <p>
+            For the past 15 days, the Kentainers Roadshow has been on an incredible journey across Kenya,
+            bringing innovative water storage solutions to homes, businesses, and communities.
+        </p>
+
+        <p>
+            As a company dedicated to sustainable water access, this roadshow allowed us to engage directly
+            with customers, showcase our products, and provide expert guidance on reliable and durable water storage.
+        </p>
+
+        <h3>Roadshow Highlights & Impact</h3>
+
+        <p>
+            Covering multiple regions across the country, our roadshow reached major towns, rural communities,
+            and business hubs — spreading awareness about efficient water storage solutions.
+        </p>
+
+        <p>
+            From urban centers to agricultural zones, we connected with thousands of people,
+            demonstrating how our products improve water access and sustainability.
+        </p>
+
+        <p>
+            At every stop, we engaged with local communities, farmers, business owners,
+            and institutions — offering expert insights on choosing the right water storage solutions.
+        </p>
+
+        <h3>Why This Roadshow Matters</h3>
+
+        <ul class="roadshow-list">
+            <li>✔ <strong>Education & Awareness:</strong> Guidance on selecting the right storage solutions.</li>
+            <li>✔ <strong>Community Engagement:</strong> Direct interaction to understand local needs.</li>
+            <li>✔ <strong>Sustainability Focus:</strong> Promoting durable water storage solutions.</li>
+        </ul>
+
+        <h3>What’s Next?</h3>
+
+        <p>
+            With 15 successful days behind us, we’re gearing up for even more locations and engagements.
+            Stay tuned as we continue our mission to make water storage accessible, reliable, and efficient
+            for all Kenyans.
+        </p>
+
+        <p>
+            <strong>#KentainersOnTheMove #WaterForGenerations #ReliableWaterStorage</strong>
+        </p>
+
+    </div>
+
+    <!-- IMAGE GALLERY -->
+    <div class="detail-gallery">
+        <img src="{% static 'images/roadshow1.jpg' %}" alt="Roadshow Crowd">
+        <img src="{% static 'images/roadshow2.jpg' %}" alt="Roadshow Event">
+        <img src="{% static 'images/roadshow3.jpg' %}" alt="Community Engagement">
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+    {% include 'footer.html' %}
+</footer>
+
+</body>
+</html>

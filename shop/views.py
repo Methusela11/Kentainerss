@@ -350,3 +350,6 @@ def nacada_detail(request):
 
 def unglobal_detail(request):
     return render(request, "projects/unglobal_detail.html")
+
+def roadshow_detail(request):
+    return render(request, "projects/roadshow_detail.html")
