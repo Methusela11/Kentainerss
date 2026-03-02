@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 
 import dj_database_url
-from django.contrib.auth import middleware
 from django.template.context_processors import media
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,7 +32,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'django-insecure-f2d%&f&w&zsdb-(d9n*!4$ry&v92bfjc3l@!_lsjzooik4if7@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
