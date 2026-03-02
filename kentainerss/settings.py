@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import dj_database_url
+from django.contrib.auth import middleware
 from django.template.context_processors import media
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,6 +40,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     ".ngrok-free.app",
     "448e-41-220-233-110.ngrok-free.app",
+    ".onrender.com"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -60,6 +63,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -93,13 +97,12 @@ WSGI_APPLICATION = 'kentainerss.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
+import os
+
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get("DATABASE_URL"))
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -135,8 +138,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -145,3 +146,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
