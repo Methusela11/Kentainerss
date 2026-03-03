@@ -1,4 +1,4 @@
-/* DETAIL PAGE */
+
 .detail-wrapper {
     padding: 80px 0;
     max-width: 1340px;
@@ -7,7 +7,7 @@
 
 .detail-title {
     font-weight: normal;
-    font-size: 46px;
+    font-size: 42px;
     color: #1e3a8a;
     font-family: Georgia, serif;
     margin-bottom: 30px;
@@ -16,7 +16,7 @@
 .detail-content {
     line-height: 1.8;
     color: #333;
-    font-size: 17px;
+    font-size: 14px;
     margin-bottom: 50px;
 }
 
@@ -27,6 +27,6 @@
 }
 
 .detail-gallery img {
-    width: 23%;
+    width: 20%;
     background: #ddd;
 }

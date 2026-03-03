@@ -353,3 +353,6 @@ def unglobal_detail(request):
 
 def roadshow_detail(request):
     return render(request, "projects/roadshow_detail.html")
+
+def news_update(request):
+    return render(request, "projects/news_update.html")

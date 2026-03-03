@@ -44,6 +44,7 @@ body {
 
 .press-release {
     color: #1e3a8a;
+    text-decoration: none;
 }
 
 /* RIGHT FEATURE */
@@ -60,7 +61,8 @@ body {
 
 .news-update {
     margin-top: 15px;
-    font-weight: bold;
+    font-weight: normal;
+    text-align: center;
     color: #1e3a8a;
 }
 

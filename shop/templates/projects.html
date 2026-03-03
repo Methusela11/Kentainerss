@@ -41,7 +41,7 @@
             </a>
 
             <a href="{% url 'roadshow_detail' %}" class="project-link">
-                Kentainers Roadshow: A Journey of Impact Across Kenya
+                Kentainerss Roadshow: A Journey of Impact Across Kenya
             </a>
 
             <a href="#" class="project-link">
@@ -58,13 +58,16 @@
         <!-- RIGHT SIDE FEATURED IMAGE -->
         <div class="projects-featured">
 
-            <img src="{% static 'assets/image/projects/notice.png' %}" class="featured-img">
+            <a href="{% url 'news_update' %}" style="text-decoration: none">
+                <img src="{% static 'assets/image/projects/notice.png' %}" class="featured-img">
 
-            <div class="news-update">News Update</div>
+                <div class="news-update">News Update</div>
+            </a>
 
             <div class="bottom-grey">
                 <img src="{% static 'images/placeholder.jpg' %}">
             </div>
+
 
         </div>
 

@@ -31,6 +31,7 @@ urlpatterns = [
     path('projects/supporting-recovery-through-water-security-our-partnership-with-nacada-kenya/', views.nacada_detail, name='nacada_detail'),
     path('projects/another-milestone-we-officially-join-united-nations-global-impact/', views.unglobal_detail, name='unglobal_detail'),
     path('projects/kentainers-roadshow-a-journey-of-impact-across-kenya/', views.roadshow_detail, name='roadshow_detail'),
+    path('product/news-update', views.news_update, name='news_update'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
