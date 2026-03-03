@@ -1,0 +1,66 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Update – Public Clarification</title>
+    <link rel="stylesheet" href="{% static 'assets/css/projects/news_update.css' %}">
+</head>
+<body>
+
+<header>
+    {% include 'includes/mainnavbar.html' %}
+</header>
+
+<main>
+
+<section class="news-wrapper">
+
+    <p class="news-breadcrumb">News Update</p>
+
+    <h1 class="news-title">
+        PUBLIC CLARIFICATION
+    </h1>
+
+    <div class="news-image">
+        <img src="{% static 'images/news-update.jpg' %}" alt="Public Clarification Statement">
+    </div>
+
+    <div class="news-content">
+
+        <p>
+            Following media reports regarding Kentainers Limited and the explosion
+            that occurred in Embakasi, Nairobi, we wish to provide clarification.
+        </p>
+
+        <p>
+            The explosion did not occur at our former premises in Embakasi either.
+            We would like to confirm that Kentainers Limited had moved its operations
+            to Nairobi Gate Industrial Park, Northlands area.
+        </p>
+
+        <p>
+            We extend our sincere condolences to the families affected and thank
+            the national police, Nairobi County Government, St. John’s Ambulance,
+            and other first responders for their quick response.
+        </p>
+
+        <p class="news-date">
+            Kentainers Limited<br>
+            2nd February 2024
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+    {% include 'includes/mainfooter.html' %}
+</footer>
+
+</body>
+</html>
