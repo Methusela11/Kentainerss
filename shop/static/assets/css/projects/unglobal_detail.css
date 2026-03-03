@@ -6,7 +6,7 @@
 
 .detail-title {
     font-weight: normal;
-    font-size: 46px;
+    font-size: 38px;
     color: #1e3a8a;
     font-family: Georgia, serif;
     margin-bottom: 30px;
@@ -15,27 +15,26 @@
 /* SPLIT LAYOUT */
 .detail-split {
     display: flex;
-    gap: 60px;
     align-items: flex-start;
+    gap: -50px;
 }
 
 /* LEFT IMAGE */
 .detail-image {
-    width: 35%;
+    width: 30%;
+    height: 200px;
 }
 
 .detail-image img {
-    width: 100%;
+    width: 90%;
     border-radius: 4px;
     object-fit: cover;
 }
 
 /* RIGHT CONTENT */
 .detail-content {
-    width: 65%;
-    line-height: 1.8;
-    font-size: 17px;
-    color: #333;
+    width: 100%;
+    color: #072933;
 }
 
 /* CHECK LIST */
@@ -48,12 +47,18 @@
 .commitment-list li {
     margin-bottom: 8px;
     font-weight: 500;
+    font-size: 14px;
 }
 
+.detail-below{
+    font-size: 13px;
+    color: #0d193e;
+}
 .hashtags {
     margin-top: 20px;
     font-weight: 600;
-    color: #1e3a8a;
+    color: #040b20;
+    font-size: 14px;
 }
 
 /* RESPONSIVE */
