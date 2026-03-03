@@ -1,0 +1,145 @@
+.site-footer {
+    background: #ffffff;
+    padding: 40px 20px;
+    font-family: Georgia, serif;
+    color: #062454;
+}
+
+/* MAIN FOOTER WRAPPER */
+.footer-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin: 0 auto;
+    max-width: 1400px;
+}
+
+/* LOGO */
+.footer-logo {
+    width: 180px;
+    margin-bottom: 20px;
+}
+
+/* TEXT */
+.footer-address, .footer-contact {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* SOCIAL ICONS */
+.social-icons a {
+    margin-right: 14px;
+    font-size: 18px;
+    color: #082145;
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+/* LINKS */
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li a {
+    color: #062454;
+    text-decoration: none;
+    font-size: 13px;
+    opacity: .8;
+}
+
+/* NEWSLETTER */
+.newsletter-form .input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+
+.newsletter-form input {
+    width: 100%;
+    padding: 12px 10px 12px 20px;
+    border: 1px solid #062454;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.newsletter-form .submit-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #062454;
+    font-size: 18px;
+    padding: 0;
+}
+
+/* BOTTOM ROW */
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    font-size: 12px;
+    margin: 0 auto;
+    max-width: 1400px;
+}
+
+.footer-bottom-links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 25px;
+}
+
+
+/* ---------------------------- */
+/*   MOBILE FOOTER — LEFT ALIGN */
+/* ---------------------------- */
+
+@media (max-width: 700px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: left; /* ✅ FIX */
+    }
+
+    .newsletter-form {
+        margin: 0; /* align left */
+    }
+    .input-wrapper input {
+        width: 100%;
+        border: 2px solid #062454;
+    }
+
+    .social-icons {
+        justify-content: flex-start;
+    }
+
+    .social-icons a {
+        margin-right: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-footer {
+        padding: 30px 15px;
+    }
+
+    .footer-container {
+        gap: 20px;
+    }
+
+    .footer-bottom {
+        font-size: 11px;
+        flex-direction: column;
+        align-items: flex-start; /* ✅ FIX */
+        text-align: left;        /* ✅ FIX */
+        gap: 8px;
+    }
+}
+

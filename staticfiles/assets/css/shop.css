@@ -1,0 +1,119 @@
+/* ---------- GLOBAL ---------- */
+
+* {
+    box-sizing: border-box;      /* prevents width overflow */
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: white;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden !important;   /* hard-stop horizontal scrolling */
+}
+
+.main-content {
+    padding-top: 40px;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* ---------- PAGE TITLE ---------- */
+
+.shop-title {
+    width: 92%;
+    margin: 20px auto;     /* adds spacing and centers it */
+    color: #3a43a3;
+    font-weight: normal;
+    font-family: Arial, sans-serif;
+    text-align: center;    /* keeps title centered */
+    font-size: clamp(22px, 5vw, 36px);  /* responsive scaling */
+}
+
+/* ---------- PRODUCT GRID ---------- */
+
+.product-grid {
+    width: 92%;
+    max-width: 1350px;
+    margin: 0 auto 80px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 45px;
+
+    overflow-x: hidden;   /* blocks grid overflow */
+}
+
+
+/* ---------- PRODUCT CARD ---------- */
+
+.product-card {
+    background: #dbdcdd;
+    border-radius: 12px;
+    padding: 55px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    color: #000;
+    transition: all .25s ease;
+
+    width: 100%;                 /* prevents wide expansion */
+    overflow: hidden;            /* protects inner elements */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+
+/* ---------- IMAGE AREA ---------- */
+
+.image-wrapper {
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;            /* prevents image pushing layout */
+}
+
+.image-wrapper img {
+    max-height: 280px;
+    max-width: 100%;             /* FIX for horizontal overflow */
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+
+/* ---------- PRODUCT NAME ---------- */
+
+.product-name {
+    margin-top: 22px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #062454;
+}
+
+
+/* ---------- PRODUCT PRICE ---------- */
+
+.product-price {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #6A6A6A;
+    font-weight: 400;
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 480px) {
+    .product-grid {
+        gap: 20px;
+    }
+    .product-card {
+        padding: 40px 15px;
+    }
+}

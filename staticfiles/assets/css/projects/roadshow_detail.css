@@ -1,0 +1,63 @@
+.detail-wrapper {
+    padding: 100px 20px;
+    max-width: 1340px;
+    margin: 0 auto;
+}
+
+.detail-title {
+    font-weight: normal;
+    font-size: 48px;
+    color: #1e3a8a;
+    font-family: Georgia, serif;
+    margin-bottom: 30px;
+    line-height: 1.3;
+}
+
+.detail-content {
+    line-height: 1.8;
+    color: #333;
+    font-size: 17px;
+    margin-bottom: 50px;
+    max-width: 1000px;
+}
+
+.roadshow-list {
+    margin: 20px 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.roadshow-list li {
+    margin-bottom: 10px;
+}
+
+.detail-gallery {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.detail-gallery img {
+    width: 32%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+@media (max-width: 992px) {
+    .detail-gallery img {
+        width: 48%;
+        height: 220px;
+    }
+}
+
+@media (max-width: 600px) {
+    .detail-title {
+        font-size: 32px;
+    }
+
+    .detail-gallery img {
+        width: 100%;
+        height: auto;
+    }
+}
