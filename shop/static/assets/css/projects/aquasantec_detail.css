@@ -29,3 +29,26 @@
 .detail-gallery img {
     width: 20%;
 }
+
+@media (max-width: 992px) {
+    .detail-wrapper {
+        padding: 40px 18px;
+    }
+
+    .detail-title {
+        font-size: 26px;
+    }
+
+    .detail-gallery {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .detail-gallery img {
+        width: 75%;
+    }
+
+
+
+}
