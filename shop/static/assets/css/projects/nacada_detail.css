@@ -38,19 +38,21 @@
 
 /* RESPONSIVE */
 @media (max-width: 992px) {
-    .detail-gallery img {
-        width: 48%;
-        height: 220px;
+    .detail-wrapper {
+        padding: 80px 18px;
     }
-}
 
-@media (max-width: 600px) {
     .detail-title {
-        font-size: 32px;
+        font-size: 26px;
+    }
+
+    .detail-gallery {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
     }
 
     .detail-gallery img {
-        width: 100%;
-        height: auto;
+        width: 75%;
     }
 }
