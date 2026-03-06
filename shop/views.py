@@ -356,3 +356,6 @@ def roadshow_detail(request):
 
 def news_update(request):
     return render(request, "projects/news_update.html")
+
+def about(request):
+    return render(request, "footer/about.html")

@@ -1,0 +1,118 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - Kentainerss</title>
+
+<link rel="stylesheet" href="{% static 'assets/css/footer/about.css' %}">
+</head>
+
+<body>
+
+<header>
+{% include 'includes/mainnavbar.html' %}
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="about-hero">
+    <div class="about-hero-content">
+        <h1>About Kentainerss</h1>
+        <p>Delivering durable water storage solutions for homes, industries, and communities across Kenya.</p>
+    </div>
+</section>
+
+
+<!-- COMPANY INTRO -->
+<section class="about-container">
+
+    <div class="about-grid">
+
+        <div class="about-text">
+            <h2>Who We Are</h2>
+
+            <p>
+            Kentainers Limited is one of Kenya's leading manufacturers of high-quality
+            plastic water storage tanks and containers. Our mission is to provide
+            reliable, durable, and sustainable water storage solutions for homes,
+            businesses, institutions, and agricultural communities.
+            </p>
+
+            <p>
+            With decades of experience in manufacturing and innovation,
+            we continue to invest in technology and quality processes that
+            ensure our products meet international standards.
+            </p>
+
+        </div>
+
+        <div class="about-image">
+            <img src="{% static 'assets/image/about/factory.jpg' %}" alt="Kentainers Factory">
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VISION & MISSION -->
+<section class="mission-section">
+
+<div class="mission-grid">
+
+<div class="mission-box">
+<h3>Our Vision</h3>
+<p>
+To be the most trusted provider of water storage solutions in Africa,
+empowering communities through reliable access to water.
+</p>
+</div>
+
+<div class="mission-box">
+<h3>Our Mission</h3>
+<p>
+To manufacture high-quality, durable, and innovative water storage
+products that meet the evolving needs of our customers.
+</p>
+</div>
+
+<div class="mission-box">
+<h3>Our Values</h3>
+<p>
+Integrity, innovation, sustainability, and customer satisfaction
+guide everything we do.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FACTORY IMAGE -->
+<section class="factory-section">
+
+<h2>Our Manufacturing Facility</h2>
+
+<img src="{% static 'assets/image/about/factory.jpg' %}" alt="Factory">
+
+<p>
+Our state-of-the-art production facility enables us to produce
+a wide range of water tanks and plastic products that meet
+international quality standards.
+</p>
+
+</section>
+
+</main>
+
+<footer>
+{% include 'includes/mainfooter.html' %}
+</footer>
+
+</body>
+</html>

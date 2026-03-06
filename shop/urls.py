@@ -32,6 +32,7 @@ urlpatterns = [
     path('projects/another-milestone-we-officially-join-united-nations-global-impact/', views.unglobal_detail, name='unglobal_detail'),
     path('projects/kentainers-roadshow-a-journey-of-impact-across-kenya/', views.roadshow_detail, name='roadshow_detail'),
     path('product/news-update', views.news_update, name='news_update'),
+    path('about', views.about, name='about'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
