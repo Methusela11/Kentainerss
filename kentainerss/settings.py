@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     ".ngrok-free.app",
     "448e-41-220-233-110.ngrok-free.app",
+    'kentainerss.onrender.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
